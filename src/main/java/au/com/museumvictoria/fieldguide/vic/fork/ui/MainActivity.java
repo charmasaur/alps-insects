@@ -32,7 +32,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class MainActivity extends SherlockFragmentActivity implements
     ActionBar.TabListener, SpeciesItemListFragment.Callbacks {
 
-  private static final String TAG = "VIC.HomeActivity";
+  private static final String TAG = MainActivity.class.getSimpleName();
 
   /**
    * The serialization (saved instance state) Bundle key representing the
@@ -45,9 +45,8 @@ public class MainActivity extends SherlockFragmentActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    final ActionBar ab = getSupportActionBar();
-    final String[] menulist = getResources().getStringArray(
-        R.array.sections);
+    ActionBar ab = getSupportActionBar();
+    String[] menulist = getResources().getStringArray(R.array.sections);
 
     // set defaults for logo & home up
     ab.setDisplayHomeAsUpEnabled(false);
@@ -67,7 +66,6 @@ public class MainActivity extends SherlockFragmentActivity implements
         });
 
     ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
   }
 
   @Override
@@ -77,10 +75,8 @@ public class MainActivity extends SherlockFragmentActivity implements
     // Associate searchable configuration with the SearchView
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-      SearchView searchView = (SearchView) menu
-          .findItem(R.id.menu_search).getActionView();
-      searchView.setSearchableInfo(searchManager
-          .getSearchableInfo(getComponentName()));
+      SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+      searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
       searchView.setIconifiedByDefault(false);
     }
 

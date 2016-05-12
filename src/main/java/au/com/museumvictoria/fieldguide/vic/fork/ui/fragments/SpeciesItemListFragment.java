@@ -23,13 +23,12 @@ import com.actionbarsherlock.app.SherlockListFragment;
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link SpeciesItemDetailFragment}.
- * <p>
- * Activities containing this fragment MUST implement the {@link Callbacks}
+ *
+ * <p>Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
 public class SpeciesItemListFragment extends SherlockListFragment {
-
-  private static final String TAG = "SpeciesItemListFragment";
+  private static final String TAG = SpeciesItemListFragment.class.getSimpleName();
 
   /**
    * The serialization (saved instance state) Bundle key representing the
