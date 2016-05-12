@@ -548,7 +548,8 @@ public class SplashActivity extends SherlockActivity implements IDownloaderClien
    * all of the controls into the remote service calls.
    */
   private void initializeDownloadUI() {
-    mDownloaderClientStub = DownloaderClientMarshaller.CreateStub(this, FieldGuideDownloaderService.class);
+    mDownloaderClientStub =
+        DownloaderClientMarshaller.CreateStub(this, FieldGuideDownloaderService.class);
     setContentView(R.layout.downloader_ui);
 
     mPB = (ProgressBar) findViewById(R.id.progressBar);
