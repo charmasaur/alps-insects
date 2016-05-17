@@ -1,15 +1,14 @@
 package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class SpeciesDetailFragment extends SherlockFragment {
+public class SpeciesDetailFragment extends Fragment {
 
 	public static String FRAGMENT_NAME = "fragment_name";
 

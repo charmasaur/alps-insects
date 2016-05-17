@@ -4,7 +4,10 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -15,11 +18,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapte
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-
-public class SearchActivity extends SherlockFragmentActivity {
+public class SearchActivity extends AppCompatActivity {
 	
 	private TextView mTextView;
 	private ListView mListView;

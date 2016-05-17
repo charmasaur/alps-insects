@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,9 +24,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.ImageCache.ImageCacheParam
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utils;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class ImageGridFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
+public class ImageGridFragment extends Fragment implements AdapterView.OnItemClickListener {
 	
 	private static final String TAG = "VIC.ImageGridFragment";
     private static final String IMAGE_CACHE_DIR = "thumbs";

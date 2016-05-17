@@ -4,18 +4,17 @@
 package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * @author aranipeta
  *
  */
-public class HomeFragment extends SherlockFragment {
+public class HomeFragment extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

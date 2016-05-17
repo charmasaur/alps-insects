@@ -5,6 +5,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageWorker;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class ImageDetailFragment extends SherlockFragment {
+public class ImageDetailFragment extends Fragment {
 	
 	private static final String TAG = "VIC.ImageDetailFragment";
 	

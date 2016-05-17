@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class SpeciesListFragment extends SherlockFragment {
+public class SpeciesListFragment extends Fragment {
 	public static final String TAG = SpeciesListFragment.class.getSimpleName();
 
 	/**

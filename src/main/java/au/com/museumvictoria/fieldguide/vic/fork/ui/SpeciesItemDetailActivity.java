@@ -2,14 +2,13 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  * An activity representing a single Item detail screen. This activity is only
@@ -19,7 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link SpeciesItemDetailActivity}.
  */
-public class SpeciesItemDetailActivity extends SherlockFragmentActivity {
+public class SpeciesItemDetailActivity extends AppCompatActivity {
 	
 	private static final String TAG = "SpeciesItemDetailActivity";
 	

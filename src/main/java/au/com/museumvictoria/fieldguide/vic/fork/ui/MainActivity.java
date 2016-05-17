@@ -8,10 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.OnNavigationListener;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
+
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
@@ -21,15 +28,8 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesListFragmen
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 @SuppressLint("NewApi")
-public class MainActivity extends SherlockFragmentActivity implements
+public class MainActivity extends AppCompatActivity implements
     ActionBar.TabListener, SpeciesItemListFragment.Callbacks {
 
   private static final String TAG = MainActivity.class.getSimpleName();
@@ -56,7 +56,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
     // set up list nav
     ab.setListNavigationCallbacks(ArrayAdapter.createFromResource(this,
-        R.array.sections, R.layout.sherlock_spinner_dropdown_item),
+        R.array.sections, R.layout.support_simple_spinner_dropdown_item),
         new OnNavigationListener() {
           public boolean onNavigationItemSelected(int itemPosition,
               long itemId) {
@@ -70,7 +70,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+    getMenuInflater().inflate(R.menu.activity_main, menu);
 
     // Associate searchable configuration with the SearchView
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

@@ -2,11 +2,15 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -18,13 +22,8 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageWorker;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utils;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-
 @SuppressLint("NewApi")
-public class ImageDetailActivity extends SherlockFragmentActivity implements OnClickListener {
+public class ImageDetailActivity extends AppCompatActivity implements OnClickListener {
 	
 	private static final String TAG = "VIC.ImageDetailActivity";
 
@@ -171,7 +170,7 @@ public class ImageDetailActivity extends SherlockFragmentActivity implements OnC
         }
 
         @Override
-        public SherlockFragment getItem(int position) {
+        public Fragment getItem(int position) {
         	if (Images.imageUrls[position].endsWith("audio")) {
         		return ImageDetailFragment.newInstance(position+1);
         	}

@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapte
 import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesSubgroupListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 
 /**
  * A list fragment representing a list of Items. This fragment also supports
@@ -27,7 +27,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
  * <p>Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class SpeciesItemListFragment extends SherlockListFragment {
+public class SpeciesItemListFragment extends ListFragment {
   private static final String TAG = SpeciesItemListFragment.class.getSimpleName();
 
   /**

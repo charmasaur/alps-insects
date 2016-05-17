@@ -1,6 +1,3 @@
-/**
- * 
- */
 package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
 import java.io.BufferedReader;
@@ -14,6 +11,7 @@ import java.io.Writer;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +20,11 @@ import android.webkit.WebView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * @author aranipeta
  *
  */
-public class WebFragment extends SherlockFragment {
+public class WebFragment extends Fragment {
 	
 	private String htmlPage = "information"; 
 	

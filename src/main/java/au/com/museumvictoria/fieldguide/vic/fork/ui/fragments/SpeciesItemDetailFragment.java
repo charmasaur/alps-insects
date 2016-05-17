@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -13,7 +14,10 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -38,16 +42,12 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utils;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
 /**
  * A fragment representing a single Item detail screen. This fragment is either
  * contained in a {@link SpeciesItemListActivity} in two-pane mode (on tablets)
  * or a {@link SpeciesItemDetailFragment} on handsets.
  */
-public class SpeciesItemDetailFragment extends SherlockFragment {
+public class SpeciesItemDetailFragment extends Fragment {
 
 	private static final String TAG = "SpeciesItemDetailFragment";
 
@@ -55,7 +55,7 @@ public class SpeciesItemDetailFragment extends SherlockFragment {
 	private static Cursor cursor, cursorImages, cursorAudio;
 	private static MediaPlayer mPlayer; 
 
-	private static SherlockFragmentActivity baseContext;
+	private static Activity baseContext;
 
 	public static SpeciesItemDetailFragment newInstance(Bundle args) {
 		SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
@@ -92,8 +92,9 @@ public class SpeciesItemDetailFragment extends SherlockFragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 
-		baseContext = getSherlockActivity();
-		final ActionBar ab = getSherlockActivity().getSupportActionBar();
+		baseContext = getActivity();
+    // TODO GROSS
+		final ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
 		mPlayer = new MediaPlayer();
 
 		String displayText = "No species found";

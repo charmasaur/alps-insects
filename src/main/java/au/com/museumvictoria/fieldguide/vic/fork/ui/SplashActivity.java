@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Messenger;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.service.FieldGuideDownloaderService;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.android.vending.expansion.zipfile.ZipResourceFile.ZipEntryRO;
 import com.google.android.vending.expansion.downloader.Constants;
@@ -38,7 +38,7 @@ import com.google.android.vending.expansion.downloader.IDownloaderClient;
 import com.google.android.vending.expansion.downloader.IDownloaderService;
 import com.google.android.vending.expansion.downloader.IStub;
 
-public class SplashActivity extends SherlockActivity implements IDownloaderClient {
+public class SplashActivity extends AppCompatActivity implements IDownloaderClient {
   private static final String TAG = SplashActivity.class.getSimpleName();
 
   private final Handler mHandler = new Handler();

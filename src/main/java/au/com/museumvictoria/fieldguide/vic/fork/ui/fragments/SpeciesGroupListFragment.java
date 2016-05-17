@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +20,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-
-public class SpeciesGroupListFragment extends SherlockListFragment {
+public class SpeciesGroupListFragment extends ListFragment {
 	private static final String TAG = "SpeciesGroupListFragment";
 
 	private ListView mListView;
