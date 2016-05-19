@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements
       SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
       SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
       searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-      searchView.setIconifiedByDefault(false);
+//    searchView.setIconifiedByDefault(false);
     }
 
     return true;
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-    case R.id.menu_search:
-      onSearchRequested();
-      return true;
+//    case R.id.menu_search:
+//      onSearchRequested();
+//      return true;
     case R.id.menu_settings:
       Intent intent = new Intent(this, SettingsActivity.class);
       startActivity(intent);
