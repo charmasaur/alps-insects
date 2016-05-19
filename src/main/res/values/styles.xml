@@ -1,7 +1,5 @@
 <resources>
-    <style name="Theme.FieldGuide" parent="Theme.AppCompat">
-        <item name="actionBarStyle">@style/Theme.FieldGuide.ActionBar</item>
-        
+    <style name="Theme.FieldGuide" parent="Theme.AppCompat.NoActionBar">
         <item name="dropDownListViewStyle">@style/Theme.FieldGuide.DropDownListView</item>
         <item name="android:dropDownListViewStyle">@style/Theme.FieldGuide.DropDownListView</item>
         

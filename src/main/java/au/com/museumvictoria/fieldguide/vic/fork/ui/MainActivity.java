@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,39 +46,21 @@ public class MainActivity extends AppCompatActivity implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    ActionBar ab = getSupportActionBar();
-    String[] menulist = getResources().getStringArray(R.array.sections);
-
-    // set defaults for logo & home up
-    ab.setDisplayHomeAsUpEnabled(false);
-    ab.setDisplayUseLogoEnabled(false);
-    ab.setDisplayShowTitleEnabled(false);
-    ab.setDisplayShowHomeEnabled(false);
-
-    // set up list nav
-    ab.setListNavigationCallbacks(ArrayAdapter.createFromResource(this,
-        R.array.sections, R.layout.support_simple_spinner_dropdown_item),
-        new OnNavigationListener() {
-          public boolean onNavigationItemSelected(int itemPosition,
-              long itemId) {
-            displayFragment(itemPosition);
-            return false;
-          }
-        });
-
-    ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+    Log.i(TAG, "onCreate");
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("Field Guide");
+    toolbar.setSubtitle("Australian Alpine Insects");
+    setSupportActionBar(toolbar);
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.activity_main, menu);
 
-    // Associate searchable configuration with the SearchView
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
       SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
       searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//    searchView.setIconifiedByDefault(false);
     }
 
     return true;
@@ -85,16 +68,11 @@ public class MainActivity extends AppCompatActivity implements
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-//    case R.id.menu_search:
-//      onSearchRequested();
-//      return true;
-    case R.id.menu_settings:
+    if (item.getItemId() == R.id.menu_settings) {
       Intent intent = new Intent(this, SettingsActivity.class);
       startActivity(intent);
-    default:
-      return super.onOptionsItemSelected(item);
     }
+    return super.onOptionsItemSelected(item);
   }
 
   private void displayFragment(int itemPosition) {

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,13 @@ import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapte
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
+/**
+ * Gets started to handle tapping on a search result (I think). And maybe for searches from the
+ * system widget or something? Shows a list of search results when a search actually is completed
+ * (rather than just an item selected from the instant list).
+ */
 public class SearchActivity extends AppCompatActivity {
+  private static final String TAG = SearchActivity.class.getSimpleName();
 	
 	private TextView mTextView;
 	private ListView mListView;
@@ -26,9 +33,14 @@ public class SearchActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+    Log.i(TAG, "onCreate");
 		setContentView(R.layout.search_results);
 		
-		final ActionBar ab = getSupportActionBar();
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("Search");
+    setSupportActionBar(toolbar);
+		ActionBar ab = getSupportActionBar();
 		ab.setDisplayHomeAsUpEnabled(true);
 		ab.setDisplayShowHomeEnabled(false);
 		ab.setDisplayUseLogoEnabled(false);
