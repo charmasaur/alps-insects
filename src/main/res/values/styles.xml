@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.FieldGuide" parent="Theme.AppCompat.Light">
+    <style name="Theme.FieldGuide" parent="Theme.AppCompat">
         <item name="actionBarStyle">@style/Theme.FieldGuide.ActionBar</item>
         
         <item name="dropDownListViewStyle">@style/Theme.FieldGuide.DropDownListView</item>
@@ -9,36 +9,34 @@
         
     </style>
     
-    <style name="Theme.FieldGuide.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.FieldGuide.FullScreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
     
-    <style name="Theme.FieldGuide.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.FieldGuide.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowFullscreen">true</item>
     </style>
     
     
     <!-- actionbar styles -->
-    <style name="Theme.FieldGuide.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="Theme.FieldGuide.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
 
-        <item name="background">@drawable/actionbar_gradient</item>
+    <!--    <item name="background">@drawable/actionbar_gradient</item>
         <item name="backgroundStacked">@drawable/actionbar_gradient</item>
         <item name="backgroundSplit">@drawable/actionbar_gradient</item>
-        <!-- <item name="progressBarStyle">@style/example_ProgressBar</item> -->
 
-        <item name="android:background">@drawable/actionbar_gradient</item>
-        <!-- <item name="android:progressBarStyle">@style/example_ProgressBar</item> -->
+        <item name="android:background">@drawable/actionbar_gradient</item>-->
     </style>
     
-    <style name="Theme.FieldGuide.DropDownNav" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="background">@drawable/spinner_background_ab_example</item>
+    <style name="Theme.FieldGuide.DropDownNav" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
+    <!--    <item name="background">@drawable/spinner_background_ab_example</item>
         <item name="android:background">@drawable/spinner_background_ab_example</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_example</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_example</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_example</item>-->
     </style>
 
-    <style name="Theme.FieldGuide.DropDownListView" parent="Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_example</item>
+    <style name="Theme.FieldGuide.DropDownListView" parent="Widget.AppCompat.ListView.DropDown">
+    <!--<item name="android:listSelector">@drawable/selectable_background_example</item>-->
     </style>
 
 
