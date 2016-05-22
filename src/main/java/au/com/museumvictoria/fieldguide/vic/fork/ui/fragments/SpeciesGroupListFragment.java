@@ -3,12 +3,13 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AlphabetIndexer;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,7 +21,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-public class SpeciesGroupListFragment extends ListFragment {
+public class SpeciesGroupListFragment extends Fragment {
 	private static final String TAG = SpeciesGroupListFragment.class.getSimpleName();
 
 	private ListView mListView;
@@ -31,7 +32,7 @@ public class SpeciesGroupListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_species_item, container, false);
+		return inflater.inflate(R.layout.fragment_species_group_list, container, false);
 	}
 
 	@Override
@@ -44,10 +45,11 @@ public class SpeciesGroupListFragment extends ListFragment {
 
 		mCursor = database.getSpeciesGroups();
 		
-		mListView = getListView();
+		mListView = (ListView) findViewById(R.id.group_list);
 		mListView.setFastScrollEnabled(true);
 		mAdapter = new SpeciesCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
-		setListAdapter(mAdapter);
+		mListView.setListAdapter(mAdapter);
+//    mListView.setOnItemClickListener(listViewOnItemClickListener);
 
 		Log.i(TAG, "Done loading items");
 	}
@@ -61,6 +63,8 @@ public class SpeciesGroupListFragment extends ListFragment {
 	}
 	
 	
+//  private final AdapterView.OnItemClickListener listViewOnItemClickListener =
+//    new AdapterView.OnItemClickListener() {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
@@ -142,6 +146,16 @@ public class SpeciesGroupListFragment extends ListFragment {
 			TextView txtView2 = (TextView) view.findViewById(R.id.speciesSublabel);
 			// txtView2.setText(cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
 			txtView2.setVisibility(View.GONE);
+
+      view.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+    			Intent intent = new Intent(getActivity(), SpeciesActivity.class);
+    			intent.putExtra(Utilities.SPECIES_GROUP_LABEL, groupLabel);
+    			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
+    			startActivity(intent);
+        }
+      });
 		}
 
 		@Override
