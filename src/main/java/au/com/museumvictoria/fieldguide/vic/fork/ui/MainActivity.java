@@ -1,6 +1,5 @@
 package au.com.museumvictoria.fieldguide.vic.fork.ui;
 
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -29,9 +28,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesListFragmen
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-@SuppressLint("NewApi")
-public class MainActivity extends AppCompatActivity implements
-    ActionBar.TabListener, SpeciesItemListFragment.Callbacks {
+public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -75,83 +72,22 @@ public class MainActivity extends AppCompatActivity implements
     return super.onOptionsItemSelected(item);
   }
 
-  private void displayFragment(int itemPosition) {
-
-    Fragment frag = null;
-    Fragment frag2 = null;
-    Bundle bundle = new Bundle();
-
-    switch (itemPosition) {
-    case 1:
-      frag = SpeciesListFragment.newInstance();
-      break;
-
-    case 2:
-      // show about
-      bundle.putString("pageurl", "about");
-      frag = new WebFragment();
-      frag.setArguments(bundle);
-      break;
-
-    default:
-      frag = new HomeFragment();
-      break;
-    }
-
-    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    ft.replace(R.id.basecontainer, frag);
-    ft.commit();
-
-  }
-
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     // Serialize the current tab position.
-    Log.d(TAG, "In onSaveInstanceState");
-    outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar()
-        .getSelectedNavigationIndex());
+    Log.d(TAG, "onSaveInstanceState");
+    outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
+        getSupportActionBar().getSelectedNavigationIndex());
   }
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     // Restore the previously serialized current tab position.
-    Log.d(TAG, "In onRestoreInstanceState");
+    Log.d(TAG, "onRestoreInstanceState");
     if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
       getSupportActionBar().setSelectedNavigationItem(
           savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
     }
-  }
-
-  private void showDropDownNav() {
-    ActionBar ab = getSupportActionBar();
-    if (ab.getNavigationMode() != ActionBar.NAVIGATION_MODE_LIST) {
-      ab.setDisplayShowTitleEnabled(false);
-      ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-    }
-  }
-
-  private void showTabsNav() {
-    ActionBar ab = getSupportActionBar();
-    if (ab.getNavigationMode() != ActionBar.NAVIGATION_MODE_TABS) {
-      ab.setDisplayShowTitleEnabled(false);
-      ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-    }
-  }
-
-  @Override
-  public void onTabSelected(Tab tab, FragmentTransaction ft) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
-  public void onTabReselected(Tab tab, FragmentTransaction ft) {
-    // TODO Auto-generated method stub
-
   }
 
   /**
@@ -206,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   public void displayInfo(View view) {
-
     switch (view.getId()) {
     case R.id.heading_distribution:
 
