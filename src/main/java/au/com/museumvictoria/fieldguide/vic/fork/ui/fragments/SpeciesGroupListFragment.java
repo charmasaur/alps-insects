@@ -47,7 +47,7 @@ public class SpeciesGroupListFragment extends ListFragment {
 		mListView = getListView();
 		mListView.setFastScrollEnabled(true);
 		mAdapter = new SpeciesCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
-		mListView.setAdapter(mAdapter);
+		setListAdapter(mAdapter);
 
 		Log.i(TAG, "Done loading items");
 	}
@@ -88,7 +88,7 @@ public class SpeciesGroupListFragment extends ListFragment {
 	
 	
 
-	private static final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
+	private final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
 
 		AlphabetIndexer mAlphabetIndexer;
 
