@@ -83,14 +83,14 @@ public class SpeciesListFragment extends Fragment {
 			}
 
 			TextView subgroupname = (TextView) mygroupsview.findViewById(R.id.subgroupname);
-			if (subgroupname != null) {
+			//if (subgroupname != null) {
 				Bundle arguments = this.getArguments();
 				String speciesgroup = arguments.getString("speciesgroup");
 				if (TextUtils.isEmpty(speciesgroup)) {
 					speciesgroup = "ALL";
 				}
 
-				subgroupname.setText(speciesgroup);
+			//	subgroupname.setText(speciesgroup);
 				
 //				final ActionBar ab = getSherlockActivity().getSupportActionBar();
 //		        ab.setDisplayShowTitleEnabled(true);
@@ -108,7 +108,7 @@ public class SpeciesListFragment extends Fragment {
 						fragment.onSpeciesGroupUpdated(getArguments().getString("speciesgroup")); 
 					}
 				}
-			}
+			//}
 
 			mShowGroups = false;
 

@@ -6,40 +6,7 @@
     android:orientation="vertical"
     android:showDividers="middle" >
 
-<!--     tools:context="au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ItemListActivity" -->
-
-
-    <!--
-    <FrameLayout
-        android:id="@+id/item_group_container"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_weight="1" >
-        
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal">
-            
-        <Button
-            android:id="@+id/button_group_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&lt; Back"
-            android:onClick="backToGroups" />
-        
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Do it."/>
-        
-            
-        </LinearLayout>
-
-    </FrameLayout>
-    -->
-
-    <FrameLayout
+    <!--    <FrameLayout
         android:id="@+id/item_group_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +25,7 @@
                 android:gravity="center"
                 android:clickable="true"
                 android:onClick="backToGroups" />
-    </FrameLayout>
+    </FrameLayout>-->
 
     <fragment
         android:id="@+id/item_list"
