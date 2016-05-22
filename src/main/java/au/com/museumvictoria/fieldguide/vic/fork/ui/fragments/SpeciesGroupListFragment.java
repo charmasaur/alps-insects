@@ -21,11 +21,11 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 public class SpeciesGroupListFragment extends ListFragment {
-	private static final String TAG = "SpeciesGroupListFragment";
+	private static final String TAG = SpeciesGroupListFragment.class.getSimpleName();
 
 	private ListView mListView;
 	private Cursor mCursor;
-	private FieldGuideDatabase fgdb;
+	private FieldGuideDatabase database;
 	private SpeciesCursorAdapter mAdapter; 
 	
 
@@ -38,11 +38,11 @@ public class SpeciesGroupListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		fgdb = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
+		database = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
 
 		Log.i(TAG, "Loading grouped items");
 
-		mCursor = fgdb.getSpeciesGroups();
+		mCursor = database.getSpeciesGroups();
 		
 		mListView = getListView();
 		mListView.setFastScrollEnabled(true);
@@ -55,7 +55,7 @@ public class SpeciesGroupListFragment extends ListFragment {
 	@Override
 	public void onDestroy() {
 		mCursor.close();
-		fgdb.close();
+		database.close();
 		
 		super.onDestroy();
 	}
@@ -88,7 +88,7 @@ public class SpeciesGroupListFragment extends ListFragment {
 	
 	
 
-	class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
+	private static final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
 
 		AlphabetIndexer mAlphabetIndexer;
 
