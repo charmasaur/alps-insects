@@ -40,16 +40,22 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
    */
   private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
+  private Toolbar toolbar;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
     Log.i(TAG, "onCreate");
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle("Field Guide");
     toolbar.setSubtitle("Australian Alpine Insects");
     setSupportActionBar(toolbar);
+
+    getSupportFragmentManager().beginTransaction()
+      .add(R.id.basecontainer, new SpeciesGroupListFragment())
+      .commit();
   }
 
   @Override
@@ -149,9 +155,12 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
     Fragment frag = SpeciesListFragment.newInstance(true, arguments);
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    Log.i(TAG, "Cont: " + findViewById(R.id.basecontainer));
     transaction.replace(R.id.basecontainer, frag, "speciesgroups");
     transaction.addToBackStack("speciesgroups");
     transaction.commit();
+
+    // TODO: Need to set the title.
   }
 
   public void backToGroups(View view) {

@@ -11,9 +11,4 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"/>
 
-    <fragment android:name="au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment"
-        android:id="@+id/species_group_list_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
 </LinearLayout>
