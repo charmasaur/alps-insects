@@ -1,5 +1,6 @@
 package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,14 +22,38 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
+/**
+ * Displays a list of groups.
+ */
 public class SpeciesGroupListFragment extends Fragment {
 	private static final String TAG = SpeciesGroupListFragment.class.getSimpleName();
+
+  /**
+   * Callback interface to be notified when a group is selected. Activities using this fragment
+   * must implement this interface.
+   */
+  public interface Callback {
+    void onGroupSelected(String groupName);
+  }
+
+  private Callback callback;
 
 	private ListView mListView;
 	private Cursor mCursor;
 	private FieldGuideDatabase database;
 	private SpeciesCursorAdapter mAdapter; 
 	
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+
+    try {
+      callback = (Callback) activity;
+    } catch (ClassCastException e) {
+      Log.e(TAG, "Container activity does not implement callback.");
+      callback = null;
+    }
+  }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,11 +70,10 @@ public class SpeciesGroupListFragment extends Fragment {
 
 		mCursor = database.getSpeciesGroups();
 		
-		mListView = (ListView) findViewById(R.id.group_list);
+		mListView = (ListView) getView().findViewById(R.id.group_list);
 		mListView.setFastScrollEnabled(true);
 		mAdapter = new SpeciesCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
-		mListView.setListAdapter(mAdapter);
-//    mListView.setOnItemClickListener(listViewOnItemClickListener);
+		mListView.setAdapter(mAdapter);
 
 		Log.i(TAG, "Done loading items");
 	}
@@ -61,46 +85,19 @@ public class SpeciesGroupListFragment extends Fragment {
 		
 		super.onDestroy();
 	}
-	
-	
-//  private final AdapterView.OnItemClickListener listViewOnItemClickListener =
-//    new AdapterView.OnItemClickListener() {
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Object o = l.getItemAtPosition(position);
-		Log.i(TAG, "Object: " + o.toString() + " -- " + o.getClass().getCanonicalName());
-		
-//		if (o instanceof Cursor) {
-//			Cursor cursor = (Cursor) o;
-//			String groupLabel = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP));
-//			// Toast.makeText(getActivity().getApplicationContext(), "Group clicked: " + groupLabel, Toast.LENGTH_SHORT).show();
-//			
-//			Intent intent = new Intent(this.getActivity(), SpeciesActivity.class);
-//			intent.putExtra(Utilities.SPECIES_GROUP_LABEL, groupLabel);
-//			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
-//			startActivity(intent);
-//			
-//		} else {
-//			Toast.makeText(getActivity().getApplicationContext(), "Item clicked: " + id, Toast.LENGTH_SHORT).show();
-//		}
-		
-		Toast.makeText(getActivity().getApplicationContext(), "Item clicked: " + id, Toast.LENGTH_SHORT).show();
-	}
-	
-	
-	
-	
 
+  @Override
+  public void onDetach() {
+    callback = null;
+  }
+	
 	private final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
-
-		AlphabetIndexer mAlphabetIndexer;
+		private AlphabetIndexer mAlphabetIndexer;
 
 		public SpeciesCursorAdapter(Context context, Cursor c, int flags) {
 			super(context, c, flags);
 
-			mAlphabetIndexer = new AlphabetIndexer(c,
-					c.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP),
+			mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP),
 					" ABCDEFGHIJKLMNOPQRTSUVWXYZ");
 			mAlphabetIndexer.setCursor(c);
 		}
@@ -122,7 +119,8 @@ public class SpeciesGroupListFragment extends Fragment {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			String groupLabel = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP));
+			final String groupLabel =
+        cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP));
 			String iconLabel = groupLabel.toLowerCase().replaceAll(" ", "").replaceAll(",", "");
 			String iconPath = Utilities.SPECIES_GROUPS_PATH + iconLabel + ".png"; 
 			
@@ -150,10 +148,8 @@ public class SpeciesGroupListFragment extends Fragment {
       view.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-    			Intent intent = new Intent(getActivity(), SpeciesActivity.class);
-    			intent.putExtra(Utilities.SPECIES_GROUP_LABEL, groupLabel);
-    			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); 
-    			startActivity(intent);
+          Log.i(TAG, "View clicked: " + v);
+          callback.onGroupSelected(groupLabel);
         }
       });
 		}

@@ -22,13 +22,15 @@ import android.support.v7.widget.SearchView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
+import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks {
+public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks,
+    SpeciesGroupListFragment.Callback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -135,6 +137,21 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
         startActivity(detailIntent);
       }
     }
+  }
+
+  // SpeciesGroupListFragment.Callback methods.
+
+  @Override
+  public void onGroupSelected(String groupName) {
+    Log.i(TAG, "Group selected: " + groupName);
+    Bundle arguments = new Bundle();
+    arguments.putString("speciesgroup", groupName);
+
+    Fragment frag = SpeciesListFragment.newInstance(true, arguments);
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.basecontainer, frag, "speciesgroups");
+    transaction.addToBackStack("speciesgroups");
+    transaction.commit();
   }
 
   public void backToGroups(View view) {
