@@ -69,7 +69,7 @@ public class SpeciesListFragment extends Fragment {
 				}
 			}
 			try {
-				Bundle arguments = this.getArguments();
+				Bundle arguments = getArguments();
 				if (arguments != null) {
 					String speciesgroup = arguments.getString("speciesgroup");
 					if (TextUtils.isEmpty(speciesgroup)) {
