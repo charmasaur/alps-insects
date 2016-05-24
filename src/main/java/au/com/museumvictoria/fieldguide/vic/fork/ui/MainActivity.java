@@ -24,6 +24,7 @@ import android.support.v7.widget.SearchView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
+import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemListFragment;
@@ -79,6 +80,13 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
     getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     setFragment(new SpeciesGroupListFragment(), null);
+
+    handleIntent(getIntent());
+  }
+
+  @Override
+  protected void onNewIntent(Intent intent) {
+    handleIntent(intent);
   }
 
   @Override
@@ -108,6 +116,112 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
         break;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  // SpeciesGroupListFragment.Callback methods.
+
+  @Override
+  public void onGroupSelected(String groupName) {
+    Log.i(TAG, "Group selected: " + groupName);
+    Bundle arguments = new Bundle();
+    arguments.putString("speciesgroup", groupName);
+
+    backStackScreens.put("GROUP", new Screen(groupName, null));
+    setFragment(SpeciesListFragment.newInstance(true, arguments), "GROUP");
+  }
+
+  private void handleIntent(Intent intent) {
+		Log.i(TAG, "Handling intent: " + intent);
+    if (intent.getAction() == null) {
+      return;
+    }
+    switch (intent.getAction()) {
+      case Intent.ACTION_VIEW:
+        // TODO: Handle this (could occur when a search suggestion is clicked).
+        break;
+      case Intent.ACTION_SEARCH:
+        backStackScreens.put("SEARCH", new Screen("Search", null));
+        Fragment searchFragment = new SearchFragment();
+        searchFragment.setArguments(intent.getExtras());
+        setFragment(searchFragment, "SEARCH");
+        break;
+      default:
+        break;
+    };
+  }
+
+  /**
+   * Sets the current fragment, updating the UI as necessary.
+   */
+  private void setFragment(Fragment fragment, @Nullable String backStackEntryName) {
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+        .replace(R.id.basecontainer, fragment);
+    if (backStackEntryName != null) {
+      transaction.addToBackStack(backStackEntryName);
+    }
+    transaction.commit();
+    if (backStackEntryName == null) {
+      updateScreen();
+    }
+  }
+
+  private void updateScreen() {
+    Screen currentScreen;
+    int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
+    if (backStackSize == 0) {
+      // Home screen is showing.
+      currentScreen = homeScreen;
+    } else {
+      currentScreen = backStackScreens.get(
+          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
+    }
+    toolbar.setTitle(currentScreen.title);
+    toolbar.setSubtitle(currentScreen.subtitle);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
+  }
+
+  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
+      new FragmentManager.OnBackStackChangedListener() {
+    @Override
+    public void onBackStackChanged() {
+      Log.i(TAG, "Back stack changed: " + getSupportFragmentManager().getBackStackEntryCount());
+      updateScreen();
+    }
+  };
+
+  // TODO: Deal with everything below this line.
+
+  public void backToGroups(View view) {
+    onBackPressed();
+  }
+
+  public void displayInfo(View view) {
+    switch (view.getId()) {
+    case R.id.heading_distribution:
+
+      Bundle extras = new Bundle();
+      extras.putString("pagetitle", "About Distribution");
+      extras.putString("pageurl", "aboutdistribution");
+      Intent infoIntent = new Intent(this, DisplayInfoActivity.class);
+      infoIntent.putExtras(extras);
+      startActivity(infoIntent);
+
+      break;
+
+    case R.id.heading_threatened_status:
+
+      Bundle extras1 = new Bundle();
+      extras1.putString("pagetitle", "About Threatened Status");
+      extras1.putString("pageurl", "aboutthreatenedstatus");
+      Intent infoIntent1 = new Intent(this, DisplayInfoActivity.class);
+      infoIntent1.putExtras(extras1);
+      startActivity(infoIntent1);
+
+      break;
+
+    default:
+      break;
+    }
   }
 
   @Override
@@ -174,88 +288,4 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
       }
     }
   }
-
-  // SpeciesGroupListFragment.Callback methods.
-
-  @Override
-  public void onGroupSelected(String groupName) {
-    Log.i(TAG, "Group selected: " + groupName);
-    Bundle arguments = new Bundle();
-    arguments.putString("speciesgroup", groupName);
-
-    backStackScreens.put("GROUP", new Screen(groupName, null));
-    setFragment(SpeciesListFragment.newInstance(true, arguments), "GROUP");
-  }
-
-  public void backToGroups(View view) {
-    onBackPressed();
-  }
-
-  public void displayInfo(View view) {
-    switch (view.getId()) {
-    case R.id.heading_distribution:
-
-      Bundle extras = new Bundle();
-      extras.putString("pagetitle", "About Distribution");
-      extras.putString("pageurl", "aboutdistribution");
-      Intent infoIntent = new Intent(this, DisplayInfoActivity.class);
-      infoIntent.putExtras(extras);
-      startActivity(infoIntent);
-
-      break;
-
-    case R.id.heading_threatened_status:
-
-      Bundle extras1 = new Bundle();
-      extras1.putString("pagetitle", "About Threatened Status");
-      extras1.putString("pageurl", "aboutthreatenedstatus");
-      Intent infoIntent1 = new Intent(this, DisplayInfoActivity.class);
-      infoIntent1.putExtras(extras1);
-      startActivity(infoIntent1);
-
-      break;
-
-    default:
-      break;
-    }
-  }
-
-  /**
-   * Sets the current fragment, updating the UI as necessary.
-   */
-  private void setFragment(Fragment fragment, @Nullable String backStackEntryName) {
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-        .replace(R.id.basecontainer, fragment);
-    if (backStackEntryName != null) {
-      transaction.addToBackStack(backStackEntryName);
-    }
-    transaction.commit();
-    if (backStackEntryName == null) {
-      updateScreen();
-    }
-  }
-
-  private void updateScreen() {
-    Screen currentScreen;
-    int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
-    if (backStackSize == 0) {
-      // Home screen is showing.
-      currentScreen = homeScreen;
-    } else {
-      currentScreen = backStackScreens.get(
-          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
-    }
-    toolbar.setTitle(currentScreen.title);
-    toolbar.setSubtitle(currentScreen.subtitle);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
-  }
-
-  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
-      new FragmentManager.OnBackStackChangedListener() {
-    @Override
-    public void onBackStackChanged() {
-      Log.i(TAG, "Back stack changed: " + getSupportFragmentManager().getBackStackEntryCount());
-      updateScreen();
-    }
-  };
 }
