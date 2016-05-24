@@ -97,6 +97,7 @@ public class SpeciesGroupListFragment extends Fragment {
   @Override
   public void onDetach() {
     callback = null;
+    super.onDetach();
   }
 
   private static final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
