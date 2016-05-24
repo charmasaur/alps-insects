@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
@@ -29,6 +31,9 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesListFragmen
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks,
     SpeciesGroupListFragment.Callback {
 
@@ -40,22 +45,40 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
    */
   private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
+  /**
+   * Represents a screen that can be showing to the user.
+   */
+  private static final class Screen {
+    public final String title;
+    @Nullable
+    public final String subtitle;
+
+    public Screen(String title, @Nullable String subtitle) {
+      this.title = title;
+      this.subtitle = subtitle;
+    }
+  };
+
+  private final Map<String, Screen> backStackScreens = new HashMap<>();
+
   private Toolbar toolbar;
+
+  private Screen homeScreen;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    Log.i(TAG, "onCreate");
+
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    Log.i(TAG, "onCreate");
+    homeScreen = new Screen("Field Guide", "Australian Alpine Insects");
+
     toolbar = (Toolbar) findViewById(R.id.toolbar);
-    toolbar.setTitle("Field Guide");
-    toolbar.setSubtitle("Australian Alpine Insects");
     setSupportActionBar(toolbar);
 
-    getSupportFragmentManager().beginTransaction()
-      .add(R.id.basecontainer, new SpeciesGroupListFragment())
-      .commit();
+    getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+    setFragment(new SpeciesGroupListFragment(), null);
   }
 
   @Override
@@ -73,9 +96,16 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == R.id.menu_settings) {
-      Intent intent = new Intent(this, SettingsActivity.class);
-      startActivity(intent);
+    switch (item.getItemId()) {
+      case R.id.menu_settings:
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+        break;
+      case android.R.id.home:
+        onBackPressed();
+        break;
+      default:
+        break;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -153,14 +183,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     Bundle arguments = new Bundle();
     arguments.putString("speciesgroup", groupName);
 
-    Fragment frag = SpeciesListFragment.newInstance(true, arguments);
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    Log.i(TAG, "Cont: " + findViewById(R.id.basecontainer));
-    transaction.replace(R.id.basecontainer, frag, "speciesgroups");
-    transaction.addToBackStack("speciesgroups");
-    transaction.commit();
-
-    // TODO: Need to set the title.
+    backStackScreens.put("GROUP", new Screen(groupName, null));
+    setFragment(SpeciesListFragment.newInstance(true, arguments), "GROUP");
   }
 
   public void backToGroups(View view) {
@@ -195,4 +219,43 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
       break;
     }
   }
+
+  /**
+   * Sets the current fragment, updating the UI as necessary.
+   */
+  private void setFragment(Fragment fragment, @Nullable String backStackEntryName) {
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+        .replace(R.id.basecontainer, fragment);
+    if (backStackEntryName != null) {
+      transaction.addToBackStack(backStackEntryName);
+    }
+    transaction.commit();
+    if (backStackEntryName == null) {
+      updateScreen();
+    }
+  }
+
+  private void updateScreen() {
+    Screen currentScreen;
+    int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
+    if (backStackSize == 0) {
+      // Home screen is showing.
+      currentScreen = homeScreen;
+    } else {
+      currentScreen = backStackScreens.get(
+          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
+    }
+    toolbar.setTitle(currentScreen.title);
+    toolbar.setSubtitle(currentScreen.subtitle);
+    getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
+  }
+
+  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
+      new FragmentManager.OnBackStackChangedListener() {
+    @Override
+    public void onBackStackChanged() {
+      Log.i(TAG, "Back stack changed: " + getSupportFragmentManager().getBackStackEntryCount());
+      updateScreen();
+    }
+  };
 }
