@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.support.v7.widget.SearchView;
 
 import au.com.museumvictoria.fieldguide.vic.fork.R;
+import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
@@ -36,7 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks,
-    SpeciesGroupListFragment.Callback {
+    SpeciesGroupListFragment.Callback, GroupFragment.Callback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -118,8 +119,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     return super.onOptionsItemSelected(item);
   }
 
-  // SpeciesGroupListFragment.Callback methods.
-
   @Override
   public void onGroupSelected(String groupName) {
     Log.i(TAG, "Group selected: " + groupName);
@@ -127,11 +126,28 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     arguments.putString("speciesgroup", groupName);
 
     backStackScreens.put("GROUP", new Screen(groupName, null));
-    setFragment(SpeciesListFragment.newInstance(true, arguments), "GROUP");
+    Fragment fragment = new GroupFragment();
+    fragment.setArguments(arguments);
+    setFragment(fragment, "GROUP");
+  }
+
+  @Override
+  public void onSpeciesSelected(String speciesId) {
+    Log.i(TAG, "Species selected: " + speciesId);
+
+    //Intent detailIntent = new Intent(this, SpeciesItemDetailActivity.class);
+    //detailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, speciesId);
+    //startActivity(detailIntent);
+    Bundle arguments = new Bundle();
+    arguments.putString(Utilities.SPECIES_IDENTIFIER, speciesId);
+    SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
+    fragment.setArguments(arguments);
+    backStackScreens.put("SPECIES", new Screen("UMMM", null));
+    setFragment(fragment, "SPECIES");
   }
 
   private void handleIntent(Intent intent) {
-		Log.i(TAG, "Handling intent: " + intent);
+    Log.i(TAG, "Handling intent: " + intent);
     if (intent.getAction() == null) {
       return;
     }
@@ -175,8 +191,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
       currentScreen = backStackScreens.get(
           getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
     }
-    toolbar.setTitle(currentScreen.title);
-    toolbar.setSubtitle(currentScreen.subtitle);
+    getSupportActionBar().setTitle(currentScreen.title);
+    getSupportActionBar().setSubtitle(currentScreen.subtitle);
     getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
   }
 
@@ -248,44 +264,44 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
    */
   @Override
   public void onItemSelected(String inputid) {
-    Log.d(TAG, "Selected ID: " + inputid);
+    //Log.d(TAG, "Selected ID: " + inputid);
 
-    if (inputid.startsWith(SpeciesItemListFragment.LIST_TYPE_GROUP + "__")) {
-      Bundle arguments = new Bundle();
-      arguments.putString("speciesgroup",
-          inputid.substring(SpeciesItemListFragment.LIST_TYPE_GROUP
-              .length() + 2));
-      Fragment frag = SpeciesListFragment.newInstance(true, arguments);
-      FragmentTransaction ft = getSupportFragmentManager()
-          .beginTransaction();
-      ft.replace(R.id.basecontainer, frag, "speciesgroups");
-      ft.addToBackStack("speciesgroups");
-      ft.commit();
+    //if (inputid.startsWith(SpeciesItemListFragment.LIST_TYPE_GROUP + "__")) {
+    //  Bundle arguments = new Bundle();
+    //  arguments.putString("speciesgroup",
+    //      inputid.substring(SpeciesItemListFragment.LIST_TYPE_GROUP
+    //          .length() + 2));
+    //  Fragment frag = SpeciesListFragment.newInstance(true, arguments);
+    //  FragmentTransaction ft = getSupportFragmentManager()
+    //      .beginTransaction();
+    //  ft.replace(R.id.basecontainer, frag, "speciesgroups");
+    //  ft.addToBackStack("speciesgroups");
+    //  ft.commit();
 
-    } else {
-      String id = inputid
-          .substring(SpeciesItemListFragment.LIST_TYPE_ALPHABETICAL
-              .length() + 2);
+    //} else {
+    //  String id = inputid
+    //      .substring(SpeciesItemListFragment.LIST_TYPE_ALPHABETICAL
+    //          .length() + 2);
 
-      if (findViewById(R.id.item_detail_container) != null) {
-        // In two-pane mode, show the detail view in this activity by
-        // adding or replacing the detail fragment using a
-        // fragment transaction.
-        Bundle arguments = new Bundle();
-        arguments.putString(Utilities.SPECIES_IDENTIFIER, id);
-        SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.item_detail_container, fragment).commit();
+    //  if (findViewById(R.id.item_detail_container) != null) {
+    //    // In two-pane mode, show the detail view in this activity by
+    //    // adding or replacing the detail fragment using a
+    //    // fragment transaction.
+    //    Bundle arguments = new Bundle();
+    //    arguments.putString(Utilities.SPECIES_IDENTIFIER, id);
+    //    SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
+    //    fragment.setArguments(arguments);
+    //    getSupportFragmentManager().beginTransaction()
+    //        .replace(R.id.item_detail_container, fragment).commit();
 
-      } else {
-        // In single-pane mode, simply start the detail activity
-        // for the selected item ID.
-        Intent detailIntent = new Intent(this,
-            SpeciesItemDetailActivity.class);
-        detailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, id);
-        startActivity(detailIntent);
-      }
-    }
+    //  } else {
+    //    // In single-pane mode, simply start the detail activity
+    //    // for the selected item ID.
+    //    Intent detailIntent = new Intent(this,
+    //        SpeciesItemDetailActivity.class);
+    //    detailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, id);
+    //    startActivity(detailIntent);
+    //  }
+    //}
   }
 }

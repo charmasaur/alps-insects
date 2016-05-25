@@ -50,8 +50,7 @@ public class SpeciesGroupListFragment extends Fragment {
     try {
       callback = (Callback) activity;
     } catch (ClassCastException e) {
-      Log.e(TAG, "Container activity does not implement callback.");
-      callback = null;
+      throw new RuntimeException("Container activity does not implement callback.");
     }
   }
 

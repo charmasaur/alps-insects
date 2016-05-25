@@ -152,6 +152,7 @@ public class SpeciesListFragment extends Fragment {
 
 		@Override
 		public int getCount() {
+      Log.i(TAG, "Getting count: " + speciestabs.length);
 			return speciestabs.length;
 		}
 
