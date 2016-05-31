@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
+import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesSubgroupListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.SpeciesItemDetailActivity;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
@@ -27,13 +28,29 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
  */
 public class SearchFragment extends Fragment {
   private static final String TAG = SearchFragment.class.getSimpleName();
-  
+
+  /**
+   * Callback interface to be notified when a species is selected. Activities using this fragment
+   * must implement this interface.
+   */
+  public interface Callback {
+    void onSpeciesSelected(String speciesId, String name, @Nullable String subname);
+  }
+
+  private Callback callback;
+
   private TextView mTextView;
   private ListView mListView;
 
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
+
+    try {
+      callback = (Callback) activity;
+    } catch (ClassCastException e) {
+      throw new RuntimeException("Container activity does not implement callback.");
+    }
   }
 
   @Override
@@ -59,6 +76,7 @@ public class SearchFragment extends Fragment {
 
   @Override
   public void onDetach() {
+    callback = null;
     super.onDetach();
   }
 
@@ -87,22 +105,24 @@ public class SearchFragment extends Fragment {
       // SimpleCursorAdapter words =
       //     new SimpleCursorAdapter(this, R.layout.layout2_species_list_2, cursor, from, to, 0);
       // mListView.setAdapter(words);
-      
-      mListView.setAdapter(
-          new SpeciesListCursorAdapter(getActivity().getApplicationContext(), cursor, 0));
 
-      // Define the on-click listener for the list items
+      final SpeciesSubgroupListCursorAdapter adapter =
+          new SpeciesSubgroupListCursorAdapter(getActivity().getApplicationContext(), cursor, 0);
+
+      mListView.setAdapter(adapter);
       mListView.setOnItemClickListener(new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
           Log.w("SearchActivity", "Displaying species details for " + id);
           Log.w("SearchActivity", view.toString());
 
-          Intent spdetailIntent =
-            new Intent(getActivity().getApplicationContext(), SpeciesItemDetailActivity.class);
-          spdetailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, String.valueOf(id));
-          spdetailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-          startActivity(spdetailIntent);
+          callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
+              adapter.getSublabelAtPosition(position));
+          //Intent spdetailIntent =
+          //  new Intent(getActivity().getApplicationContext(), SpeciesItemDetailActivity.class);
+          //spdetailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, String.valueOf(id));
+          //spdetailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+          //startActivity(spdetailIntent);
         }
       });
     }
@@ -119,7 +139,7 @@ public class SearchFragment extends Fragment {
 //            Intent spdetailIntent = new Intent(getApplicationContext(), SpeciesItemDetailActivity.class);
 //            //Uri data = Uri.withAppendedPath(FieldGuideContentProvider.CONTENT_URI, String.valueOf(id));
 //            //spdetailIntent.setData(data);
-//            String spId = intent.getData().getLastPathSegment(); 
+//            String spId = intent.getData().getLastPathSegment();
 //            spdetailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, spId);
 //            spdetailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 //            startActivity(spdetailIntent);
@@ -133,4 +153,4 @@ public class SearchFragment extends Fragment {
 //      searchSpecies(query);
 //    }
 //  }
-  
+

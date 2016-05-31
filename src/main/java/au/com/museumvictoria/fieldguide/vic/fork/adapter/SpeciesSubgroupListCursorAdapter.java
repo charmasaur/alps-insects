@@ -3,7 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,76 +14,42 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-public class SpeciesSubgroupListCursorAdapter extends SimpleCursorAdapter {
-	
-	private static final String TAG = "SpeciesSubgroupListCursorAdapter";
-	
-	private Cursor mCursor;
-    private LayoutInflater mInflater;
-    private Context mContext; 
-	
-	public SpeciesSubgroupListCursorAdapter(Context context, int layout, Cursor c,
-			String[] from, int[] to, int flags) {
-		super(context, layout, c, from, to, flags);
-		
-		mCursor = c;
-        mInflater = LayoutInflater.from(context);
-        mContext = context; 
-	}
+// TODO: Combine with SpeciesListCursorAdapter -- that's the nice thing about cursors I guess.
+// And by combine I mean "remove this, and put all the code into SpeciesListCursorAdapter, but
+// probably take the indexing stuff from there too".
+public class SpeciesSubgroupListCursorAdapter extends CursorAdapter {
+  public SpeciesSubgroupListCursorAdapter(Context context, Cursor c, int flags) {
+    super(context, c, flags);
+  }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
+  @Override
+  public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    LayoutInflater inflater = LayoutInflater.from(context);
+    return inflater.inflate(R.layout.species_list, parent, false);
+  }
 
-        if (convertView == null) 
-        {
-            convertView = mInflater.inflate(R.layout.species_list_groupped, null);
-        	//convertView = mInflater.inflate(R.layout.fragment_species_grouplist, null);
-            holder = new ViewHolder();
-            holder.text1 = (TextView) convertView.findViewById(R.id.speciesLabel);//Task Title
-            holder.text2 = (TextView) convertView.findViewById(R.id.speciesSublabel);//Task Date
-            holder.img =   (ImageView) convertView.findViewById(R.id.speciesIcon);
+  @Override
+  public void bindView(View view, Context context, Cursor cursor) {
+    TextView labelView = (TextView) view.findViewById(R.id.speciesLabel);
+    TextView sublabelView = (TextView) view.findViewById(R.id.speciesSublabel);
+    ImageView iconView = (ImageView) view.findViewById(R.id.speciesIcon);
 
-            holder.sec_hr=(TextView) convertView.findViewById(R.id.speciesSubGroup);
+    labelView.setText(getLabel(cursor));
+    String sublabel = getSublabel(cursor);
+    if (sublabel == null) {
+      sublabelView.setVisibility(View.GONE);
+    } else {
+      sublabelView.setVisibility(View.VISIBLE);
+      sublabelView.setText(sublabel);
+    }
 
-            convertView.setTag(holder);
-        }
-        else
-        {
-            holder = (ViewHolder) convertView.getTag();
-        }
+    String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH
+        + cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
 
-        mCursor.moveToPosition(position);
-        String speciesSubgroup = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBGROUP));
-        String speciesLabel = getLabel(mCursor);
-        String speciesSublabel = getSublabel(mCursor);
-        String speciesThumbnail = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
-		String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH + speciesThumbnail;
-
-        String prevSubgroup = null;
-
-        if (mCursor.getPosition() > 0 && mCursor.moveToPrevious()) {
-        	prevSubgroup = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBGROUP));
-        	mCursor.moveToNext();
-        }
-
-
-        if(speciesSubgroup.equals(prevSubgroup) || speciesSubgroup.equals("")) {
-            holder.sec_hr.setVisibility(View.GONE);
-        }
-        else {
-            holder.sec_hr.setText(speciesSubgroup);
-            holder.sec_hr.setVisibility(View.VISIBLE);
-        }
-        
-        holder.text1.setText(speciesLabel);
-        holder.text2.setText(speciesSublabel);
-        //holder.img.setImageBitmap(ImageResizer.decodeSampledBitmapFromAsset(mContext.getAssets(), iconPath, 150, 150));
-        
-        holder.img.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(mContext, iconPath), 150, 150));
-
-        return convertView;
-	}
+    // TODO: Fix?
+    iconView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
+        Utilities.getFullExternalDataPath(context, iconPath), 150, 150));
+  }
 
   public String getLabelAtPosition(int position) {
     return getLabel((Cursor) getItem(position));
@@ -102,12 +68,4 @@ public class SpeciesSubgroupListCursorAdapter extends SimpleCursorAdapter {
   private static String getSublabel(Cursor cursor) {
     return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL));
   }
-	
-	static class ViewHolder {
-        TextView text1;
-        TextView text2;
-        TextView sec_hr;
-        ImageView img;
-    }
-
 }

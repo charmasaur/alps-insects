@@ -83,9 +83,8 @@ public class GroupFragment extends Fragment {
     int[] to = new int[] { R.id.speciesSubGroup, R.id.speciesLabel,
         R.id.speciesSublabel, R.id.speciesIcon };
 
-    final SpeciesSubgroupListCursorAdapter adapter = new SpeciesSubgroupListCursorAdapter(
-        getActivity().getApplicationContext(),
-        R.layout.species_list_groupped, mCursor, from, to, 0);
+    final SpeciesSubgroupListCursorAdapter adapter =
+        new SpeciesSubgroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
 
     mListView.setAdapter(adapter);
     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

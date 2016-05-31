@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,9 @@ import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks,
-    SpeciesGroupListFragment.Callback, GroupFragment.Callback {
+    SpeciesGroupListFragment.Callback, GroupFragment.Callback, SearchFragment.Callback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -51,11 +55,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
    * Represents a screen that can be showing to the user.
    */
   private static final class Screen {
-    public final String title;
+    public final CharSequence title;
     @Nullable
-    public final String subtitle;
+    public final CharSequence subtitle;
 
-    public Screen(String title, @Nullable String subtitle) {
+    public Screen(CharSequence title, @Nullable CharSequence subtitle) {
       this.title = title;
       this.subtitle = subtitle;
     }
@@ -136,18 +140,29 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     setFragment(fragment, "GROUP");
   }
 
+  // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense
+  // though.
   @Override
   public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
     Log.i(TAG, "Species selected: " + speciesId);
 
-    //Intent detailIntent = new Intent(this, SpeciesItemDetailActivity.class);
-    //detailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, speciesId);
-    //startActivity(detailIntent);
     Bundle arguments = new Bundle();
     arguments.putString(Utilities.SPECIES_IDENTIFIER, speciesId);
     SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
     fragment.setArguments(arguments);
-    backStackScreens.put("SPECIES", new Screen(name, subname));
+    // TODO: Consider moving the formatting of the labels into the fragment.
+    SpannableString subnameFormatted;
+    // TODO: For now just hide the secondary text (since the italicisation looks silly -- too
+    // slanted), but if Rachel thinks we should show it always then we can figure something out.
+    subname = null;
+    if (subname == null) {
+      subnameFormatted = null;
+    } else {
+      subnameFormatted = new SpannableString(subname);
+      subnameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, subname.length(),
+          Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+    backStackScreens.put("SPECIES", new Screen(name, subnameFormatted));
     setFragment(fragment, "SPECIES");
   }
 
