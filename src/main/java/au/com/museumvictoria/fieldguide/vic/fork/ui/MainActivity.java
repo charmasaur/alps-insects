@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
   private Screen homeScreen;
 
+  private boolean showOptions = true;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
@@ -92,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
+    if (!showOptions) {
+      return false;
+    }
     getMenuInflater().inflate(R.menu.activity_main, menu);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -187,9 +192,17 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     if (backStackSize == 0) {
       // Home screen is showing.
       currentScreen = homeScreen;
+      if (!showOptions) {
+        showOptions = true;
+        supportInvalidateOptionsMenu();
+      }
     } else {
       currentScreen = backStackScreens.get(
           getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
+      if (showOptions) {
+        showOptions = false;
+        supportInvalidateOptionsMenu();
+      }
     }
     getSupportActionBar().setTitle(currentScreen.title);
     getSupportActionBar().setSubtitle(currentScreen.subtitle);
