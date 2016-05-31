@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
   }
 
   @Override
-  public void onSpeciesSelected(String speciesId) {
+  public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
     Log.i(TAG, "Species selected: " + speciesId);
 
     //Intent detailIntent = new Intent(this, SpeciesItemDetailActivity.class);
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     arguments.putString(Utilities.SPECIES_IDENTIFIER, speciesId);
     SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
     fragment.setArguments(arguments);
-    backStackScreens.put("SPECIES", new Screen("UMMM", null));
+    backStackScreens.put("SPECIES", new Screen(name, subname));
     setFragment(fragment, "SPECIES");
   }
 

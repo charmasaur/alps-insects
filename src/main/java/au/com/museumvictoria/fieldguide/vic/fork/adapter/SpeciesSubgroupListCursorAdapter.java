@@ -2,6 +2,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,8 +55,8 @@ public class SpeciesSubgroupListCursorAdapter extends SimpleCursorAdapter {
 
         mCursor.moveToPosition(position);
         String speciesSubgroup = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBGROUP));
-        String speciesLabel = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL));
-        String speciesSublabel = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL));
+        String speciesLabel = getLabel(mCursor);
+        String speciesSublabel = getSublabel(mCursor);
         String speciesThumbnail = mCursor.getString(mCursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
 		String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH + speciesThumbnail;
 
@@ -83,6 +84,24 @@ public class SpeciesSubgroupListCursorAdapter extends SimpleCursorAdapter {
 
         return convertView;
 	}
+
+  public String getLabelAtPosition(int position) {
+    return getLabel((Cursor) getItem(position));
+  }
+
+  @Nullable
+  public String getSublabelAtPosition(int position) {
+    return getSublabel((Cursor) getItem(position));
+  }
+
+  private static String getLabel(Cursor cursor) {
+    return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL));
+  }
+
+  @Nullable
+  private static String getSublabel(Cursor cursor) {
+    return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL));
+  }
 	
 	static class ViewHolder {
         TextView text1;

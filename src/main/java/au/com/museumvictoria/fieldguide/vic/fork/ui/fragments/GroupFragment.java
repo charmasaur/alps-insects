@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +37,7 @@ public class GroupFragment extends Fragment {
    * must implement this interface.
    */
   public interface Callback {
-    void onSpeciesSelected(String speciesId);
+    void onSpeciesSelected(String speciesId, String name, @Nullable String subname);
   }
 
   private Callback callback;
@@ -81,14 +82,19 @@ public class GroupFragment extends Fragment {
         FieldGuideDatabase.SPECIES_THUMBNAIL };
     int[] to = new int[] { R.id.speciesSubGroup, R.id.speciesLabel,
         R.id.speciesSublabel, R.id.speciesIcon };
-    mListView.setAdapter(new SpeciesSubgroupListCursorAdapter(
+
+    final SpeciesSubgroupListCursorAdapter adapter = new SpeciesSubgroupListCursorAdapter(
         getActivity().getApplicationContext(),
-        R.layout.species_list_groupped, mCursor, from, to, 0));
+        R.layout.species_list_groupped, mCursor, from, to, 0);
+
+    mListView.setAdapter(adapter);
     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "Click" + position + " " + id);
-        callback.onSpeciesSelected(Long.toString(id));
+        // TODO: Need a better way to get IDs.
+        callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
+            adapter.getSublabelAtPosition(position));
       }
     });
   }
