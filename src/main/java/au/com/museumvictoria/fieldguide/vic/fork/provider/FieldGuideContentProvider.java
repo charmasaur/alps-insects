@@ -179,7 +179,7 @@ public class FieldGuideContentProvider extends ContentProvider {
 
 	private Cursor getSpeciesDetails(Uri uri) {
 		String rowId = uri.getLastPathSegment();
-		String[] columns = new String[] { FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
+		String[] columns = new String[] { BaseColumns._ID, FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
 				FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesDetails(rowId, columns);

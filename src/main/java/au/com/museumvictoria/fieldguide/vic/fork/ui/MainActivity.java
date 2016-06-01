@@ -3,6 +3,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.support.v7.widget.SearchView;
 
 import au.com.museumvictoria.fieldguide.vic.fork.R;
+import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.AboutFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
@@ -176,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     switch (intent.getAction()) {
       case Intent.ACTION_VIEW:
         // TODO: Handle this (could occur when a search suggestion is clicked).
+        Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
+        onSpeciesSelected(
+            cursor.getString(cursor.getColumnIndex(android.provider.BaseColumns._ID)),
+            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL)),
+            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
         break;
       case Intent.ACTION_SEARCH:
         backStackScreens.put("SEARCH", new Screen("Search", null));
