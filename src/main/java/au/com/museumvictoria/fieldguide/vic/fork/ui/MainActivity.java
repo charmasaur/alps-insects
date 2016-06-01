@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.support.v7.widget.SearchView;
 
 import au.com.museumvictoria.fieldguide.vic.fork.R;
+import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.AboutFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
@@ -115,9 +116,10 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menu_settings:
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+      case R.id.menu_about:
+        backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
+        Fragment fragment = new AboutFragment();
+        setFragment(fragment, "ABOUT");
         break;
       case android.R.id.home:
         onBackPressed();
