@@ -5,8 +5,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:id="@+id/menu_search"
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom"
-        android:title="Search"/>
+        app:showAsAction="collapseActionView|always"
+        android:title="@string/menu_search_name"/>
+
     <item
         android:id="@+id/menu_about"
         android:showAsAction="collapseActionView|never"

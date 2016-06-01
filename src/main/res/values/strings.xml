@@ -13,6 +13,7 @@
     <string name="app_copyright_mv">Museum Victoria</string>
     
     <!-- menu -->
+    <string name="menu_search_name">Search</string>
     <string name="menu_about_name">About</string>
     
     <!-- titles -->
@@ -21,7 +22,7 @@
     <string name="title_item_detail">Item Detail</string>
     
     <!-- search -->
-    <string name="search_hint">e.g. Fish</string>
+    <string name="search_hint">e.g. Grasshopper</string>
     <!-- Shown above search results when we receive a search request. -->
     <plurals name="search_results">
         <item quantity="one">%1$d result for \"%2$s\": </item>
