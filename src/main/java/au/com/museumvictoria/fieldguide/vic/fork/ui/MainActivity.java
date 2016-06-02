@@ -30,13 +30,11 @@ import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.AboutFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HomeFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemListFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 import java.util.HashMap;
@@ -253,35 +251,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
   public void backToGroups(View view) {
     onBackPressed();
-  }
-
-  public void displayInfo(View view) {
-    switch (view.getId()) {
-    case R.id.heading_distribution:
-
-      Bundle extras = new Bundle();
-      extras.putString("pagetitle", "About Distribution");
-      extras.putString("pageurl", "aboutdistribution");
-      Intent infoIntent = new Intent(this, DisplayInfoActivity.class);
-      infoIntent.putExtras(extras);
-      startActivity(infoIntent);
-
-      break;
-
-    case R.id.heading_threatened_status:
-
-      Bundle extras1 = new Bundle();
-      extras1.putString("pagetitle", "About Threatened Status");
-      extras1.putString("pageurl", "aboutthreatenedstatus");
-      Intent infoIntent1 = new Intent(this, DisplayInfoActivity.class);
-      infoIntent1.putExtras(extras1);
-      startActivity(infoIntent1);
-
-      break;
-
-    default:
-      break;
-    }
   }
 
   /**
