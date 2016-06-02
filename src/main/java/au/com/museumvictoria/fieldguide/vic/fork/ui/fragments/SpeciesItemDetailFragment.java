@@ -32,7 +32,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.AudioCusorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
@@ -107,8 +106,6 @@ public class SpeciesItemDetailFragment extends Fragment {
     if (mViewPager != null) {
       mViewPager.setAdapter(new SpeciesDetailPagerAdapter(
         getActivity().getLayoutInflater(), speciestabs, pagerCallback));
-//          getChildFragmentManager(), SpeciesDetailFragment.class,
-//          speciestabs));
     }
   }
 
@@ -270,65 +267,6 @@ public class SpeciesItemDetailFragment extends Fragment {
             sounds.add(cursorAudio.getString(cursorAudio.getColumnIndex("filename")).replaceAll(".mp3", ""));
             captions.add(cursorAudio.getString(cursorAudio.getColumnIndex("credit")));
           }
-
-
-          //ImageView image = new ImageView(getActivity());
-          //image.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-          //image.setPadding(imgThumbPadding, imgThumbPadding,imgThumbPadding, imgThumbPadding);
-          //image.setImageBitmap(ImageResizer.decodeSampledBitmapFromResource(r, R.drawable.icon_play, imgThumbSize, imgThumbSize));
-          //image.setOnClickListener(new View.OnClickListener() {
-          //  @Override
-          //  public void onClick(View v) {
-
-          //    AudioCusorAdapter aca = new AudioCusorAdapter(getActivity(), cursorAudio, 0);
-
-          //    LayoutInflater factory = LayoutInflater.from(getActivity());
-          //    final View dialogView = factory.inflate(R.layout.fragment_species_item, null);
-          //    final ListView listView = (ListView) dialogView.findViewById(android.R.id.list);
-          //    listView.setAdapter(aca);
-          //    listView.setOnItemClickListener(new OnItemClickListener() {
-
-          //      @Override
-          //      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          //        try {
-          //          //MediaPlayer mPlayer = MediaPlayer.create(getActivity(), R.raw.audio_360440);
-          //          mPlayer.reset();
-          //          mPlayer.setDataSource(Utilities.getFullExternalDataPath(getActivity(), Utilities.SPECIES_AUDIO_PATH + view.getTag()));
-          //          mPlayer.prepare();
-          //          mPlayer.start();
-          //        } catch (IllegalArgumentException e) {
-          //          // TODO Auto-generated catch block
-          //          e.printStackTrace();
-          //        } catch (SecurityException e) {
-          //          // TODO Auto-generated catch block
-          //          e.printStackTrace();
-          //        } catch (IllegalStateException e) {
-          //          // TODO Auto-generated catch block
-          //          e.printStackTrace();
-          //        } catch (IOException e) {
-          //          // TODO Auto-generated catch block
-          //          e.printStackTrace();
-          //        }
-          //      }
-          //    });
-
-          //    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-          //    builder.setTitle("Audio").setCancelable(false);
-          //    builder.setView(dialogView);
-          //    builder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-
-          //        @Override
-          //        public void onClick(DialogInterface dialog, int which) {
-          //          mPlayer.stop();
-          //        }
-          //    });
-
-          //    AlertDialog dialog = builder.create();
-          //    dialog.show();
-          //  }
-          //});
-          //
-          //speciesimages.addView(image);
         }
 
         if (cursorImages != null) {

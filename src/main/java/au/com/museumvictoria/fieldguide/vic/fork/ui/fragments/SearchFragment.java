@@ -16,9 +16,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesSubgroupListCursorAdapter;
+import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.SpeciesItemDetailActivity;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
@@ -106,8 +105,8 @@ public class SearchFragment extends Fragment {
       //     new SimpleCursorAdapter(this, R.layout.layout2_species_list_2, cursor, from, to, 0);
       // mListView.setAdapter(words);
 
-      final SpeciesSubgroupListCursorAdapter adapter =
-          new SpeciesSubgroupListCursorAdapter(getActivity().getApplicationContext(), cursor, 0);
+      final SpeciesListCursorAdapter adapter =
+          new SpeciesListCursorAdapter(getActivity().getApplicationContext(), cursor, 0);
 
       mListView.setAdapter(adapter);
       mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -118,39 +117,8 @@ public class SearchFragment extends Fragment {
 
           callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
               adapter.getSublabelAtPosition(position));
-          //Intent spdetailIntent =
-          //  new Intent(getActivity().getApplicationContext(), SpeciesItemDetailActivity.class);
-          //spdetailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, String.valueOf(id));
-          //spdetailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-          //startActivity(spdetailIntent);
         }
       });
     }
   }
 }
-//  private void handleIntent(Intent intent) {
-//
-//    Log.w("Search ACtivity", "Handling search intent");
-//
-//    if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-//      // handles a click on a search suggestion; launches activity to show
-//      // word
-//      Log.w("Search ACtivity", "handling view event from SearchActivity: " + intent.getData());
-//            Intent spdetailIntent = new Intent(getApplicationContext(), SpeciesItemDetailActivity.class);
-//            //Uri data = Uri.withAppendedPath(FieldGuideContentProvider.CONTENT_URI, String.valueOf(id));
-//            //spdetailIntent.setData(data);
-//            String spId = intent.getData().getLastPathSegment();
-//            spdetailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, spId);
-//            spdetailIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(spdetailIntent);
-//            finish();
-//    } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-//      String query = intent.getStringExtra(SearchManager.QUERY);
-//
-//      Log.w("Search ACtivity", "Searching for " + query);
-//
-//      // use the query to search your data somehow
-//      searchSpecies(query);
-//    }
-//  }
-

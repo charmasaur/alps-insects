@@ -34,14 +34,13 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements SpeciesItemListFragment.Callbacks,
-    SpeciesGroupListFragment.Callback, GroupFragment.Callback, SearchFragment.Callback {
+public class MainActivity extends AppCompatActivity implements SpeciesGroupListFragment.Callback,
+    GroupFragment.Callback, SearchFragment.Callback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -251,52 +250,5 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
   public void backToGroups(View view) {
     onBackPressed();
-  }
-
-  /**
-   * Callback method from {@link SpeciesItemListFragment.Callbacks} indicating
-   * that the item with the given ID was selected.
-   */
-  @Override
-  public void onItemSelected(String inputid) {
-    //Log.d(TAG, "Selected ID: " + inputid);
-
-    //if (inputid.startsWith(SpeciesItemListFragment.LIST_TYPE_GROUP + "__")) {
-    //  Bundle arguments = new Bundle();
-    //  arguments.putString("speciesgroup",
-    //      inputid.substring(SpeciesItemListFragment.LIST_TYPE_GROUP
-    //          .length() + 2));
-    //  Fragment frag = SpeciesListFragment.newInstance(true, arguments);
-    //  FragmentTransaction ft = getSupportFragmentManager()
-    //      .beginTransaction();
-    //  ft.replace(R.id.basecontainer, frag, "speciesgroups");
-    //  ft.addToBackStack("speciesgroups");
-    //  ft.commit();
-
-    //} else {
-    //  String id = inputid
-    //      .substring(SpeciesItemListFragment.LIST_TYPE_ALPHABETICAL
-    //          .length() + 2);
-
-    //  if (findViewById(R.id.item_detail_container) != null) {
-    //    // In two-pane mode, show the detail view in this activity by
-    //    // adding or replacing the detail fragment using a
-    //    // fragment transaction.
-    //    Bundle arguments = new Bundle();
-    //    arguments.putString(Utilities.SPECIES_IDENTIFIER, id);
-    //    SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
-    //    fragment.setArguments(arguments);
-    //    getSupportFragmentManager().beginTransaction()
-    //        .replace(R.id.item_detail_container, fragment).commit();
-
-    //  } else {
-    //    // In single-pane mode, simply start the detail activity
-    //    // for the selected item ID.
-    //    Intent detailIntent = new Intent(this,
-    //        SpeciesItemDetailActivity.class);
-    //    detailIntent.putExtra(Utilities.SPECIES_IDENTIFIER, id);
-    //    startActivity(detailIntent);
-    //  }
-    //}
   }
 }

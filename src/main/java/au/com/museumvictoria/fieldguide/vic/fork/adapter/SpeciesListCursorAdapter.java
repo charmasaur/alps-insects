@@ -1,12 +1,9 @@
-/**
- * 
- */
 package au.com.museumvictoria.fieldguide.vic.fork.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,76 +16,76 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
-/**
- * @author aranipeta
- *
- */
 public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIndexer {
+  private final AlphabetIndexer indexer;
 
-	private static final String TAG = "SpeciesListCursorAdapter";
+  public SpeciesListCursorAdapter(Context context, Cursor c, int flags) {
+    super(context, c, flags);
 
-	AlphabetIndexer mAlphabetIndexer;
-	
-	public SpeciesListCursorAdapter(Context context, Cursor c, int flags) {
-		super(context, c, flags);
-		
-		mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL), " ABCDEFGHIJKLMNOPQRTSUVWXYZ");
-        mAlphabetIndexer.setCursor(c);
-	}
+    indexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL),
+        " ABCDEFGHIJKLMNOPQRTSUVWXYZ");
+    indexer.setCursor(c);
+  }
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.widget.CursorAdapter#bindView(android.view.View, android.content.Context, android.database.Cursor)
-	 */
-	@Override
-	public void bindView(View view, Context context, Cursor cursor) {
-		String iconLabel = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
-		String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH + iconLabel;
-		
-		Log.d(TAG, iconLabel + " -> iconPath: " + iconPath); 
-		
-		TextView txtView1 = (TextView)view.findViewById(R.id.speciesLabel);
-        txtView1.setText(cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL)));
-		
-		ImageView imgView = (ImageView) view.findViewById(R.id.speciesIcon);
-		// imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromAsset(context.getAssets(), iconPath, 150, 150));
-        
-//		InputStream istr = null;
-//		try {
-//			istr = Utilities.getAssetInputStream(context, iconPath);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(istr, 75, 75));
-		imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(context, iconPath), 75, 75));
+  @Override
+  public View newView(Context context, Cursor cursor, ViewGroup parent) {
+    LayoutInflater inflater = LayoutInflater.from(context);
+    return inflater.inflate(R.layout.species_list, parent, false);
+  }
 
-		
-		TextView txtView2 = (TextView)view.findViewById(R.id.speciesSublabel);
-        txtView2.setText(cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
-	}
+  @Override
+  public void bindView(View view, Context context, Cursor cursor) {
+    TextView labelView = (TextView) view.findViewById(R.id.speciesLabel);
+    TextView sublabelView = (TextView) view.findViewById(R.id.speciesSublabel);
+    ImageView iconView = (ImageView) view.findViewById(R.id.speciesIcon);
 
-	/* (non-Javadoc)
-	 * @see android.support.v4.widget.CursorAdapter#newView(android.content.Context, android.database.Cursor, android.view.ViewGroup)
-	 */
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-        View newView = inflater.inflate(R.layout.species_list, parent, false);
-        return newView;
-	}
+    labelView.setText(getLabel(cursor));
+    String sublabel = getSublabel(cursor);
+    if (sublabel == null) {
+      sublabelView.setVisibility(View.GONE);
+    } else {
+      sublabelView.setVisibility(View.VISIBLE);
+      sublabelView.setText(sublabel);
+    }
 
-	@Override
-	public int getPositionForSection(int section) {
-		return mAlphabetIndexer.getPositionForSection(section);
-	}
+    String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH
+        + cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
 
-	@Override
-	public int getSectionForPosition(int position) {
-		return mAlphabetIndexer.getSectionForPosition(position);
-	}
+    // TODO: Fix?
+    iconView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
+        Utilities.getFullExternalDataPath(context, iconPath), 150, 150));
+  }
 
-	@Override
-	public Object[] getSections() {
-		return mAlphabetIndexer.getSections();
-	}
+  @Override
+  public int getPositionForSection(int section) {
+    return indexer.getPositionForSection(section);
+  }
 
+  @Override
+  public int getSectionForPosition(int position) {
+    return indexer.getSectionForPosition(position);
+  }
+
+  @Override
+  public Object[] getSections() {
+    return indexer.getSections();
+  }
+
+  public String getLabelAtPosition(int position) {
+    return getLabel((Cursor) getItem(position));
+  }
+
+  @Nullable
+  public String getSublabelAtPosition(int position) {
+    return getSublabel((Cursor) getItem(position));
+  }
+
+  private static String getLabel(Cursor cursor) {
+    return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL));
+  }
+
+  @Nullable
+  private static String getSublabel(Cursor cursor) {
+    return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL));
+  }
 }

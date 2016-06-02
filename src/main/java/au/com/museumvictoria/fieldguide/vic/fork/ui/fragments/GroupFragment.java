@@ -14,14 +14,12 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesGroupListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesSubgroupListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 
 
 /**
- * A list. This fragment also supports
+ * A list of species in a group. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link SpeciesItemDetailFragment}.
@@ -30,7 +28,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
  * interface.
  */
 public class GroupFragment extends Fragment {
-  private static final String TAG = SpeciesItemListFragment.class.getSimpleName();
+  private static final String TAG = GroupFragment.class.getSimpleName();
 
   /**
    * Callback interface to be notified when a species is selected. Activities using this fragment
@@ -83,8 +81,8 @@ public class GroupFragment extends Fragment {
     int[] to = new int[] { R.id.speciesSubGroup, R.id.speciesLabel,
         R.id.speciesSublabel, R.id.speciesIcon };
 
-    final SpeciesSubgroupListCursorAdapter adapter =
-        new SpeciesSubgroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
+    final SpeciesListCursorAdapter adapter =
+        new SpeciesListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
 
     mListView.setAdapter(adapter);
     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

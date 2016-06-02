@@ -60,21 +60,9 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ui.SpeciesItemDetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
             android:name=".ui.ImageDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.FieldGuide.FullScreen" >
-        </activity>
-        <activity
-            android:name=".ui.DisplayInfoActivity"
-            android:label="@string/park_title" >
         </activity>
 
         <!-- Provides search suggestions for species and it's details. -->
