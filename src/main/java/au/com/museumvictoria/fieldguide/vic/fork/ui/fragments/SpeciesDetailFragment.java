@@ -48,7 +48,7 @@ public class SpeciesDetailFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		
-		SpeciesItemDetailFragment.displaySpeciesInformation();
+		//SpeciesItemDetailFragment.displaySpeciesInformation();
 		
 	}
 	

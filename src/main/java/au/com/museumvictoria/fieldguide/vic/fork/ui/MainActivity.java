@@ -36,7 +36,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemListFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.WebFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
@@ -170,6 +169,14 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
     setFragment(fragment, "SPECIES");
   }
 
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  }
+
   private void handleIntent(Intent intent) {
     Log.i(TAG, "Handling intent: " + intent);
     if (intent.getAction() == null) {
@@ -274,24 +281,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesItemListFr
 
     default:
       break;
-    }
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    // Serialize the current tab position.
-    Log.d(TAG, "onSaveInstanceState");
-    outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
-        getSupportActionBar().getSelectedNavigationIndex());
-  }
-
-  @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    // Restore the previously serialized current tab position.
-    Log.d(TAG, "onRestoreInstanceState");
-    if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-      getSupportActionBar().setSelectedNavigationItem(
-          savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
     }
   }
 
