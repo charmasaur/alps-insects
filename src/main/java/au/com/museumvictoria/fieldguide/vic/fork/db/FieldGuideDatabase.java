@@ -99,9 +99,6 @@ public class FieldGuideDatabase {
   }
 
   public static FieldGuideDatabase getInstance(Context context) {
-    // Use the application context, which will ensure that you
-    // don't accidentally leak an Activity's context.
-    // See this article for more information: http://bit.ly/6LRzfx
     if (mInstance == null) {
       mInstance = new FieldGuideDatabase(context.getApplicationContext());
     }
@@ -128,12 +125,14 @@ public class FieldGuideDatabase {
     return DatabaseUtils.queryNumEntries(mDatabase, SPECIES_TABLE_NAME);
   }
 
+  @Nullable
   public Cursor getSpeciesMatches(String query) {
     String[] columns = new String[] { BaseColumns._ID, SPECIES_IDENTIFIER, SPECIES_LABEL, SPECIES_SUBLABEL, SPECIES_THUMBNAIL };
 
     return getSpeciesMatches(query, columns);
   }
 
+  @Nullable
   public Cursor getSpeciesMatches(String query, String[] columns) {
     Log.w(TAG, "Searching species for " + query);
 
@@ -143,6 +142,7 @@ public class FieldGuideDatabase {
     return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, SPECIES_LABEL);
   }
 
+  @Nullable
   public Cursor getSpeciesList(String groupLabel) {
     String[] columns = new String[] { BaseColumns._ID, SPECIES_IDENTIFIER, SPECIES_LABEL, SPECIES_SUBLABEL, SPECIES_THUMBNAIL, SPECIES_SUBGROUP };
     String selection = null;
@@ -174,9 +174,11 @@ public class FieldGuideDatabase {
     return cursor;
   }
 
+  @Nullable
   public Cursor getSpeciesGroups() {
     Log.w(TAG, "Getting species groups");
 
+    // TODO: Does this get each group once, or can it duplicate them?
     String[] columns = new String[] { BaseColumns._ID, SPECIES_GROUP };
     Cursor cursor = query(SPECIES_TABLE_NAME, columns, null, null, SPECIES_GROUP, SPECIES_GROUP);
 
@@ -190,6 +192,33 @@ public class FieldGuideDatabase {
     }
 
     return cursor;
+  }
+
+  /**
+   * Returns a Cursor positioned at the species detail specified by rowId
+   *
+   * @param identifier species identifier
+   * @param columns the columns to include, if null then all are included
+   * @return {@link Cursor} positioned to matching word, or null if not found
+   */
+  @Nullable
+  public Cursor getSpeciesDetails(String identifier, String[] columns) {
+    //String selection = SPECIES_IDENTIFIER + " = ?";
+    String selection = BaseColumns._ID + " = ?";
+    String[] selectionArgs = new String[] { identifier };
+
+    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
+    return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, null);
+  }
+
+  public Cursor getSpeciesImages(String identifier) {
+    String selection = SPECIES_IDENTIFIER + " = ?";
+    String[] selectionArgs = new String[] { identifier };
+
+    Log.w(TAG, "Getting species images for: " + identifier);
+
+    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
+    return query(IMAGES_TABLE_NAME, null, selection, selectionArgs, null, null);
   }
 
   /**
@@ -232,53 +261,6 @@ public class FieldGuideDatabase {
     return cursor;
   }
 
-  /**
-   * Returns a Cursor positioned at the species detail specified by rowId
-   *
-   * @param identifier species identifier
-   * @param columns the columns to include, if null then all are included
-   * @return {@link Cursor} positioned to matching word, or null if not found
-   */
-  public Cursor getSpeciesDetails(String identifier, String[] columns) {
-    //String selection = SPECIES_IDENTIFIER + " = ?";
-    String selection = BaseColumns._ID + " = ?";
-    String[] selectionArgs = new String[] { identifier };
-
-    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
-    return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, null);
-  }
-
-  public Cursor getSpeciesImages(String identifier) {
-    String selection = SPECIES_IDENTIFIER + " = ?";
-    String[] selectionArgs = new String[] { identifier };
-
-    Log.w(TAG, "Getting species images for: " + identifier);
-
-    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
-    return query(IMAGES_TABLE_NAME, null, selection, selectionArgs, null, null);
-  }
-
-  public List<Species> getAllSpeciesList() {
-    List<Species> splist = new ArrayList<Species>();
-
-    Cursor cursor = getSpeciesList(null);
-
-    if (cursor == null) {
-      return null;
-    }
-
-    cursor.moveToFirst();
-    while (!cursor.isAfterLast()) {
-      Species sp = cursorToSpecies(cursor);
-      splist.add(sp);
-      cursor.moveToNext();
-    }
-    // Make sure to close the cursor
-    cursor.close();
-
-    return splist;
-  }
-
   private Species cursorToSpecies(Cursor cursor) {
     Species sp = new Species();
 
@@ -308,10 +290,6 @@ public class FieldGuideDatabase {
       super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
       mHelperContext = context;
-
-      // Log.w(TAG, "Deleting old db");
-      // mHelperContext.deleteDatabase(DATABASE_NAME);
-
     }
 
     @Override
@@ -321,21 +299,6 @@ public class FieldGuideDatabase {
       db.execSQL(SPECIES_TABLE_CREATE);
       db.execSQL(IMAGES_TABLE_CREATE);
 
-      loadFieldGuideData(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-      Log.i(TAG, "onUpgrade: from version " + oldVersion + " to " + newVersion);
-      db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
-      db.execSQL("DROP TABLE IF EXISTS " + IMAGES_TABLE_NAME);
-      onCreate(db);
-    }
-
-    /**
-     * Starts a thread to load the database.
-     */
-    private void loadFieldGuideData(final SQLiteDatabase db) {
       Log.i(TAG, "Starting thread to load database");
       new Thread(new Runnable() {
         @Override
@@ -349,6 +312,14 @@ public class FieldGuideDatabase {
           }
         }
       }).start();
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+      Log.i(TAG, "onUpgrade: from version " + oldVersion + " to " + newVersion);
+      db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
+      db.execSQL("DROP TABLE IF EXISTS " + IMAGES_TABLE_NAME);
+      onCreate(db);
     }
 
     private String getInsertSQL(String tableName, List<String> columnNames,
@@ -524,7 +495,7 @@ public class FieldGuideDatabase {
         speciesStatement.close();
         db.endTransaction();
       }
-      
+
       Log.i(TAG, "Done populating database");
     }
   }
