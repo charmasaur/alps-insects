@@ -3,9 +3,11 @@ package au.com.museumvictoria.fieldguide.vic.fork.db;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 
@@ -21,8 +23,11 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
@@ -43,22 +48,48 @@ public class FieldGuideDatabase {
   private static final String IMAGES_TABLE_NAME = "images";
 
   // column mapping
-  public static final String SPECIES_ID = "_id";
   public static final String SPECIES_IDENTIFIER = "identifier";
   public static final String SPECIES_LABEL = "label";
   public static final String SPECIES_SUBLABEL = "sublabel";
+  public static final String SPECIES_SEARCHTEXT = "searchText";
   public static final String SPECIES_THUMBNAIL = "squareThumbnail";
   public static final String SPECIES_GROUP = "groupLabel";
   public static final String SPECIES_SUBGROUP = "subgroupLabel";
-  public static final String SPECIES_SEARCHTEXT = "searchText";
+  public static final String SPECIES_DESCRIPTION = "description";
+  public static final String SPECIES_BITE = "bite";
+  public static final String SPECIES_BIOLOGY = "biology";
+  public static final String SPECIES_DIET = "diet";
+  public static final String SPECIES_HABITAT = "habitat";
+  public static final String SPECIES_NATIVE_STATUS = "nativeStatus";
+  public static final String SPECIES_DISTINCTIVE = "distinctive";
+  public static final String SPECIES_DISTRIBUTION = "distribution";
+  public static final String SPECIES_DEPTH = "depth";
+  public static final String SPECIES_LOCATION = "location";
+  public static final String SPECIES_IS_COMMERCIAL = "isCommercial";
+  public static final String SPECIES_TAXA_PHYLUM = "taxaPhylum";
+  public static final String SPECIES_TAXA_CLASS = "taxaClass";
+  public static final String SPECIES_TAXA_ORDER = "taxaOrder";
+  public static final String SPECIES_TAXA_FAMILY = "taxaFamily";
+  public static final String SPECIES_TAXA_GENUS = "taxaGenus";
+  public static final String SPECIES_TAXA_SPECIES = "taxaSpecies";
+  public static final String SPECIES_TAXA_SUBSPECIES = "taxaSubspecies";
+  public static final String SPECIES_COMMON_NAMES = "commonNames";
+  public static final String SPECIES_OTHER_NAMES = "otherNames";
   public static final String SPECIES_SEARCHICON = "searchIcon";
+  public static final String SPECIES_BUTTERFLY_START = "butterflyStart";
+  public static final String SPECIES_BUTTERFLY_END = "butterflyEnd";
+  public static final String SPECIES_DISTRIBUTION_MAP = "distributionMap";
 
   public static final String MEDIA_FILENAME = "filename";
-  public static final String MEDIA_CAPTION = "credit";
+  public static final String MEDIA_CAPTION = "caption";
+  public static final String MEDIA_CREDIT = "credit";
+  public static final String MEDIA_IDENTIFIER = "identifier";
 
   private final FieldGuideOpenHelper mDatabaseOpenHelper;
-  private SQLiteDatabase mDatabase;
+
   private static FieldGuideDatabase mInstance = null;
+
+  private SQLiteDatabase mDatabase;
 
   private int currCount = 0;
   private int totalCount = 0;
@@ -171,6 +202,7 @@ public class FieldGuideDatabase {
    * @param orderBy the ORDER BY column name
    * @return a {@link Cursor} over all rows matching the query
    */
+  @Nullable
   private Cursor query(String tables, String[] columns, String selection, String[] selectionArgs,
       String groupBy, String orderBy) {
     /*
@@ -259,19 +291,14 @@ public class FieldGuideDatabase {
   }
 
   private final class FieldGuideOpenHelper extends SQLiteOpenHelper {
-
-    private final Context mHelperContext;
-    private SQLiteDatabase mDatabase;
-    //private final SQLiteDatabase.CursorFactory cursorFactory = new SQLiteCursorFactory(true);
-
-    // IF NOT EXISTS
-
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
         + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, taxaSubspecies TEXT, commonNames TEXT, otherNames TEXT, butterflyStart TEXT, butterflyEnd TEXT, distributionMap TEXT); ";
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
         + IMAGES_TABLE_NAME
         + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
+
+    private final Context mHelperContext;
 
     public FieldGuideOpenHelper(Context context) {
 
@@ -289,43 +316,32 @@ public class FieldGuideDatabase {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-      Log.w(TAG, "Creating new db");
-      mDatabase = db;
+      Log.i(TAG, "onCreate");
 
-      Log.w(TAG, "Creating tables");
+      db.execSQL(SPECIES_TABLE_CREATE);
+      db.execSQL(IMAGES_TABLE_CREATE);
 
-      // db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
-      // db.execSQL("DROP TABLE IF EXISTS " + MEDIA_TABLE_NAME);
-
-      mDatabase.execSQL(SPECIES_TABLE_CREATE);
-      mDatabase.execSQL(IMAGES_TABLE_CREATE);
-
-      Log.w(TAG, "Loading data via loadFieldGuideData()");
-
-      loadFieldGuideData();
-
-      Log.w(TAG, "Done loading data");
-
+      loadFieldGuideData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-      Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
-          + ", which will destroy all old data");
+      Log.i(TAG, "onUpgrade: from version " + oldVersion + " to " + newVersion);
       db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
       db.execSQL("DROP TABLE IF EXISTS " + IMAGES_TABLE_NAME);
       onCreate(db);
     }
 
     /**
-     * Starts a thread to load the database table with words
+     * Starts a thread to load the database.
      */
-    private void loadFieldGuideData() {
+    private void loadFieldGuideData(final SQLiteDatabase db) {
+      Log.i(TAG, "Starting thread to load database");
       new Thread(new Runnable() {
+        @Override
         public void run() {
           try {
-            Log.w(TAG, "Loading data via loadData()");
-            loadData();
+            loadData(db);
           } catch (IOException e) {
             throw new RuntimeException(e);
           } catch (JSONException e) {
@@ -335,173 +351,181 @@ public class FieldGuideDatabase {
       }).start();
     }
 
-    private void loadData() throws IOException, JSONException {
+    private String getInsertSQL(String tableName, List<String> columnNames,
+        Map<String, Integer> columnIndices) {
+      StringBuilder columnsBuilder = new StringBuilder()
+          .append("INSERT INTO ").append(tableName).append(" (");
+      StringBuilder valuesBuilder = new StringBuilder(") VALUES (");
+      int index = 1;
+      for (String columnName : columnNames) {
+        columnIndices.put(columnName, index);
 
-      Log.w(TAG, "in loadData()");
-
-      Log.w(TAG, "Setting Species IH");
-      InsertHelper ih1 = new InsertHelper(mDatabase, SPECIES_TABLE_NAME);
-      Log.w(TAG, "Setting Images IH");
-      InsertHelper ih2 = new InsertHelper(mDatabase, IMAGES_TABLE_NAME);
-
-      Log.w(TAG, "Setting identifierColumn");
-      final int identifierColumn = ih1.getColumnIndex("identifier");
-      final int labelColumn = ih1.getColumnIndex("label");
-      final int subLabelColumn = ih1.getColumnIndex("sublabel");
-      final int searchTextColumn = ih1.getColumnIndex("searchText");
-      final int squareThumbnailColumn = ih1.getColumnIndex("squareThumbnail");
-      final int groupColumn = ih1.getColumnIndex("groupLabel");
-      final int subGroupColumn = ih1.getColumnIndex("subgroupLabel");
-      final int descriptionColumn = ih1.getColumnIndex("description");
-      final int biteColumn = ih1.getColumnIndex("bite");
-      final int biologyColumn = ih1.getColumnIndex("biology");
-      final int dietColumn = ih1.getColumnIndex("diet");
-      final int habitatColumn = ih1.getColumnIndex("habitat");
-      final int nativeStatusColumn = ih1.getColumnIndex("nativeStatus");
-      final int distinctiveColumn = ih1.getColumnIndex("distinctive");
-      final int distributionColumn = ih1.getColumnIndex("distribution");
-      final int depthColumn = ih1.getColumnIndex("depth");
-      final int locationColumn = ih1.getColumnIndex("location");
-      final int isCommercialColumn = ih1.getColumnIndex("isCommercial");
-      final int taxaPhylumColumn = ih1.getColumnIndex("taxaPhylum");
-      final int taxaClassColumn = ih1.getColumnIndex("taxaClass");
-      final int taxaOrderColumn = ih1.getColumnIndex("taxaOrder");
-      final int taxaFamilyColumn = ih1.getColumnIndex("taxaFamily");
-      final int taxaGenusColumn = ih1.getColumnIndex("taxaGenus");
-      final int taxaSpeciesColumn = ih1.getColumnIndex("taxaSpecies");
-      final int taxaSubspeciesColumn = ih1.getColumnIndex("taxaSubspecies");
-      final int commonNameColumn = ih1.getColumnIndex("commonNames");
-      final int otherNamesColumn = ih1.getColumnIndex("otherNames");
-      final int searchIconColumn = ih1.getColumnIndex("searchIcon");
-      final int butterflyStartColumn = ih1.getColumnIndex("butterflyStart");
-      final int butterflyEndColumn = ih1.getColumnIndex("butterflyEnd");
-      final int distributionMapColumn = ih1.getColumnIndex("distributionMap");
-
-      Log.w(TAG, "Setting filenameColumn");
-      final int filenameColumn = ih2.getColumnIndex("filename");
-      final int captionColumn = ih2.getColumnIndex("caption");
-      final int creditColumn = ih2.getColumnIndex("credit");
-      final int identifierFKColumn = ih2.getColumnIndex("identifier");
-
-      Log.w(TAG, "Getting species data from getData()");
-
-      HashMap<String, Object> data = getData();
-
-      Log.w(TAG, "Loading species data...");
-      if (data != null) {
-        //Double version = (Double) data.get("version");
-        //ArrayList<Species> splist = (ArrayList<Species>) data.get("data");
-        //Iterator<Species> its = splist.iterator();
-
-        JsonArray splist = (JsonArray)data.get("data");
-
-        totalCount = splist.size();
-        Log.w(TAG, "Loading " + splist.size() + " records");
-
-        mDatabase.beginTransaction();
-
-        try {
-
-          Gson gson = new Gson();
-          for (int i=0; i<splist.size(); i++) {
-            Species s = gson.fromJson(splist.get(i), Species.class);
-
-            ih1.prepareForInsert();
-
-            ih1.bind(identifierColumn, s.getIdentifier());
-            ih1.bind(labelColumn, s.getLabel());
-            ih1.bind(subLabelColumn, s.getSublabel());
-            ih1.bind(searchTextColumn, s.getSearchText());
-            ih1.bind(squareThumbnailColumn, s.getSquareThumbnail());
-            ih1.bind(searchIconColumn, "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/" + s.getSquareThumbnail());
-            ih1.bind(groupColumn, s.getGroup());
-            ih1.bind(subGroupColumn, s.getSubgroup());
-            ih1.bind(descriptionColumn, s.getDetails().getDescription());
-            ih1.bind(biteColumn, s.getDetails().getBite());
-            ih1.bind(biologyColumn, s.getDetails().getBiology());
-            ih1.bind(dietColumn, s.getDetails().getDiet());
-            ih1.bind(habitatColumn, s.getDetails().getHabitat());
-            ih1.bind(nativeStatusColumn, s.getDetails().getNativeStatus());
-            ih1.bind(distinctiveColumn, s.getDetails().getDistinctive());
-            ih1.bind(distributionColumn, s.getDetails().getDistribution());
-
-            //ih1.bind(depthColumn, TextUtils.join(";;", s.getDetails().getDepth()));
-            //ih1.bind(locationColumn, TextUtils.join(";;", s.getDetails().getLocation()));
-            ih1.bind(depthColumn, "");
-            ih1.bind(locationColumn, "");
-
-            ih1.bind(isCommercialColumn, s.getDetails().isCommercial());
-            ih1.bind(taxaPhylumColumn, s.getDetails().getTaxaPhylum());
-            ih1.bind(taxaClassColumn, s.getDetails().getTaxaClass());
-            ih1.bind(taxaOrderColumn, s.getDetails().getTaxaOrder());
-            ih1.bind(taxaFamilyColumn, s.getDetails().getTaxaFamily());
-            ih1.bind(taxaGenusColumn, s.getDetails().getTaxaGenus());
-            ih1.bind(taxaSpeciesColumn, s.getDetails().getTaxaSpecies());
-            ih1.bind(taxaSubspeciesColumn, s.getDetails().getTaxaSubSpecies());
-            ih1.bind(commonNameColumn, s.getDetails().getCommonNames());
-            ih1.bind(otherNamesColumn, s.getDetails().getOtherNames());
-            ih1.bind(butterflyStartColumn, s.getDetails().getButterflyStart());
-            ih1.bind(butterflyEndColumn, s.getDetails().getButterflyEnd());
-            ih1.bind(distributionMapColumn, s.getDetails().getDistributionMap());
-
-            ih1.execute();
-
-            Iterator<Images> imgs = s.getImages().iterator();
-            while (imgs.hasNext()) {
-              Images img = imgs.next();
-
-              ih2.prepareForInsert();
-
-              ih2.bind(filenameColumn, img.getFilename());
-              ih2.bind(captionColumn, img.getImageDescription());
-              ih2.bind(creditColumn, img.getCredit());
-              ih2.bind(identifierFKColumn, s.getIdentifier());
-
-              ih2.execute();
-            }
-
-            currCount++;
-
-          }
-
-          mDatabase.setTransactionSuccessful();
-
-        } finally {
-          ih1.close();
-          ih2.close();
-
-          mDatabase.endTransaction();
+        columnsBuilder.append(columnName);
+        valuesBuilder.append("?");
+        if (index < columnNames.size()) {
+          columnsBuilder.append(", ");
+          valuesBuilder.append(", ");
         }
-
+        ++index;
       }
-      Log.w(TAG, "Done loading species data.");
-
+      valuesBuilder.append(");");
+      return columnsBuilder.append(valuesBuilder.toString()).toString();
     }
 
-    private HashMap<String, Object> getData() throws IOException, JSONException {
-      Log.w(TAG, "Reading species data...");
+    private void loadData(SQLiteDatabase db) throws IOException, JSONException {
+      Log.i(TAG, "Loading database");
 
-      //JsonReader reader = new JsonReader(new InputStreamReader(mHelperContext.getAssets().open("data/generaData.json")));
+      Map<String, Integer> speciesColumns = new HashMap<>();
+      String speciesSQL = getInsertSQL(
+          SPECIES_TABLE_NAME,
+          Arrays.asList(
+              SPECIES_IDENTIFIER,
+              SPECIES_LABEL,
+              SPECIES_SUBLABEL,
+              SPECIES_SEARCHTEXT,
+              SPECIES_THUMBNAIL,
+              SPECIES_GROUP,
+              SPECIES_SUBGROUP,
+              SPECIES_DESCRIPTION,
+              SPECIES_BITE,
+              SPECIES_BIOLOGY,
+              SPECIES_DIET,
+              SPECIES_HABITAT,
+              SPECIES_NATIVE_STATUS,
+              SPECIES_DISTINCTIVE,
+              SPECIES_DISTRIBUTION,
+              SPECIES_DEPTH,
+              SPECIES_LOCATION,
+              SPECIES_IS_COMMERCIAL,
+              SPECIES_TAXA_PHYLUM,
+              SPECIES_TAXA_CLASS,
+              SPECIES_TAXA_ORDER,
+              SPECIES_TAXA_FAMILY,
+              SPECIES_TAXA_GENUS,
+              SPECIES_TAXA_SPECIES,
+              SPECIES_TAXA_SUBSPECIES,
+              SPECIES_COMMON_NAMES,
+              SPECIES_OTHER_NAMES,
+              SPECIES_SEARCHICON,
+              SPECIES_BUTTERFLY_START,
+              SPECIES_BUTTERFLY_END,
+              SPECIES_DISTRIBUTION_MAP),
+          speciesColumns);
 
-      // production code for .obb file
-      JsonReader reader = new JsonReader(new InputStreamReader(Utilities.getAssetInputStream(mHelperContext, Utilities.SPECIES_DATA_FILE)));
+      Map<String, Integer> imagesColumns = new HashMap<>();
+      String imageSQL = getInsertSQL(
+          IMAGES_TABLE_NAME,
+          Arrays.asList(MEDIA_FILENAME, MEDIA_CAPTION, MEDIA_CREDIT, MEDIA_IDENTIFIER),
+          imagesColumns);
 
-
-      //JsonReader reader = new JsonReader(new InputStreamReader(Utilities.getAssetsFileDescriptor(mHelperContext, "data/generaData.json").createInputStream()));
-
-      //Reader reader = new InputStreamReader(mHelperContext.getAssets().open("data/generaData.json"));
-      //HashMap<String, Object> generaData = new Gson().fromJson(reader, HashMap.class);
+      Log.i(TAG, "Reading assets");
+      JsonReader reader = new JsonReader(new InputStreamReader(
+            Utilities.getAssetInputStream(mHelperContext, Utilities.SPECIES_DATA_FILE)));
 
       JsonParser parser = new JsonParser();
       JsonObject json = parser.parse(reader).getAsJsonObject();
       double version = json.get("version").getAsDouble();
-      JsonArray speciesdata = json.get("data").getAsJsonArray();
+      JsonArray splist = json.get("data").getAsJsonArray();
 
-      HashMap<String, Object> generaData = new HashMap<String, Object>();
-      generaData.put("version", version);
-      generaData.put("data", speciesdata);
+      totalCount = splist.size();
 
-      return generaData;
+      db.beginTransaction();
+
+      SQLiteStatement speciesStatement = db.compileStatement(speciesSQL);
+      SQLiteStatement imageStatement = db.compileStatement(imageSQL);
+
+      Log.i(TAG, "Populating database");
+      try {
+        Gson gson = new Gson();
+        for (int i=0; i<splist.size(); i++) {
+          Species s = gson.fromJson(splist.get(i), Species.class);
+
+          speciesStatement.bindString(speciesColumns.get(SPECIES_IDENTIFIER), s.getIdentifier());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_LABEL), s.getLabel());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_SUBLABEL), s.getSublabel());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_SEARCHTEXT), s.getSearchText());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_THUMBNAIL), s.getSquareThumbnail());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_GROUP), s.getGroup());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_SUBGROUP), s.getSubgroup());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_DESCRIPTION), s.getDetails().getDescription());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_BITE), s.getDetails().getBite());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_BIOLOGY), s.getDetails().getBiology());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_DIET), s.getDetails().getDiet());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_HABITAT), s.getDetails().getHabitat());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_NATIVE_STATUS), s.getDetails().getNativeStatus());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_DISTINCTIVE), s.getDetails().getDistinctive());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_DISTRIBUTION), s.getDetails().getDistribution());
+          speciesStatement.bindString(speciesColumns.get(SPECIES_DEPTH), "");
+          speciesStatement.bindString(speciesColumns.get(SPECIES_LOCATION), "");
+          speciesStatement.bindLong(
+              speciesColumns.get(SPECIES_IS_COMMERCIAL), s.getDetails().isCommercial() ? 1 : 0);
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_PHYLUM), s.getDetails().getTaxaPhylum());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_CLASS), s.getDetails().getTaxaClass());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_ORDER), s.getDetails().getTaxaOrder());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_FAMILY), s.getDetails().getTaxaFamily());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_GENUS), s.getDetails().getTaxaGenus());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_SPECIES), s.getDetails().getTaxaSpecies());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_TAXA_SUBSPECIES), s.getDetails().getTaxaSubSpecies());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_COMMON_NAMES), s.getDetails().getCommonNames());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_OTHER_NAMES), s.getDetails().getOtherNames());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_SEARCHICON),
+              "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/"
+                  + s.getSquareThumbnail());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_BUTTERFLY_START), s.getDetails().getButterflyStart());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_BUTTERFLY_END), s.getDetails().getButterflyEnd());
+          speciesStatement.bindString(
+              speciesColumns.get(SPECIES_DISTRIBUTION_MAP), s.getDetails().getDistributionMap());
+
+          speciesStatement.executeInsert();
+          speciesStatement.clearBindings();
+
+          Iterator<Images> imgs = s.getImages().iterator();
+          while (imgs.hasNext()) {
+            Images img = imgs.next();
+
+            imageStatement.bindString(imagesColumns.get(MEDIA_FILENAME), img.getFilename());
+            imageStatement.bindString(imagesColumns.get(MEDIA_CAPTION), img.getImageDescription());
+            imageStatement.bindString(imagesColumns.get(MEDIA_CREDIT), img.getCredit());
+            imageStatement.bindString(imagesColumns.get(MEDIA_IDENTIFIER), s.getIdentifier());
+
+            imageStatement.executeInsert();
+            imageStatement.clearBindings();
+          }
+
+          ++currCount;
+
+        }
+
+        db.setTransactionSuccessful();
+
+      } finally {
+        imageStatement.close();
+        speciesStatement.close();
+        db.endTransaction();
+      }
+      
+      Log.i(TAG, "Done populating database");
     }
   }
 
