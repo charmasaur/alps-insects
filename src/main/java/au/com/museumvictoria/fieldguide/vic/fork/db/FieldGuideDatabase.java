@@ -23,7 +23,6 @@ import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
 import android.util.Log;
-import au.com.museumvictoria.fieldguide.vic.fork.model.ConservationStatuses;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
@@ -269,7 +268,7 @@ public class FieldGuideDatabase {
 
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, conservationStatusDSE TEXT, conservationStatusEPBC TEXT, conservationStatusIUCN TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, taxaSubspecies TEXT, commonNames TEXT, otherNames TEXT, butterflyStart TEXT, butterflyEnd TEXT, distributionMap TEXT); ";
+        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, taxaSubspecies TEXT, commonNames TEXT, otherNames TEXT, butterflyStart TEXT, butterflyEnd TEXT, distributionMap TEXT); ";
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
         + IMAGES_TABLE_NAME
         + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
@@ -361,9 +360,6 @@ public class FieldGuideDatabase {
       final int nativeStatusColumn = ih1.getColumnIndex("nativeStatus");
       final int distinctiveColumn = ih1.getColumnIndex("distinctive");
       final int distributionColumn = ih1.getColumnIndex("distribution");
-      final int conservationStatusColumnDSE = ih1.getColumnIndex("conservationStatusDSE");
-      final int conservationStatusColumnEPBC = ih1.getColumnIndex("conservationStatusEPBC");
-      final int conservationStatusColumnIUCN = ih1.getColumnIndex("conservationStatusIUCN");
       final int depthColumn = ih1.getColumnIndex("depth");
       final int locationColumn = ih1.getColumnIndex("location");
       final int isCommercialColumn = ih1.getColumnIndex("isCommercial");
@@ -428,20 +424,6 @@ public class FieldGuideDatabase {
             ih1.bind(nativeStatusColumn, s.getDetails().getNativeStatus());
             ih1.bind(distinctiveColumn, s.getDetails().getDistinctive());
             ih1.bind(distributionColumn, s.getDetails().getDistribution());
-
-            Iterator<ConservationStatuses> css = s.getDetails().getConservationStatuses().iterator();
-            while (css.hasNext()) {
-              ConservationStatuses cs = css.next();
-              if (cs.getAuthority().startsWith("DSE")) {
-                ih1.bind(conservationStatusColumnDSE, cs.getStatus());
-              }
-              if (cs.getAuthority().startsWith("EPBC")) {
-                ih1.bind(conservationStatusColumnEPBC, cs.getStatus());
-              }
-              if (cs.getAuthority().startsWith("IUCN")) {
-                ih1.bind(conservationStatusColumnIUCN, cs.getStatus());
-              }
-            }
 
             //ih1.bind(depthColumn, TextUtils.join(";;", s.getDetails().getDepth()));
             //ih1.bind(locationColumn, TextUtils.join(";;", s.getDetails().getLocation()));

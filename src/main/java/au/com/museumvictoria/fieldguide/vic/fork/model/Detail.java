@@ -12,7 +12,6 @@ public class Detail {
 	private String nativeStatus;
 	private String distinctive;
 	private String distribution;
-	private ArrayList<ConservationStatuses> conservationStatuses;
 	private String[] depth;
 	private String[] location;	
 	private String butterflyStart;
@@ -96,15 +95,6 @@ public class Detail {
 
 	public void setDistribution(String distribution) {
 		this.distribution = distribution;
-	}
-
-	public ArrayList<ConservationStatuses> getConservationStatuses() {
-		return conservationStatuses;
-	}
-
-	public void setConservationStatuses(
-			ArrayList<ConservationStatuses> conservationStatuses) {
-		this.conservationStatuses = conservationStatuses;
 	}
 
 	public String[] getDepth() {
@@ -234,7 +224,6 @@ public class Detail {
 				+ ", biology=" + biology + ", diet=" + diet + ", habitat="
 				+ habitat + ", nativeStatus=" + nativeStatus + ", distinctive="
 				+ distinctive + ", distribution=" + distribution
-				+ ", conservationStatuses=" + conservationStatuses
 				+ ", butterflyStart=" + butterflyStart + ", butterflyEnd="
 				+ butterflyEnd + ", isCommercial=" + isCommercial
 				+ ", taxaPhylum=" + taxaPhylum + ", taxaClass=" + taxaClass
