@@ -23,7 +23,6 @@ import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
 import android.util.Log;
-import au.com.museumvictoria.fieldguide.vic.fork.model.Audio;
 import au.com.museumvictoria.fieldguide.vic.fork.model.ConservationStatuses;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
@@ -43,7 +42,6 @@ public class FieldGuideDatabase {
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";
-  private static final String AUDIO_TABLE_NAME = "audio";
 
   // column mapping
   public static final String SPECIES_ID = "_id";
@@ -229,16 +227,6 @@ public class FieldGuideDatabase {
     return query(IMAGES_TABLE_NAME, null, selection, selectionArgs, null, null);
   }
 
-  public Cursor getSpeciesAudio(String identifier) {
-    String selection = SPECIES_IDENTIFIER + " = ?";
-    String[] selectionArgs = new String[] { identifier };
-
-    Log.w(TAG, "Getting species images for: " + identifier);
-
-    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
-    return query(AUDIO_TABLE_NAME, null, selection, selectionArgs, null, null);
-  }
-
   public List<Species> getAllSpeciesList() {
     List<Species> splist = new ArrayList<Species>();
 
@@ -285,9 +273,6 @@ public class FieldGuideDatabase {
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
         + IMAGES_TABLE_NAME
         + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
-    private static final String AUDIO_TABLE_CREATE = "CREATE TABLE "
-        + AUDIO_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
 
     public FieldGuideOpenHelper(Context context) {
 
@@ -315,7 +300,6 @@ public class FieldGuideDatabase {
 
       mDatabase.execSQL(SPECIES_TABLE_CREATE);
       mDatabase.execSQL(IMAGES_TABLE_CREATE);
-      mDatabase.execSQL(AUDIO_TABLE_CREATE);
 
       Log.w(TAG, "Loading data via loadFieldGuideData()");
 
@@ -331,7 +315,6 @@ public class FieldGuideDatabase {
           + ", which will destroy all old data");
       db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
       db.execSQL("DROP TABLE IF EXISTS " + IMAGES_TABLE_NAME);
-      db.execSQL("DROP TABLE IF EXISTS " + AUDIO_TABLE_NAME);
       onCreate(db);
     }
 
@@ -361,8 +344,6 @@ public class FieldGuideDatabase {
       InsertHelper ih1 = new InsertHelper(mDatabase, SPECIES_TABLE_NAME);
       Log.w(TAG, "Setting Images IH");
       InsertHelper ih2 = new InsertHelper(mDatabase, IMAGES_TABLE_NAME);
-      Log.w(TAG, "Setting Audio IH");
-      InsertHelper ih3 = new InsertHelper(mDatabase, AUDIO_TABLE_NAME);
 
       Log.w(TAG, "Setting identifierColumn");
       final int identifierColumn = ih1.getColumnIndex("identifier");
@@ -405,12 +386,6 @@ public class FieldGuideDatabase {
       final int captionColumn = ih2.getColumnIndex("caption");
       final int creditColumn = ih2.getColumnIndex("credit");
       final int identifierFKColumn = ih2.getColumnIndex("identifier");
-
-      Log.w(TAG, "Setting audio data");
-      final int audfilenameColumn = ih3.getColumnIndex("filename");
-      final int audcaptionColumn = ih3.getColumnIndex("caption");
-      final int audcreditColumn = ih3.getColumnIndex("credit");
-      final int audidentifierFKColumn = ih3.getColumnIndex("identifier");
 
       Log.w(TAG, "Getting species data from getData()");
 
@@ -501,23 +476,6 @@ public class FieldGuideDatabase {
               ih2.bind(identifierFKColumn, s.getIdentifier());
 
               ih2.execute();
-            }
-
-            if (s.getAudio() != null) {
-
-              Iterator<Audio> auds = s.getAudio().iterator();
-              while (auds.hasNext()) {
-                Audio aud = auds.next();
-
-                ih3.prepareForInsert();
-
-                ih3.bind(audfilenameColumn, aud.getFilename());
-                ih3.bind(audcaptionColumn, aud.getAudioDescription());
-                ih3.bind(audcreditColumn, aud.getCredit());
-                ih3.bind(audidentifierFKColumn, s.getIdentifier());
-
-                ih3.execute();
-              }
             }
 
             currCount++;

@@ -49,7 +49,6 @@ public class SpeciesItemDetailFragment extends Fragment {
   private FieldGuideDatabase fgdb;
   private Cursor cursor;
   private Cursor cursorImages;
-  private Cursor cursorAudio;
 
   public static SpeciesItemDetailFragment newInstance(Bundle args) {
     SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
@@ -85,7 +84,6 @@ public class SpeciesItemDetailFragment extends Fragment {
       String identifier = cursor.getString(cursor
           .getColumnIndex("identifier"));
       cursorImages = fgdb.getSpeciesImages(identifier);
-      cursorAudio = fgdb.getSpeciesAudio(identifier);
 
       displayText = "Displaying species info for '" + label + "'";
 
@@ -121,9 +119,6 @@ public class SpeciesItemDetailFragment extends Fragment {
   @Override
   public void onDestroy() {
 
-    if (cursorAudio != null) {
-      cursorAudio.close();
-    }
     if (cursorImages != null) {
       cursorImages.close();
     }
@@ -256,18 +251,6 @@ public class SpeciesItemDetailFragment extends Fragment {
       // speciesimages.removeAllViews();
 
       if (speciesimages.getChildCount() == 0) {
-
-        if (cursorAudio != null) { // getColumnValue("label").startsWith("Alison")
-          int imgThumbSize = r.getDimensionPixelSize(R.dimen.species_image_thumbnail_size);
-          int imgThumbPadding = r.getDimensionPixelSize(R.dimen.image_detail_pager_margin);
-
-          final ArrayList<String> captions = new ArrayList<String>();
-          final ArrayList<String> sounds = new ArrayList<String>();
-          for (cursorAudio.moveToFirst(); !cursorAudio.isAfterLast(); cursorAudio.moveToNext()) {
-            sounds.add(cursorAudio.getString(cursorAudio.getColumnIndex("filename")).replaceAll(".mp3", ""));
-            captions.add(cursorAudio.getString(cursorAudio.getColumnIndex("credit")));
-          }
-        }
 
         if (cursorImages != null) {
           Log.d(TAG, "Got " + cursorImages.getCount() + " images");

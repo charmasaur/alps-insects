@@ -38,7 +38,6 @@ public class Utilities {
   public static final String SPECIES_IMAGES_THUMBNAILS_PATH = "data/images/species/";
   public static final String SPECIES_IMAGES_FULL_PATH = "data/images/species/";
   public static final String SPECIES_DISTRIBUTION_MAPS_PATH = "data/images/species/";
-  public static final String SPECIES_AUDIO_PATH = "data/audio/";
 
   public static InputStream getAssetsPathInputStream(Context context, String internalPath) throws IOException {
     // Get a ZipResourceFile representing a merger of both the main and patch files

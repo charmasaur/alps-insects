@@ -154,9 +154,6 @@ public class ImageDetailActivity extends AppCompatActivity implements OnClickLis
 
     @Override
     public Fragment getItem(int position) {
-      if (Images.imageUrls[position].endsWith("audio")) {
-        return ImageDetailFragment.newInstance(position+1);
-      }
       if (galleryReference == -1) {
         Log.d(TAG, "SEtting IDF.id");
         return ImageDetailFragment.newInstance(position);

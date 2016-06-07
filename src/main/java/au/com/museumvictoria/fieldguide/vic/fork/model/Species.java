@@ -17,7 +17,6 @@ public class Species {
 	private String template;
 	private Detail details;
 	private ArrayList<Images> images;
-	private ArrayList<Audio> audio;
 	
 	public Species() {}
 
@@ -116,21 +115,12 @@ public class Species {
 		this.images = images;
 	}
 
-	public ArrayList<Audio> getAudio() {
-		return audio;
-	}
-
-	public void setAudio(ArrayList<Audio> audio) {
-		this.audio = audio;
-	}
-
 	@Override
 	public String toString() {
 		return "Species [identifier=" + identifier + ", label=" + label
 				+ ", sublabel=" + sublabel + ", searchText=" + searchText
 				+ ", squareThumbnail=" + squareThumbnail + ", group=" + group
 				+ ", subgroup=" + subgroup + ", template=" + template
-				+ ", details=" + details + ", images=" + images + ", audio="
-				+ audio + "]";
+				+ ", details=" + details + ", images=" + images + "]";
 	}
 }
