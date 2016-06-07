@@ -293,7 +293,7 @@ public class FieldGuideDatabase {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(final SQLiteDatabase db) {
       Log.i(TAG, "onCreate");
 
       db.execSQL(SPECIES_TABLE_CREATE);
