@@ -19,22 +19,12 @@
     <!-- actionbar styles -->
     <style name="Theme.FieldGuide.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
 
-    <!--    <item name="background">@drawable/actionbar_gradient</item>
-        <item name="backgroundStacked">@drawable/actionbar_gradient</item>
-        <item name="backgroundSplit">@drawable/actionbar_gradient</item>
-
-        <item name="android:background">@drawable/actionbar_gradient</item>-->
     </style>
     
     <style name="Theme.FieldGuide.DropDownNav" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
-    <!--    <item name="background">@drawable/spinner_background_ab_example</item>
-        <item name="android:background">@drawable/spinner_background_ab_example</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_example</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_example</item>-->
     </style>
 
     <style name="Theme.FieldGuide.DropDownListView" parent="Widget.AppCompat.ListView.DropDown">
-    <!--<item name="android:listSelector">@drawable/selectable_background_example</item>-->
     </style>
 
 
