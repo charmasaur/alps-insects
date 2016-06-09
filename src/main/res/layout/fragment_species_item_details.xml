@@ -351,21 +351,6 @@
                     android:text="Species"
                     android:textStyle="italic" />
             </TableRow>
-
-            <TableRow style="@style/tablerowstylealt" >
-
-                <TextView
-                    style="@style/SpeciesDetailsText"
-                    android:text="Subspecies:" />
-
-                <TextView
-                    android:id="@+id/sdTaxaSubspecies"
-                    style="@style/SpeciesDetailsText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Subspecies"
-                    android:textStyle="italic" />
-            </TableRow>
             </TableLayout>
     </LinearLayout>
 

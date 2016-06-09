@@ -219,10 +219,7 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
             // mProgressText.setText("Expanding data... done");
           }
 
-          // mDatabase = new
-          // FieldGuideDatabase(getApplicationContext());
-          mDatabase = FieldGuideDatabase
-              .getInstance(getApplicationContext());
+          mDatabase = FieldGuideDatabase.getInstance(getApplicationContext());
           mCursor = mDatabase.getSpeciesGroups();
 
           while (mProgressStatus < 100) {

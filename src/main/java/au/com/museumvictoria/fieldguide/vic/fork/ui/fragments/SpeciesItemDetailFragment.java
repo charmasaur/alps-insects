@@ -176,8 +176,6 @@ public class SpeciesItemDetailFragment extends Fragment {
           .setText(getColumnValue("taxaGenus"));
       ((TextView) getActivity().findViewById(R.id.sdTaxaSpecies))
           .setText(getColumnValue("taxaSpecies"));
-      ((TextView) getActivity().findViewById(R.id.sdTaxaSubspecies))
-      .setText(getColumnValue("taxaSubspecies"));
       ((TextView) getActivity().findViewById(R.id.sdDistinctive)).setText(Html.fromHtml(getColumnValue("distinctive")));
 
 
@@ -215,10 +213,10 @@ public class SpeciesItemDetailFragment extends Fragment {
         bite.setVisibility(View.GONE);
       }
 
-      String butterflyStartValue = getColumnValue("butterflyStart");
+      String butterflyStartValue = "";
       TextView flight = (TextView) getActivity().findViewById(R.id.sdFlight);
       if (!TextUtils.isEmpty(butterflyStartValue)) {
-        flight.setText(butterflyStartValue + " - " + getColumnValue("butterflyEnd"));
+        flight.setText(butterflyStartValue + " - ");
       } else {
         TextView flightLabel = (TextView) getActivity()
             .findViewById(R.id.flightLabel);
@@ -369,12 +367,12 @@ public class SpeciesItemDetailFragment extends Fragment {
 
 
     // Load up the Distribution map
-    ImageView distributionImage = (ImageView) getActivity().findViewById(R.id.distributionImage);
-    if (distributionImage != null) {
-      String imgpath = Utilities.SPECIES_DISTRIBUTION_MAPS_PATH + getColumnValue("distributionMap");
-      int width = distributionImage.getMeasuredWidth();
-      distributionImage.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(getActivity(), imgpath), width, width));
-    }
+    //ImageView distributionImage = (ImageView) getActivity().findViewById(R.id.distributionImage);
+    //if (distributionImage != null) {
+    //  String imgpath = Utilities.SPECIES_DISTRIBUTION_MAPS_PATH + getColumnValue("distributionMap");
+    //  int width = distributionImage.getMeasuredWidth();
+    //  distributionImage.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(getActivity(), imgpath), width, width));
+    //}
     TextView distribution = (TextView) getActivity().findViewById(R.id.sdDistribution);
     if (distribution != null) {
       distribution.setText(Html.fromHtml(getColumnValue("distribution")));
@@ -393,31 +391,6 @@ public class SpeciesItemDetailFragment extends Fragment {
         tsinfo.setMovementMethod(LinkMovementMethod.getInstance());
       }
 
-      // set the DSE value
-      String conservationStatusDSEValue = getColumnValue("conservationStatusDSE");
-      View conservationStatusDSE = (View) getActivity()
-          .findViewById(R.id.statusViewDSE);
-      setStatusDrawable(conservationStatusDSEValue, conservationStatusDSE);
-      ((TextView) getActivity().findViewById(R.id.statusTextDSE))
-          .setText("Local: " + conservationStatusDSEValue);
-
-      // set the EPBC value
-      String conservationStatusEPBCValue = getColumnValue("conservationStatusEPBC");
-      View conservationStatusEPBC = (View) getActivity()
-          .findViewById(R.id.statusViewEPBC);
-      setStatusDrawable(conservationStatusEPBCValue,
-          conservationStatusEPBC);
-      ((TextView) getActivity().findViewById(R.id.statusTextEPBC))
-          .setText("National: " + conservationStatusEPBCValue);
-
-      // set the IUCN value
-      String conservationStatusIUCNValue = getColumnValue("conservationStatusIUCN");
-      View conservationStatusIUCN = (View) getActivity()
-          .findViewById(R.id.statusViewIUCN);
-      setStatusDrawable(conservationStatusIUCNValue,
-          conservationStatusIUCN);
-      ((TextView) getActivity().findViewById(R.id.statusTextIUCN))
-          .setText("Worldwide: " + conservationStatusIUCNValue);
     }
 
   }

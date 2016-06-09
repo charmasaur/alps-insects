@@ -28,6 +28,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import au.com.museumvictoria.fieldguide.vic.fork.model.Group;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
@@ -42,12 +43,13 @@ public class FieldGuideDatabase {
   private static final String TAG = FieldGuideDatabase.class.getSimpleName();
 
   // database
-  private static final int DATABASE_VERSION = 1;
+  private static final int DATABASE_VERSION = 2;
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";
+  private static final String GROUPS_TABLE_NAME = "groups";
 
-  // column mapping
+  // species column mapping
   public static final String SPECIES_IDENTIFIER = "identifier";
   public static final String SPECIES_LABEL = "label";
   public static final String SPECIES_SUBLABEL = "sublabel";
@@ -72,18 +74,23 @@ public class FieldGuideDatabase {
   public static final String SPECIES_TAXA_FAMILY = "taxaFamily";
   public static final String SPECIES_TAXA_GENUS = "taxaGenus";
   public static final String SPECIES_TAXA_SPECIES = "taxaSpecies";
-  public static final String SPECIES_TAXA_SUBSPECIES = "taxaSubspecies";
   public static final String SPECIES_COMMON_NAMES = "commonNames";
   public static final String SPECIES_OTHER_NAMES = "otherNames";
   public static final String SPECIES_SEARCHICON = "searchIcon";
-  public static final String SPECIES_BUTTERFLY_START = "butterflyStart";
-  public static final String SPECIES_BUTTERFLY_END = "butterflyEnd";
-  public static final String SPECIES_DISTRIBUTION_MAP = "distributionMap";
 
+  // images column mapping
   public static final String MEDIA_FILENAME = "filename";
   public static final String MEDIA_CAPTION = "caption";
   public static final String MEDIA_CREDIT = "credit";
   public static final String MEDIA_IDENTIFIER = "identifier";
+
+  // groups column mapping
+  public static final String GROUPS_ORDER = "orderORDER";
+  public static final String GROUPS_LABEL = "label";
+  public static final String GROUPS_ICON_WHITE_FILENAME = "iconWhiteFilename";
+  public static final String GROUPS_ICON_DARK_FILENAME = "iconDarkFilename";
+  public static final String GROUPS_ICON_CREDIT = "iconCredit";
+  public static final String GROUPS_DESCRIPTION = "description";
 
   private final FieldGuideOpenHelper mDatabaseOpenHelper;
 
@@ -275,10 +282,18 @@ public class FieldGuideDatabase {
   private final class FieldGuideOpenHelper extends SQLiteOpenHelper {
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, taxaSubspecies TEXT, commonNames TEXT, otherNames TEXT, butterflyStart TEXT, butterflyEnd TEXT, distributionMap TEXT); ";
+        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
         + IMAGES_TABLE_NAME
         + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
+    private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + GROUPS_TABLE_NAME
+        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, "
+        + GROUPS_ORDER + " TEXT, "
+        + GROUPS_LABEL + " TEXT, "
+        + GROUPS_ICON_WHITE_FILENAME + " TEXT, "
+        + GROUPS_ICON_DARK_FILENAME + " TEXT, "
+        + GROUPS_ICON_CREDIT + " TEXT, "
+        + GROUPS_DESCRIPTION + " TEXT); ";
 
     private final Context mHelperContext;
 
@@ -298,6 +313,7 @@ public class FieldGuideDatabase {
 
       db.execSQL(SPECIES_TABLE_CREATE);
       db.execSQL(IMAGES_TABLE_CREATE);
+      db.execSQL(GROUPS_TABLE_CREATE);
 
       Log.i(TAG, "Starting thread to load database");
       new Thread(new Runnable() {
@@ -319,6 +335,7 @@ public class FieldGuideDatabase {
       Log.i(TAG, "onUpgrade: from version " + oldVersion + " to " + newVersion);
       db.execSQL("DROP TABLE IF EXISTS " + SPECIES_TABLE_NAME);
       db.execSQL("DROP TABLE IF EXISTS " + IMAGES_TABLE_NAME);
+      db.execSQL("DROP TABLE IF EXISTS " + GROUPS_TABLE_NAME);
       onCreate(db);
     }
 
@@ -374,13 +391,9 @@ public class FieldGuideDatabase {
               SPECIES_TAXA_FAMILY,
               SPECIES_TAXA_GENUS,
               SPECIES_TAXA_SPECIES,
-              SPECIES_TAXA_SUBSPECIES,
               SPECIES_COMMON_NAMES,
               SPECIES_OTHER_NAMES,
-              SPECIES_SEARCHICON,
-              SPECIES_BUTTERFLY_START,
-              SPECIES_BUTTERFLY_END,
-              SPECIES_DISTRIBUTION_MAP),
+              SPECIES_SEARCHICON),
           speciesColumns);
 
       Map<String, Integer> imagesColumns = new HashMap<>();
@@ -389,6 +402,18 @@ public class FieldGuideDatabase {
           Arrays.asList(MEDIA_FILENAME, MEDIA_CAPTION, MEDIA_CREDIT, MEDIA_IDENTIFIER),
           imagesColumns);
 
+      Map<String, Integer> groupsColumns = new HashMap<>();
+      String groupsSQL = getInsertSQL(
+          GROUPS_TABLE_NAME,
+          Arrays.asList(
+            GROUPS_ORDER,
+            GROUPS_LABEL,
+            GROUPS_ICON_WHITE_FILENAME,
+            GROUPS_ICON_DARK_FILENAME,
+            GROUPS_ICON_CREDIT,
+            GROUPS_DESCRIPTION),
+          groupsColumns);
+
       Log.i(TAG, "Reading assets");
       JsonReader reader = new JsonReader(new InputStreamReader(
             Utilities.getAssetInputStream(mHelperContext, Utilities.SPECIES_DATA_FILE)));
@@ -396,20 +421,20 @@ public class FieldGuideDatabase {
       JsonParser parser = new JsonParser();
       JsonObject json = parser.parse(reader).getAsJsonObject();
       double version = json.get("version").getAsDouble();
-      JsonArray splist = json.get("data").getAsJsonArray();
+      JsonArray splist = json.get("species_data").getAsJsonArray();
+      JsonArray groupsList = json.get("groups_data").getAsJsonArray();
 
-      totalCount = splist.size();
+      totalCount = splist.size() + groupsList.size();
 
       db.beginTransaction();
 
       SQLiteStatement speciesStatement = db.compileStatement(speciesSQL);
       SQLiteStatement imageStatement = db.compileStatement(imageSQL);
+      SQLiteStatement groupsStatement = db.compileStatement(groupsSQL);
 
       Log.i(TAG, "Populating database");
       try {
-        Gson gson = new Gson();
-        for (int i=0; i<splist.size(); i++) {
-          Species s = gson.fromJson(splist.get(i), Species.class);
+        Gson gson = new Gson(); for (int i = 0; i < splist.size(); i++) { Species s = gson.fromJson(splist.get(i), Species.class);
 
           speciesStatement.bindString(speciesColumns.get(SPECIES_IDENTIFIER), s.getIdentifier());
           speciesStatement.bindString(speciesColumns.get(SPECIES_LABEL), s.getLabel());
@@ -452,8 +477,6 @@ public class FieldGuideDatabase {
           speciesStatement.bindString(
               speciesColumns.get(SPECIES_TAXA_SPECIES), s.getDetails().getTaxaSpecies());
           speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_SUBSPECIES), s.getDetails().getTaxaSubSpecies());
-          speciesStatement.bindString(
               speciesColumns.get(SPECIES_COMMON_NAMES), s.getDetails().getCommonNames());
           speciesStatement.bindString(
               speciesColumns.get(SPECIES_OTHER_NAMES), s.getDetails().getOtherNames());
@@ -461,12 +484,6 @@ public class FieldGuideDatabase {
               speciesColumns.get(SPECIES_SEARCHICON),
               "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/"
                   + s.getSquareThumbnail());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_BUTTERFLY_START), s.getDetails().getButterflyStart());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_BUTTERFLY_END), s.getDetails().getButterflyEnd());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_DISTRIBUTION_MAP), s.getDetails().getDistributionMap());
 
           speciesStatement.executeInsert();
           speciesStatement.clearBindings();
@@ -488,9 +505,31 @@ public class FieldGuideDatabase {
 
         }
 
+        for (int i = 0; i < groupsList.size(); ++i) {
+          Group group = gson.fromJson(groupsList.get(i), Group.class);
+
+          groupsStatement.bindString(groupsColumns.get(GROUPS_ORDER), group.getOrder());
+          groupsStatement.bindString(groupsColumns.get(GROUPS_LABEL), group.getLabel());
+          groupsStatement.bindString(
+              groupsColumns.get(GROUPS_ICON_WHITE_FILENAME), group.getIconWhiteFilename());
+          groupsStatement.bindString(
+              groupsColumns.get(GROUPS_ICON_DARK_FILENAME), group.getIconDarkFilename());
+          groupsStatement.bindString(
+              groupsColumns.get(GROUPS_ICON_CREDIT), group.getIconCredit());
+          groupsStatement.bindString(
+              groupsColumns.get(GROUPS_DESCRIPTION), group.getDescription());
+
+          groupsStatement.executeInsert();
+          groupsStatement.clearBindings();
+
+          ++currCount;
+        }
+
+
         db.setTransactionSuccessful();
 
       } finally {
+        groupsStatement.close();
         imageStatement.close();
         speciesStatement.close();
         db.endTransaction();

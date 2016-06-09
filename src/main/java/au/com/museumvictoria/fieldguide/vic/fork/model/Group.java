@@ -1,46 +1,60 @@
 package au.com.museumvictoria.fieldguide.vic.fork.model;
 
 public class Group {
+  private String order;
 	private String label;
-	private int order; 
-	private String standardImage;
-	private String highlightedImage;
-	public Group() { }
-	public Group(String label, int order) {
-		this.label = label;
-		this.order = order;
-		this.standardImage = "";
-		this.highlightedImage = "";
-	}
-	public Group(String label, int order, String standardImage, String highlightedImage) {
-		this.label = label;
-		this.order = order;
-		this.standardImage = standardImage;
-		this.highlightedImage = highlightedImage;
-	}
+  private String iconWhiteFilename;
+  private String iconDarkFilename;
+  private String iconCredit;
+  private String description;
+
+	public Group() {}
+
+  public String getOrder() {
+    return order;
+  }
+
+  public void setOrder(String order) {
+    this.order = order;
+  }
+
 	public String getLabel() {
 		return label;
 	}
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	public int getOrder() {
-		return order;
+
+	public String getIconWhiteFilename() {
+		return iconWhiteFilename;
 	}
-	public void setOrder(int order) {
-		this.order = order;
+
+	public void setIconWhiteFilename(String iconWhiteFilename) {
+		this.iconWhiteFilename = iconWhiteFilename;
 	}
-	public String getStandardImage() {
-		return standardImage;
+
+	public String getIconDarkFilename() {
+		return iconDarkFilename;
 	}
-	public void setStandardImage(String standardImage) {
-		this.standardImage = standardImage;
+
+	public void setIconDarkFilename(String iconDarkFilename) {
+		this.iconDarkFilename = iconDarkFilename;
 	}
-	public String getHighlightedImage() {
-		return highlightedImage;
+
+	public String getIconCredit() {
+		return iconCredit;
 	}
-	public void setHighlightedImage(String highlightedImage) {
-		this.highlightedImage = highlightedImage;
+
+	public void setIconCredit(String iconCredit) {
+		this.iconCredit = iconCredit;
 	}
-	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
