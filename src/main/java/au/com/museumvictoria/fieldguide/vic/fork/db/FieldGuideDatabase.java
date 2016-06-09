@@ -416,7 +416,7 @@ public class FieldGuideDatabase {
 
       Log.i(TAG, "Reading assets");
       JsonReader reader = new JsonReader(new InputStreamReader(
-            Utilities.getAssetInputStream(mHelperContext, Utilities.SPECIES_DATA_FILE)));
+            Utilities.getAssetInputStreamZipFile(mHelperContext, Utilities.SPECIES_DATA_FILE)));
 
       JsonParser parser = new JsonParser();
       JsonObject json = parser.parse(reader).getAsJsonObject();

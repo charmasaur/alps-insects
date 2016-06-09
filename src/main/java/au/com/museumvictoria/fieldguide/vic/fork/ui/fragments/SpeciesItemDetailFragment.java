@@ -292,6 +292,25 @@ public class SpeciesItemDetailFragment extends Fragment {
           image.setPadding(imgThumbPadding, imgThumbPadding,imgThumbPadding, imgThumbPadding);
 
           image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(getActivity(), img),imgThumbSize, imgThumbSize));
+          // TODO: Try to use this. Also consider trying to use ZipResourceFile.getAssetFileDescriptor instead. It looks like the ImageResizer used to work with those. See http://stackoverflow.com/questions/13031240/reading-mp3-from-expansion-file -- looks like the zip needs to be uncompressed to do this.
+          //try {
+          //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+          //      Utilities.getAssetInputStreamZipFile(getActivity().getApplicationContext(), img), imgThumbSize,
+          //      imgThumbSize));
+          //} catch (Exception e) {
+          //  Log.i(TAG, "Exception loading image bitmap:" + e);
+          //  image.setImageBitmap(null);
+          //}
+          //try {
+          //  android.content.res.AssetFileDescriptor fd =
+          //    Utilities.getAssetsFileDescriptor(getActivity(), img);
+          //  Log.i(TAG, "FD: " + fd);
+          //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFD(
+          //      fd.getFileDescriptor(), imgThumbSize, imgThumbSize));
+          //} catch (java.io.IOException e) {
+          //  Log.i(TAG, "Exception loading image bitmap:" + e);
+          //  image.setImageBitmap(null);
+          //}
           image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

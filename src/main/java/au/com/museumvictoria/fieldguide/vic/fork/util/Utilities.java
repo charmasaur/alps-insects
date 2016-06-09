@@ -49,6 +49,16 @@ public class Utilities {
     return getAssetInputStream(context, internalPath); 
   }
 
+  public static InputStream getAssetInputStreamZipFile(Context context, String internalPath) throws IOException {
+    // Get a ZipResourceFile representing a merger of both the main and patch files
+    ZipResourceFile expansionFile = APKExpansionSupport.getAPKExpansionZipFile(context, MAIN_VERSION, PATCH_VERSION);
+
+    internalPath = "assets/" + internalPath;
+
+    // Get an input stream for a known file inside the expansion file ZIPs
+    return expansionFile.getInputStream(internalPath); 
+  }
+
   public static AssetFileDescriptor getAssetsFileDescriptor(Context context, String internalPath) throws IOException {
     // Get a ZipResourceFile representing a merger of both the main and patch files
     ZipResourceFile expansionFile = APKExpansionSupport.getAPKExpansionZipFile(context, MAIN_VERSION, PATCH_VERSION);

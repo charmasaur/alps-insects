@@ -16,6 +16,8 @@
 
 package au.com.museumvictoria.fieldguide.vic.fork.util;
 
+import java.io.BufferedInputStream;
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -163,6 +165,31 @@ public class ImageResizer extends ImageWorker {
 		return null;
     }
 
+    public static Bitmap decodeSampledBitmapFromFD(FileDescriptor fd, int reqWidth, int reqHeight) {
+
+    	
+		try {
+			
+			// First decode with inJustDecodeBounds=true to check dimensions
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = true;
+			BitmapFactory.decodeFileDescriptor(fd, null, options);
+
+			// Calculate inSampleSize
+			options.inSampleSize = calculateInSampleSize(options, reqWidth,
+					reqHeight);
+			
+			// Decode bitmap with inSampleSize set
+			options.inJustDecodeBounds = false;
+			return BitmapFactory.decodeFileDescriptor(fd, null, options);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+    }
+
     /**
      * Decode and sample down a bitmap from AssetFileDescriptor to the requested width and height.
      *
@@ -172,15 +199,18 @@ public class ImageResizer extends ImageWorker {
      * @return A bitmap sampled down from the original with the same aspect ratio and dimensions
      *         that are equal to or greater than the requested width and height
      */
-    public static Bitmap decodeSampledBitmapFromStream(InputStream istr, int reqWidth, int reqHeight) {
+    public static Bitmap decodeSampledBitmapFromStream(InputStream istr_, int reqWidth, int reqHeight) {
 
     	
 		try {
 			
+      // TODO: This doesn't work for large images, because the buffer fills up (or something).
+      BufferedInputStream istr = new BufferedInputStream(istr_);
 			// First decode with inJustDecodeBounds=true to check dimensions
 			final BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(istr, null, options);
+      istr.reset();
 
 			// Calculate inSampleSize
 			options.inSampleSize = calculateInSampleSize(options, reqWidth,
