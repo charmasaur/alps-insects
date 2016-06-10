@@ -236,9 +236,7 @@ public class SpeciesItemDetailFragment extends Fragment {
         commercialLabel.setVisibility(View.GONE);
         commercial.setVisibility(View.GONE);
       }
-
     }
-
 
 
     // Load the Species images
