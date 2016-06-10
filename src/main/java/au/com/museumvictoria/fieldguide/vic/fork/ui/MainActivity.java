@@ -128,11 +128,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   }
 
   @Override
-  public void onGroupSelected(String groupName) {
+  public void onGroupSelected(String groupName, String groupOrder) {
     Log.i(TAG, "Group selected: " + groupName);
 
     backStackScreens.put("GROUP", new Screen(groupName, null));
-    setFragment(GroupFragment.newInstance(groupName), "GROUP");
+    setFragment(GroupFragment.newInstance(groupOrder), "GROUP");
   }
 
   // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense

@@ -33,7 +33,7 @@ public class SpeciesGroupListFragment extends Fragment {
    * must implement this interface.
    */
   public interface Callback {
-    void onGroupSelected(String groupName);
+    void onGroupSelected(String groupName, String groupOrder);
   }
 
   private Callback callback;
@@ -72,7 +72,7 @@ public class SpeciesGroupListFragment extends Fragment {
 
     Log.i(TAG, "Loading grouped items");
 
-    mCursor = database.getSpeciesGroups();
+    mCursor = database.getSpeciesGroupsAgain();
 
     mListView = (ListView) getView().findViewById(R.id.group_list);
     mListView.setFastScrollEnabled(true);
@@ -82,7 +82,8 @@ public class SpeciesGroupListFragment extends Fragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "Click" + position + " " + mAdapter.getItem(position));
-        callback.onGroupSelected(mAdapter.getGroupLabelAtPosition(position));
+        callback.onGroupSelected(mAdapter.getGroupNameAtPosition(position),
+            mAdapter.getGroupOrderAtPosition(position));
       }
     });
 
@@ -131,9 +132,10 @@ public class SpeciesGroupListFragment extends Fragment {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-      String groupLabel = getGroupLabel(cursor);
-      String iconLabel = groupLabel.toLowerCase().replaceAll(" ", "").replaceAll(",", "");
-      String iconPath = Utilities.SPECIES_GROUPS_PATH + iconLabel + ".png";
+      String groupLabel = getGroupName(cursor);
+      String iconLabel =
+          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME));
+      String iconPath = Utilities.SPECIES_GROUPS_PATH + iconLabel;
 
       TextView txtView1 = (TextView) view.findViewById(R.id.speciesLabel);
       txtView1.setText(groupLabel);
@@ -164,12 +166,17 @@ public class SpeciesGroupListFragment extends Fragment {
       return newView;
     }
 
-    public String getGroupLabelAtPosition(int position) {
-      return getGroupLabel((Cursor) getItem(position));
+    public String getGroupOrderAtPosition(int position) {
+      Cursor cursor = (Cursor) getItem(position);
+      return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ORDER));
     }
 
-    private static String getGroupLabel(Cursor cursor) {
-      return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP));
+    public String getGroupNameAtPosition(int position) {
+      return getGroupName((Cursor) getItem(position));
+    }
+
+    private static String getGroupName(Cursor cursor) {
+      return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_LABEL));
     }
   }
 }

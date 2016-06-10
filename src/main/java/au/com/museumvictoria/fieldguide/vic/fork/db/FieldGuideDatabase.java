@@ -203,8 +203,9 @@ public class FieldGuideDatabase {
   public Cursor getSpeciesGroupsAgain() {
     Log.i(TAG, "Getting species groups again");
 
-    String[] columns = new String[] { GROUPS_ORDER, GROUPS_LABEL, GROUPS_ICON_WHITE_FILENAME,
-        GROUPS_ICON_DARK_FILENAME, GROUPS_ICON_CREDIT, GROUPS_DESCRIPTION };
+    String[] columns = new String[] { BaseColumns._ID, GROUPS_ORDER, GROUPS_LABEL,
+        GROUPS_ICON_WHITE_FILENAME, GROUPS_ICON_DARK_FILENAME, GROUPS_ICON_CREDIT,
+        GROUPS_DESCRIPTION };
     return query(GROUPS_TABLE_NAME, columns, null, null, null, null);
   }
 
