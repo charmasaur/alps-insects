@@ -167,38 +167,45 @@ public class FieldGuideDatabase {
       orderBy = SPECIES_SUBGROUP;
     }
 
-    Cursor cursor = query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, groupBy, orderBy);
+    return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, groupBy, orderBy);
+  }
 
-    if (cursor == null) {
-      Log.w(TAG, "Cursor is null");
-      return null;
-    } else if (!cursor.moveToFirst()) {
-      cursor.close();
-      Log.w(TAG, "Cursor has nothing. closing.");
-      return null;
-    }
+  /**
+   * Returns a {@link Cursor} pointing to the species in a particular group.
+   *
+   * @param groupOrder the {@link GROUPS_ORDER} value of the group to query
+   * @param columns the columns to fetch
+   */
+  @Nullable
+  public Cursor getSpeciesInGroup(String groupOrder, String[] columns) {
+    String selection = SPECIES_TAXA_ORDER + " = ?";
+    String[] selectionArgs = new String[] { groupOrder };
 
-    return cursor;
+    return query(
+        SPECIES_TABLE_NAME,
+        columns,
+        SPECIES_TAXA_ORDER + " = ?",
+        new String[] { groupOrder },
+        null /* groupBy */,
+        SPECIES_LABEL /* orderBy */);
   }
 
   @Nullable
   public Cursor getSpeciesGroups() {
     Log.w(TAG, "Getting species groups");
 
-    // TODO: Does this get each group once, or can it duplicate them?
+    // TODO: Does this get each group once, or can it duplicate them? Ah, group by.
     String[] columns = new String[] { BaseColumns._ID, SPECIES_GROUP };
-    Cursor cursor = query(SPECIES_TABLE_NAME, columns, null, null, SPECIES_GROUP, SPECIES_GROUP);
+    return query(SPECIES_TABLE_NAME, columns, null, null, SPECIES_GROUP, SPECIES_GROUP);
+  }
 
-    if (cursor == null) {
-      Log.w(TAG, "Species Group Cursor is null");
-      return null;
-    } else if (!cursor.moveToFirst()) {
-      cursor.close();
-      Log.w(TAG, "Species Group Cursor has nothing. closing.");
-      return null;
-    }
+  @Nullable
+  public Cursor getSpeciesGroupsAgain() {
+    Log.i(TAG, "Getting species groups again");
 
-    return cursor;
+    String[] columns = new String[] { GROUPS_ORDER, GROUPS_LABEL, GROUPS_ICON_WHITE_FILENAME,
+        GROUPS_ICON_DARK_FILENAME, GROUPS_ICON_CREDIT, GROUPS_DESCRIPTION };
+    return query(GROUPS_TABLE_NAME, columns, null, null, null, null);
   }
 
   /**
@@ -219,7 +226,7 @@ public class FieldGuideDatabase {
   }
 
   public Cursor getSpeciesImages(String identifier) {
-    String selection = SPECIES_IDENTIFIER + " = ?";
+    String selection = MEDIA_IDENTIFIER + " = ?";
     String[] selectionArgs = new String[] { identifier };
 
     Log.w(TAG, "Getting species images for: " + identifier);
@@ -257,8 +264,10 @@ public class FieldGuideDatabase {
         selectionArgs, groupBy, null, orderBy);
 
     if (cursor == null) {
+      Log.i(TAG, "Null cursor");
       return null;
     } else if (!cursor.moveToFirst()) {
+      Log.i(TAG, "Empty cursor");
       cursor.close();
       return null;
     }
