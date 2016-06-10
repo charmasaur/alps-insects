@@ -30,6 +30,8 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 public class GroupFragment extends Fragment {
   private static final String TAG = GroupFragment.class.getSimpleName();
 
+  private static final String ARGUMENT_GROUP_NAME = "speciesgroup";
+
   /**
    * Callback interface to be notified when a species is selected. Activities using this fragment
    * must implement this interface.
@@ -44,6 +46,18 @@ public class GroupFragment extends Fragment {
   private ListView mListView;
   private Cursor mCursor;
   private FieldGuideDatabase fgdb;
+
+  /**
+   * TODO: Document exactly what groupName we expect.
+   */
+  public static GroupFragment newInstance(String groupName) {
+    Bundle arguments = new Bundle();
+    arguments.putString(ARGUMENT_GROUP_NAME, groupName);
+
+    GroupFragment fragment = new GroupFragment();
+    fragment.setArguments(arguments);
+    return fragment;
+  }
 
   @Override
   public void onAttach(Activity activity) {
@@ -69,7 +83,7 @@ public class GroupFragment extends Fragment {
     fgdb = FieldGuideDatabase.getInstance(getActivity()
         .getApplicationContext());
 
-    mCursor = fgdb.getSpeciesList(getArguments().getString("speciesgroup"));
+    mCursor = fgdb.getSpeciesList(getArguments().getString(ARGUMENT_GROUP_NAME));
 
     mListView = (ListView) getView().findViewById(R.id.species_list);
     mListView.setFastScrollEnabled(true);

@@ -28,6 +28,10 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 public class AboutFragment extends Fragment {
   private static final String TAG = AboutFragment.class.getSimpleName();
 
+  public static AboutFragment newInstance() {
+    return new AboutFragment();
+  }
+
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {

@@ -21,12 +21,13 @@ import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
- * Gets started to handle tapping on a search result (I think). And maybe for searches from the
- * system widget or something? Shows a list of search results when a search actually is completed
- * (rather than just an item selected from the instant list).
+ * Gets started to handle a search query (that is actually entered, rather than aborted by
+ * selecting an instant result).
  */
 public class SearchFragment extends Fragment {
   private static final String TAG = SearchFragment.class.getSimpleName();
+
+  private static final String ARGUMENT_QUERY = "query";
 
   /**
    * Callback interface to be notified when a species is selected. Activities using this fragment
@@ -40,6 +41,18 @@ public class SearchFragment extends Fragment {
 
   private TextView mTextView;
   private ListView mListView;
+
+  /**
+   * Returns a new {@link SearchFragment}.
+   *
+   * @params intentExtras the extras passed with the search intent for which this fragment should
+   *     show results
+   */
+  public static SearchFragment newInstance(Bundle intentExtras) {
+    SearchFragment fragment = new SearchFragment();
+    fragment.setArguments(intentExtras);
+    return fragment;
+  }
 
   @Override
   public void onAttach(Activity activity) {

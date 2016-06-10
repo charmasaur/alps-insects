@@ -46,13 +46,18 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.Utils;
 public class SpeciesItemDetailFragment extends Fragment {
   private static final String TAG = SpeciesItemDetailFragment.class.getSimpleName();
 
+  private static final String ARGUMENT_SPECIES_ID = "speciesId";
+
   private FieldGuideDatabase fgdb;
   private Cursor cursor;
   private Cursor cursorImages;
 
-  public static SpeciesItemDetailFragment newInstance(Bundle args) {
+  public static SpeciesItemDetailFragment newInstance(String speciesId) {
+    Bundle arguments = new Bundle();
+    arguments.putString(ARGUMENT_SPECIES_ID, speciesId);
+
     SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
-    fragment.setArguments(args);
+    fragment.setArguments(arguments);
     return fragment;
   }
 
@@ -69,10 +74,7 @@ public class SpeciesItemDetailFragment extends Fragment {
     String displayText = "No species found";
 
     String spIdentifier = null;
-    Bundle bundle = getArguments();
-    if (bundle != null) {
-      spIdentifier = bundle.getString(Utilities.SPECIES_IDENTIFIER);
-    }
+    spIdentifier = getArguments().getString(ARGUMENT_SPECIES_ID);
     Log.w(TAG, "Getting details for " + spIdentifier);
 
     fgdb = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());

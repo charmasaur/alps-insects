@@ -43,6 +43,10 @@ public class SpeciesGroupListFragment extends Fragment {
   private FieldGuideDatabase database;
   private SpeciesCursorAdapter mAdapter;
 
+  public static SpeciesGroupListFragment newInstance() {
+    return new SpeciesGroupListFragment();
+  }
+
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);

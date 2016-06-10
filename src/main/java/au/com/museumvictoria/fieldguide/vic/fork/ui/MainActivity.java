@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     setSupportActionBar(toolbar);
 
     getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
-    setFragment(new SpeciesGroupListFragment(), null);
+    setFragment(SpeciesGroupListFragment.newInstance(), null);
 
     handleIntent(getIntent());
   }
@@ -116,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     switch (item.getItemId()) {
       case R.id.menu_about:
         backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
-        Fragment fragment = new AboutFragment();
-        setFragment(fragment, "ABOUT");
+        setFragment(AboutFragment.newInstance(), "ABOUT");
         break;
       case android.R.id.home:
         onBackPressed();
@@ -131,13 +130,9 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   @Override
   public void onGroupSelected(String groupName) {
     Log.i(TAG, "Group selected: " + groupName);
-    Bundle arguments = new Bundle();
-    arguments.putString("speciesgroup", groupName);
 
     backStackScreens.put("GROUP", new Screen(groupName, null));
-    Fragment fragment = new GroupFragment();
-    fragment.setArguments(arguments);
-    setFragment(fragment, "GROUP");
+    setFragment(GroupFragment.newInstance(groupName), "GROUP");
   }
 
   // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense
@@ -146,10 +141,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
     Log.i(TAG, "Species selected: " + speciesId);
 
-    Bundle arguments = new Bundle();
-    arguments.putString(Utilities.SPECIES_IDENTIFIER, speciesId);
-    SpeciesItemDetailFragment fragment = new SpeciesItemDetailFragment();
-    fragment.setArguments(arguments);
     // TODO: Consider moving the formatting of the labels into the fragment.
     SpannableString subnameFormatted;
     // TODO: For now just hide the secondary text (since the italicisation looks silly -- too
@@ -163,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
           Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     backStackScreens.put("SPECIES", new Screen(name, subnameFormatted));
-    setFragment(fragment, "SPECIES");
+    setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES");
   }
 
   @Override
@@ -190,9 +181,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         break;
       case Intent.ACTION_SEARCH:
         backStackScreens.put("SEARCH", new Screen("Search", null));
-        Fragment searchFragment = new SearchFragment();
-        searchFragment.setArguments(intent.getExtras());
-        setFragment(searchFragment, "SEARCH");
+        setFragment(SearchFragment.newInstance(intent.getExtras()), "SEARCH");
         break;
       default:
         break;
