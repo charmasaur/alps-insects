@@ -88,13 +88,6 @@ public class GroupFragment extends Fragment {
     mListView = (ListView) getView().findViewById(R.id.species_list);
     mListView.setFastScrollEnabled(true);
 
-    String[] from = new String[] { FieldGuideDatabase.SPECIES_SUBGROUP,
-        FieldGuideDatabase.SPECIES_LABEL,
-        FieldGuideDatabase.SPECIES_SUBLABEL,
-        FieldGuideDatabase.SPECIES_THUMBNAIL };
-    int[] to = new int[] { R.id.speciesSubGroup, R.id.speciesLabel,
-        R.id.speciesSublabel, R.id.speciesIcon };
-
     final SpeciesListCursorAdapter adapter =
         new SpeciesListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
 
