@@ -149,27 +149,6 @@ public class FieldGuideDatabase {
     return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, SPECIES_LABEL);
   }
 
-  @Nullable
-  public Cursor getSpeciesList(String groupLabel) {
-    String[] columns = new String[] { BaseColumns._ID, SPECIES_IDENTIFIER, SPECIES_LABEL, SPECIES_SUBLABEL, SPECIES_THUMBNAIL, SPECIES_SUBGROUP };
-    String selection = null;
-    String[] selectionArgs = null;
-    String groupBy = null;
-    String orderBy = SPECIES_LABEL;
-
-    // get species for a given group if available
-    // or default to all species
-    if (groupLabel != null && !groupLabel.equals("ALL")) {
-      // do nothing
-      Log.w(TAG, "Getting species list for '" + groupLabel + "'");
-      selection = SPECIES_GROUP + " = ?";
-      selectionArgs = new String[] { groupLabel };
-      orderBy = SPECIES_SUBGROUP;
-    }
-
-    return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, groupBy, orderBy);
-  }
-
   /**
    * Returns a {@link Cursor} pointing to the species in a particular group.
    *
@@ -192,15 +171,6 @@ public class FieldGuideDatabase {
 
   @Nullable
   public Cursor getSpeciesGroups() {
-    Log.w(TAG, "Getting species groups");
-
-    // TODO: Does this get each group once, or can it duplicate them? Ah, group by.
-    String[] columns = new String[] { BaseColumns._ID, SPECIES_GROUP };
-    return query(SPECIES_TABLE_NAME, columns, null, null, SPECIES_GROUP, SPECIES_GROUP);
-  }
-
-  @Nullable
-  public Cursor getSpeciesGroupsAgain() {
     Log.i(TAG, "Getting species groups again");
 
     String[] columns = new String[] { BaseColumns._ID, GROUPS_ORDER, GROUPS_LABEL,

@@ -162,8 +162,6 @@ public class FieldGuideContentProvider extends ContentProvider {
 				BaseColumns._ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID };
 
 		return mDatabase.getSpeciesMatches(query, columns);
-
-		// return mDatabase.getSpeciesList(null);
 	}
 
 	private Cursor search(String query) {
@@ -173,8 +171,6 @@ public class FieldGuideContentProvider extends ContentProvider {
 				FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesMatches(query);
-
-		// return mDatabase.getSpeciesList(null);
 	}
 
 	private Cursor getSpeciesDetails(Uri uri) {

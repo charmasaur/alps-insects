@@ -48,7 +48,6 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
   private int mProgressStatus = 0;
 
   FieldGuideDatabase mDatabase;
-  Cursor mCursor;
 
   private ProgressBar mPB;
   private TextView mStatusText;
@@ -220,7 +219,6 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
           }
 
           mDatabase = FieldGuideDatabase.getInstance(getApplicationContext());
-          mCursor = mDatabase.getSpeciesGroups();
 
           while (mProgressStatus < 100) {
             mProgressStatus = doLoadDatabase();
@@ -250,11 +248,6 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
 
           // database now populated. Let's start
           if (mProgressStatus >= 100) {
-
-            if (mCursor != null) {
-              mCursor.close();
-            }
-
             mDatabase.close();
 
             startFieldGuide();

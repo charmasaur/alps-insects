@@ -72,7 +72,7 @@ public class SpeciesGroupListFragment extends Fragment {
 
     Log.i(TAG, "Loading grouped items");
 
-    mCursor = database.getSpeciesGroupsAgain();
+    mCursor = database.getSpeciesGroups();
 
     mListView = (ListView) getView().findViewById(R.id.group_list);
     mListView.setFastScrollEnabled(true);
