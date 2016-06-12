@@ -3,7 +3,6 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -84,10 +83,8 @@ public class GroupFragment extends Fragment {
     fgdb = FieldGuideDatabase.getInstance(getActivity()
         .getApplicationContext());
 
-    // TODO: Does it makes sense to move this to the adapter?
     mCursor = fgdb.getSpeciesInGroup(getArguments().getString(ARGUMENT_GROUP_NAME),
-          new String[] { BaseColumns._ID, FieldGuideDatabase.SPECIES_LABEL,
-              FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL });
+        SpeciesListCursorAdapter.getRequiredColumns());
 
     mListView = (ListView) getView().findViewById(R.id.species_list);
     mListView.setFastScrollEnabled(true);

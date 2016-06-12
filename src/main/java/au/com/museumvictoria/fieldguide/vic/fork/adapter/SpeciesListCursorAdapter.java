@@ -80,6 +80,12 @@ public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIn
     return getSublabel((Cursor) getItem(position));
   }
 
+  public static String[] getRequiredColumns() {
+    return new String[] { FieldGuideDatabase.SPECIES_ID + " AS _id",
+        FieldGuideDatabase.SPECIES_LABEL, FieldGuideDatabase.SPECIES_SUBLABEL,
+        FieldGuideDatabase.SPECIES_THUMBNAIL };
+  }
+
   private static String getLabel(Cursor cursor) {
     return cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL));
   }

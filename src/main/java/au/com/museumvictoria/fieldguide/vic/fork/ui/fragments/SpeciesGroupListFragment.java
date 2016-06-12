@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -42,7 +41,7 @@ public class SpeciesGroupListFragment extends Fragment {
   private ListView mListView;
   private Cursor mCursor;
   private FieldGuideDatabase database;
-  private SpeciesCursorAdapter mAdapter;
+  private GroupListCursorAdapter mAdapter;
 
   public static SpeciesGroupListFragment newInstance() {
     return new SpeciesGroupListFragment();
@@ -73,13 +72,13 @@ public class SpeciesGroupListFragment extends Fragment {
 
     Log.i(TAG, "Loading grouped items");
 
-    mCursor = database.getSpeciesGroups(new String[] { BaseColumns._ID,
-        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME,
-        FieldGuideDatabase.GROUPS_LABEL });
+    // CursorAdapters need an _id column with integer values. We use the auto-generated rowid
+    // column.
+    mCursor = database.getSpeciesGroups(GroupListCursorAdapter.getRequiredColumns());
 
     mListView = (ListView) getView().findViewById(R.id.group_list);
     mListView.setFastScrollEnabled(true);
-    mAdapter = new SpeciesCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
+    mAdapter = new GroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
     mListView.setAdapter(mAdapter);
     mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -107,10 +106,11 @@ public class SpeciesGroupListFragment extends Fragment {
     super.onDetach();
   }
 
-  private static final class SpeciesCursorAdapter extends CursorAdapter implements SectionIndexer {
+  private static final class GroupListCursorAdapter extends CursorAdapter
+      implements SectionIndexer {
     private final AlphabetIndexer mAlphabetIndexer;
 
-    public SpeciesCursorAdapter(Context context, Cursor c, int flags) {
+    public GroupListCursorAdapter(Context context, Cursor c, int flags) {
       super(context, c, flags);
 
       mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP),
@@ -176,6 +176,12 @@ public class SpeciesGroupListFragment extends Fragment {
 
     public String getGroupNameAtPosition(int position) {
       return getGroupName((Cursor) getItem(position));
+    }
+
+    public static String[] getRequiredColumns() {
+      return new String[] { FieldGuideDatabase.GROUPS_ID + " AS _id",
+        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME,
+        FieldGuideDatabase.GROUPS_LABEL };
     }
 
     private static String getGroupName(Cursor cursor) {

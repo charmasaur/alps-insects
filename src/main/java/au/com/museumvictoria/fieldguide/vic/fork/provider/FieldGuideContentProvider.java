@@ -10,7 +10,6 @@ import android.content.UriMatcher;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.util.Log;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 
@@ -148,34 +147,30 @@ public class FieldGuideContentProvider extends ContentProvider {
 
 	private Cursor getSuggestions(String query) {
 		query = query.toLowerCase();
-		// String[] columns = new String[] { BaseColumns._ID,
-		// FieldGuideDatabase.SPECIES_IDENTIFIER,
-		// FieldGuideDatabase.SPECIES_LABEL,
-		// FieldGuideDatabase.SPECIES_SUBLABEL,
-		// FieldGuideDatabase.SPECIES_THUMBNAIL,
-		// SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID };
 
-		String[] columns = new String[] { BaseColumns._ID, 
+    // Need _id so that the suggestions can show in a list.
+		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID + " AS _id",
 				FieldGuideDatabase.SPECIES_LABEL + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
 				FieldGuideDatabase.SPECIES_SUBLABEL + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
 				FieldGuideDatabase.SPECIES_SEARCHICON + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1,
-				BaseColumns._ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID };
+				FieldGuideDatabase.SPECIES_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID };
 
 		return mDatabase.getSpeciesMatches(query, columns);
 	}
 
 	private Cursor search(String query) {
 		query = query.toLowerCase();
-		String[] columns = new String[] { BaseColumns._ID, FieldGuideDatabase.SPECIES_IDENTIFIER,
-				FieldGuideDatabase.SPECIES_LABEL, FieldGuideDatabase.SPECIES_SUBLABEL,
-				FieldGuideDatabase.SPECIES_THUMBNAIL };
+		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID,
+      FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
+      FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesMatches(query);
 	}
 
 	private Cursor getSpeciesDetails(Uri uri) {
 		String rowId = uri.getLastPathSegment();
-		String[] columns = new String[] { BaseColumns._ID, FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
+		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID,
+      FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
 				FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesDetails(rowId, columns);

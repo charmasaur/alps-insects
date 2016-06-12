@@ -24,7 +24,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.database.sqlite.SQLiteStatement;
-import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -50,6 +49,14 @@ public class FieldGuideDatabase {
   private static final String GROUPS_TABLE_NAME = "groups";
 
   // species column mapping
+  /**
+   * A numeric identifier of the species.
+   */
+  public static final String SPECIES_ID = "rowid";
+  /**
+   * The identifier listed in the data. Not used as an identifier in the code.
+   * TODO: Make this the case.
+   */
   public static final String SPECIES_IDENTIFIER = "identifier";
   public static final String SPECIES_LABEL = "label";
   public static final String SPECIES_SUBLABEL = "sublabel";
@@ -79,12 +86,20 @@ public class FieldGuideDatabase {
   public static final String SPECIES_SEARCHICON = "searchIcon";
 
   // images column mapping
+  /**
+   * A numeric identifier of the image.
+   */
+  public static final String MEDIA_ID = "rowid";
   public static final String MEDIA_FILENAME = "filename";
   public static final String MEDIA_CAPTION = "caption";
   public static final String MEDIA_CREDIT = "credit";
   public static final String MEDIA_IDENTIFIER = "identifier";
 
   // groups column mapping
+  /**
+   * A numeric identifier of the group.
+   */
+  public static final String GROUPS_ID = "rowid";
   public static final String GROUPS_ORDER = "orderORDER";
   public static final String GROUPS_LABEL = "label";
   public static final String GROUPS_ICON_WHITE_FILENAME = "iconWhiteFilename";
@@ -134,7 +149,8 @@ public class FieldGuideDatabase {
 
   @Nullable
   public Cursor getSpeciesMatches(String query) {
-    String[] columns = new String[] { BaseColumns._ID, SPECIES_IDENTIFIER, SPECIES_LABEL, SPECIES_SUBLABEL, SPECIES_THUMBNAIL };
+    String[] columns = new String[] { SPECIES_ID, SPECIES_IDENTIFIER, SPECIES_LABEL,
+        SPECIES_SUBLABEL, SPECIES_THUMBNAIL };
 
     return getSpeciesMatches(query, columns);
   }
@@ -186,7 +202,7 @@ public class FieldGuideDatabase {
   @Nullable
   public Cursor getSpeciesDetails(String identifier, String[] columns) {
     //String selection = SPECIES_IDENTIFIER + " = ?";
-    String selection = BaseColumns._ID + " = ?";
+    String selection = SPECIES_ID + " = ?";
     String[] selectionArgs = new String[] { identifier };
 
     //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
@@ -259,12 +275,11 @@ public class FieldGuideDatabase {
   private final class FieldGuideOpenHelper extends SQLiteOpenHelper {
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
+        + " (identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
         + IMAGES_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
-    private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + GROUPS_TABLE_NAME
-        + " (_id INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL, "
+        + " (identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
+    private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + GROUPS_TABLE_NAME + " ("
         + GROUPS_ORDER + " TEXT, "
         + GROUPS_LABEL + " TEXT, "
         + GROUPS_ICON_WHITE_FILENAME + " TEXT, "

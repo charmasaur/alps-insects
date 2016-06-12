@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         // TODO: Handle this (could occur when a search suggestion is clicked).
         Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
         onSpeciesSelected(
-            cursor.getString(cursor.getColumnIndex(android.provider.BaseColumns._ID)),
+            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_ID)),
             cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL)),
             cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
         break;

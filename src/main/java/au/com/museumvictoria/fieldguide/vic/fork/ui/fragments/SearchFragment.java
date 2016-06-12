@@ -95,7 +95,7 @@ public class SearchFragment extends Fragment {
   private void searchSpecies(String query) {
     FieldGuideDatabase fgdb =
       FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
-    Cursor cursor = fgdb.getSpeciesMatches(query);
+    Cursor cursor = fgdb.getSpeciesMatches(query, SpeciesListCursorAdapter.getRequiredColumns());
 
     if (cursor == null) {
       mTextView.setText(getString(R.string.no_results, new Object[] { query }));
