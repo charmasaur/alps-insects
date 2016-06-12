@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <!-- park specific -->
-    <string name="park_title">Victoria</string>
-    <string name="park_sub_title">Marine National Park</string>
-    <string name="park_field_guide">Field Guide</string>
-    <string name="park_summary">Explore south-eastern Australia\'s unique and diverse wildlife at home or in the field. This app combines detailed animal descriptions with stunning imagery and sounds to provide a valuable reference that can be used in urban, bush and coastal environments.</string>
-    
     <!-- general app -->
-    <string name="app_name">Field Guide Fork</string>
-    <string name="app_copyright_pv">Parks Victoria</string>
-    <string name="app_copyright_mv">Museum Victoria</string>
+    <string name="app_name">Australian Alps Insects</string>
     
     <!-- menu -->
     <string name="menu_search_name">Search</string>
@@ -25,8 +17,8 @@
     <string name="search_hint">e.g. Grasshopper</string>
     <!-- Shown above search results when we receive a search request. -->
     <plurals name="search_results">
-        <item quantity="one">%1$d result for \"%2$s\": </item>
-        <item quantity="other">%1$d results for \"%2$s\": </item>
+        <item quantity="one">%1$d result for \"%2$s\"</item>
+        <item quantity="other">%1$d results for \"%2$s\"</item>
     </plurals>
     <!-- Search failure message. -->
     <string name="no_results">No species found for \"%s\"</string>
@@ -58,27 +50,6 @@
     
     <!-- data -->
     <string name="distributioninfo">This map is based on specimens held in Australia\'s museums. Museums do not collect from all possible locations so these maps may underestimate the actual range of the species. The collections also include historical records, so the map may show localities where a species was once found but is no longer. Interpret this map as \'the species is found within the green or blue highlighted areas where suitable habitat occurs\'.</string>
-    <string name="aboutdistribution">
-        <![CDATA[
-            <html>
-            <head>
-            <style type="text/css">
-                body {color: #ffffff; font: 15px/23px "Helvetica Neue"; }
-                section { border-top: 1px solid rgba(190,210,159,0.75); width: 100%; padding: 8px 0 0 0; margin: 0 auto; clear: both;}
-                p { margin: 0 0 20px 10; }
-                a { color: #749f36; text-decoration: none; }
-            </style>
-            </head>
-            <body>
-            	<h1>About Distribution</h1>
-            	<section>
-                	<p>This map is based on specimens held in Australia&#8217;s museums. Museums do not collect from all possible locations so these maps may underestimate the actual range of the species. The collections also include historical records, so the map may show localities where a species was once found but is no longer. Interpret this map as &#8216;the species is found within the green or blue highlighted areas where suitable habitat occurs&#8217;.</p>
-                </section>
-            </body>
-            </html>
-        ]]>
-    </string>
-    
     
     <string name="threatenedstatusinfo">
         <![CDATA[
