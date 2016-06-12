@@ -219,7 +219,9 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
           }
 
           mDatabase = FieldGuideDatabase.getInstance(getApplicationContext());
+          mDatabase.open();
 
+          Log.i(TAG, "Loading");
           while (mProgressStatus < 100) {
             mProgressStatus = doLoadDatabase();
 
