@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -72,7 +73,9 @@ public class SpeciesGroupListFragment extends Fragment {
 
     Log.i(TAG, "Loading grouped items");
 
-    mCursor = database.getSpeciesGroups();
+    mCursor = database.getSpeciesGroups(new String[] { BaseColumns._ID,
+        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME,
+        FieldGuideDatabase.GROUPS_LABEL });
 
     mListView = (ListView) getView().findViewById(R.id.group_list);
     mListView.setFastScrollEnabled(true);

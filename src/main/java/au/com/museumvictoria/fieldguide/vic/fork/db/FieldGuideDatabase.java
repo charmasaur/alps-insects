@@ -170,12 +170,9 @@ public class FieldGuideDatabase {
   }
 
   @Nullable
-  public Cursor getSpeciesGroups() {
-    Log.i(TAG, "Getting species groups again");
+  public Cursor getSpeciesGroups(String[] columns) {
+    Log.i(TAG, "Getting species groups");
 
-    String[] columns = new String[] { BaseColumns._ID, GROUPS_ORDER, GROUPS_LABEL,
-        GROUPS_ICON_WHITE_FILENAME, GROUPS_ICON_DARK_FILENAME, GROUPS_ICON_CREDIT,
-        GROUPS_DESCRIPTION };
     return query(GROUPS_TABLE_NAME, columns, null, null, null, null);
   }
 
