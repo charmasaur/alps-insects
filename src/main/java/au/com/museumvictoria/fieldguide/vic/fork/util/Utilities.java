@@ -30,7 +30,6 @@ public class Utilities {
   public static final String PREFS_NAME = "FieldGuidePrefsFile";
 
   public static final String SPECIES_GROUP_LABEL = "au.com.museumvictoria.fieldguide.vic.fork.SPECIES_GROUP_LABEL";
-  public static final String SPECIES_IDENTIFIER = "au.com.museumvictoria.fieldguide.vic.fork.SPECIES_IDENTIFIER";
   public static final String SPECIES_SEARCH = "au.com.museumvictoria.fieldguide.vic.fork.SPECIES_SEARCH";
 
   public static final String SPECIES_DATA_FILE = "data/generaData.json";

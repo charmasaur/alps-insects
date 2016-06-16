@@ -54,10 +54,9 @@ public class FieldGuideDatabase {
    */
   public static final String SPECIES_ID = "rowid";
   /**
-   * The identifier listed in the data. Not used as an identifier in the code.
-   * TODO: Make this the case.
+   * The identifier listed in the data.
    */
-  public static final String SPECIES_IDENTIFIER = "identifier";
+  private static final String SPECIES_IDENTIFIER = "identifier";
   public static final String SPECIES_LABEL = "label";
   public static final String SPECIES_SUBLABEL = "sublabel";
   public static final String SPECIES_SEARCHTEXT = "searchText";

@@ -160,18 +160,22 @@ public class FieldGuideContentProvider extends ContentProvider {
 
 	private Cursor search(String query) {
 		query = query.toLowerCase();
-		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID,
-      FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
-      FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL };
+		String[] columns = new String[] {
+        FieldGuideDatabase.SPECIES_ID,
+        FieldGuideDatabase.SPECIES_LABEL,
+        FieldGuideDatabase.SPECIES_SUBLABEL,
+        FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesMatches(query);
 	}
 
 	private Cursor getSpeciesDetails(Uri uri) {
 		String rowId = uri.getLastPathSegment();
-		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID,
-      FieldGuideDatabase.SPECIES_IDENTIFIER, FieldGuideDatabase.SPECIES_LABEL,
-				FieldGuideDatabase.SPECIES_SUBLABEL, FieldGuideDatabase.SPECIES_THUMBNAIL };
+		String[] columns = new String[] {
+        FieldGuideDatabase.SPECIES_ID,
+        FieldGuideDatabase.SPECIES_LABEL,
+				FieldGuideDatabase.SPECIES_SUBLABEL,
+        FieldGuideDatabase.SPECIES_THUMBNAIL };
 
 		return mDatabase.getSpeciesDetails(rowId, columns);
 	}
