@@ -92,7 +92,7 @@ public class FieldGuideDatabase {
   public static final String MEDIA_FILENAME = "filename";
   public static final String MEDIA_CAPTION = "caption";
   public static final String MEDIA_CREDIT = "credit";
-  public static final String MEDIA_IDENTIFIER = "identifier";
+  public static final String MEDIA_SPECIES_ID = "speciesId";
 
   // groups column mapping
   /**
@@ -208,14 +208,18 @@ public class FieldGuideDatabase {
     return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, null);
   }
 
-  public Cursor getSpeciesImages(String identifier) {
-    String selection = MEDIA_IDENTIFIER + " = ?";
-    String[] selectionArgs = new String[] { identifier };
+  public Cursor getSpeciesImages(String speciesId, String[] columns) {
+    Log.w(TAG, "Getting species images for: " + speciesId);
 
-    Log.w(TAG, "Getting species images for: " + identifier);
+    return query(IMAGES_TABLE_NAME, columns, MEDIA_SPECIES_ID + " = ?", new String[] { speciesId },
+        null, null);
+  }
 
-    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
-    return query(IMAGES_TABLE_NAME, null, selection, selectionArgs, null, null);
+  public Cursor getImageDetails(String imageId, String[] columns) {
+    Log.w(TAG, "Getting image details for: " + imageId);
+
+    return query(IMAGES_TABLE_NAME, columns, MEDIA_ID + " = ?", new String[] { imageId }, null,
+        null);
   }
 
   /**
@@ -275,9 +279,11 @@ public class FieldGuideDatabase {
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
         + " (identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
-    private static final String IMAGES_TABLE_CREATE = "CREATE TABLE "
-        + IMAGES_TABLE_NAME
-        + " (identifier TEXT, filename TEXT, caption TEXT, credit TEXT); ";
+    private static final String IMAGES_TABLE_CREATE = "CREATE TABLE " + IMAGES_TABLE_NAME + " ("
+        + MEDIA_FILENAME + " TEXT, "
+        + MEDIA_CAPTION + " TEXT, "
+        + MEDIA_CREDIT + " TEXT, "
+        + MEDIA_SPECIES_ID + " TEXT); ";
     private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + GROUPS_TABLE_NAME + " ("
         + GROUPS_ORDER + " TEXT, "
         + GROUPS_LABEL + " TEXT, "
@@ -390,7 +396,7 @@ public class FieldGuideDatabase {
       Map<String, Integer> imagesColumns = new HashMap<>();
       String imageSQL = getInsertSQL(
           IMAGES_TABLE_NAME,
-          Arrays.asList(MEDIA_FILENAME, MEDIA_CAPTION, MEDIA_CREDIT, MEDIA_IDENTIFIER),
+          Arrays.asList(MEDIA_FILENAME, MEDIA_CAPTION, MEDIA_CREDIT, MEDIA_SPECIES_ID),
           imagesColumns);
 
       Map<String, Integer> groupsColumns = new HashMap<>();
@@ -425,7 +431,9 @@ public class FieldGuideDatabase {
 
       Log.i(TAG, "Populating database");
       try {
-        Gson gson = new Gson(); for (int i = 0; i < splist.size(); i++) { Species s = gson.fromJson(splist.get(i), Species.class);
+        Gson gson = new Gson();
+        for (int i = 0; i < splist.size(); i++) {
+          Species s = gson.fromJson(splist.get(i), Species.class);
 
           speciesStatement.bindString(speciesColumns.get(SPECIES_IDENTIFIER), s.getIdentifier());
           speciesStatement.bindString(speciesColumns.get(SPECIES_LABEL), s.getLabel());
@@ -476,7 +484,7 @@ public class FieldGuideDatabase {
               "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/"
                   + s.getSquareThumbnail());
 
-          speciesStatement.executeInsert();
+          long speciesId = speciesStatement.executeInsert();
           speciesStatement.clearBindings();
 
           Iterator<Images> imgs = s.getImages().iterator();
@@ -486,14 +494,14 @@ public class FieldGuideDatabase {
             imageStatement.bindString(imagesColumns.get(MEDIA_FILENAME), img.getFilename());
             imageStatement.bindString(imagesColumns.get(MEDIA_CAPTION), img.getImageDescription());
             imageStatement.bindString(imagesColumns.get(MEDIA_CREDIT), img.getCredit());
-            imageStatement.bindString(imagesColumns.get(MEDIA_IDENTIFIER), s.getIdentifier());
+            imageStatement.bindString(
+                imagesColumns.get(MEDIA_SPECIES_ID), Long.toString(speciesId));
 
             imageStatement.executeInsert();
             imageStatement.clearBindings();
           }
 
           ++currCount;
-
         }
 
         for (int i = 0; i < groupsList.size(); ++i) {

@@ -1,6 +1,6 @@
 package au.com.museumvictoria.fieldguide.vic.fork.ui;
 
-import android.annotation.SuppressLint;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,59 +9,38 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.provider.Images;
+import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageDetailFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
-import au.com.museumvictoria.fieldguide.vic.fork.util.ImageWorker;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utils;
 
-@SuppressLint("NewApi")
-public class ImageDetailActivity extends AppCompatActivity implements OnClickListener {
-
-  private static final String TAG = "VIC.ImageDetailActivity";
-
+public class ImageDetailActivity extends AppCompatActivity {
+  public static final String EXTRA_SPECIES_ID = "species_id";
   public static final String EXTRA_IMAGE = "extra_image";
+
   public static final String EXTRA_GALLERY = "extra_gallery";
-  public static final String EXTRA_PATH = "extra_path";
+
   private ImagePagerAdapter mAdapter;
-  private ImageResizer mImageWorker;
   private ViewPager mPager;
   private ActionBar actionBar;
-
-  private static String[] images;
-  private static int galleryReference;
-  private static String imagepath;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_detail);
 
-    // Fetch screen height and width, to use as our max size when loading images as this
-    // activity runs full screen
-    final DisplayMetrics displaymetrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-    final int height = displaymetrics.heightPixels;
-    final int width = displaymetrics.widthPixels;
-    final int longest = height > width ? height : width;
-
-    // The ImageWorker takes care of loading images into our ImageView children asynchronously
-    mImageWorker = new ImageResizer(this, longest);
-    //Images.loadImages(getResources(), galleryReference);
-    mImageWorker.setAdapter(Images.imageWorkerUrlsAdapter);
-    //mImageWorker.setImageCache(ImageCache.findOrCreateCache(this, IMAGE_CACHE_DIR));
-    mImageWorker.setImageFadeIn(false);
+    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getApplicationContext());
+    if (!getIntent().hasExtra(EXTRA_SPECIES_ID)) {
+      throw new RuntimeException("Missing species ID");
+    }
+    Cursor cursor = db.getSpeciesImages(getIntent().getStringExtra(EXTRA_SPECIES_ID),
+        new String[] { FieldGuideDatabase.MEDIA_ID });
 
     // Set up ViewPager and backing adapter
-    mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), mImageWorker.getAdapter().getSize());
+    mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), cursor);
     mPager = (ViewPager) findViewById(R.id.pager);
     mPager.setAdapter(mAdapter);
     mPager.setPageMargin((int) getResources().getDimension(R.dimen.image_detail_pager_margin));
@@ -96,17 +75,8 @@ public class ImageDetailActivity extends AppCompatActivity implements OnClickLis
 //      }
 //    });
 
-    // Set the current item based on the extra passed in to this activity
-    imagepath = getIntent().getStringExtra(EXTRA_PATH);
-    galleryReference = getIntent().getIntExtra(EXTRA_GALLERY, -1);
-    final int extraCurrentItem = getIntent().getIntExtra(EXTRA_IMAGE, -1);
-
-    Log.d(TAG, "imagepath: " + imagepath);
-    Log.d(TAG, "galleryReference: " + galleryReference);
-    Log.d(TAG, "extraCurrentItem: " + extraCurrentItem);
-
-    if (extraCurrentItem != -1) {
-        mPager.setCurrentItem(extraCurrentItem);
+    if (getIntent().hasExtra(EXTRA_IMAGE)) {
+      mPager.setCurrentItem(getIntent().getIntExtra(EXTRA_IMAGE, 0));
     }
   }
 
@@ -126,66 +96,35 @@ public class ImageDetailActivity extends AppCompatActivity implements OnClickLis
   }
 
   /**
-   * Called by the ViewPager child fragments to load images via the one ImageWorker
-   *
-   * @return
-   */
-  public ImageWorker getImageWorker() {
-    return mImageWorker;
-  }
-
-  /**
    * The main adapter that backs the ViewPager. A subclass of FragmentStatePagerAdapter as there
    * could be a large number of items in the ViewPager and we don't want to retain them all in
    * memory at once but create/destroy them on the fly.
    */
   private class ImagePagerAdapter extends FragmentStatePagerAdapter {
-    private final int mSize;
+    private final Cursor cursor;
 
-    public ImagePagerAdapter(FragmentManager fm, int size) {
+    public ImagePagerAdapter(FragmentManager fm, Cursor cursor) {
       super(fm);
-      mSize = size;
+      this.cursor = cursor;
     }
 
     @Override
     public int getCount() {
-      return mSize;
+      return cursor.getCount();
     }
 
     @Override
     public Fragment getItem(int position) {
-      if (galleryReference == -1) {
-        Log.d(TAG, "SEtting IDF.id");
-        return ImageDetailFragment.newInstance(position);
-      } else {
-        Log.d(TAG, "SEtting IDF.id and IDF.galleryref");
-        return ImageDetailFragment.newInstance(position, galleryReference);
-      }
+      cursor.moveToPosition(position);
+      return ImageDetailFragment.newInstance(
+          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_ID)));
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
       final ImageDetailFragment fragment = (ImageDetailFragment) object;
       // As the item gets destroyed we try and cancel any existing work.
-      fragment.cancelWork();
       super.destroyItem(container, position, object);
     }
-  }
-
-  /**
-   * Set on the ImageView in the ViewPager children fragments, to enable/disable low profile mode
-   * when the ImageView is touched.
-   */
-  @SuppressLint("NewApi")
-  @Override
-  public void onClick(View v) {
-    //int vis = mPager.getSystemUiVisibility();
-    //if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
-    //  mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-    //  actionBar.show();
-    //} else {
-    //  mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-    //  actionBar.hide();
-    //}
   }
 }

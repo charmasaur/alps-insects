@@ -2,6 +2,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,57 +14,31 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.provider.Images;
+import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
-import au.com.museumvictoria.fieldguide.vic.fork.util.ImageWorker;
 import au.com.museumvictoria.fieldguide.vic.fork.util.NonBrokenImageViewTouch;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 public class ImageDetailFragment extends Fragment {
   private static final String TAG = ImageDetailFragment.class.getSimpleName();
 
-  private static final String IMAGE_DATA_EXTRA = "resId";
-  private static final String IMAGE_GALLERY_DATA_EXTRA = "galleryReference";
   private static final String IMAGE_PATH_DATA_EXTRA = "imagePath";
+  private static final String IMAGE_ID_EXTRA = "imageId";
 
-  private int mImageNum;
-  private int mGalleryReference;
-  private String mImagePath;
+  private String imagePath;
+  private String caption;
+  private String credit;
 
   private NonBrokenImageViewTouch mImageView;
   private TextView mImageDescription;
   private TextView mImageCredit;
   private RelativeLayout imageDetailsLayout;
-  private ImageWorker mImageWorker;
 
-  public static ImageDetailFragment newInstance(int imageNum) {
-    final ImageDetailFragment f = new ImageDetailFragment();
+  public static ImageDetailFragment newInstance(String imageId) {
+    ImageDetailFragment f = new ImageDetailFragment();
 
-    final Bundle args = new Bundle();
-    args.putInt(IMAGE_DATA_EXTRA, imageNum);
-    args.putInt(IMAGE_GALLERY_DATA_EXTRA, -1);
-    f.setArguments(args);
-
-    return f;
-  }
-
-  public static ImageDetailFragment newInstance(int imageNum, int galleryReference) {
-    final ImageDetailFragment f = new ImageDetailFragment();
-
-    final Bundle args = new Bundle();
-    args.putInt(IMAGE_DATA_EXTRA, imageNum);
-    args.putInt(IMAGE_GALLERY_DATA_EXTRA, galleryReference);
-    args.putString(IMAGE_PATH_DATA_EXTRA, "");
-    f.setArguments(args);
-
-    return f;
-  }
-
-  public static ImageDetailFragment newInstance(String imagePath) {
-    final ImageDetailFragment f = new ImageDetailFragment();
-
-    final Bundle args = new Bundle();
-    args.putString(IMAGE_PATH_DATA_EXTRA, imagePath);
+    Bundle args = new Bundle();
+    args.putString(IMAGE_ID_EXTRA, imageId);
     f.setArguments(args);
 
     return f;
@@ -77,15 +52,15 @@ public class ImageDetailFragment extends Fragment {
    */
   @Override
   public void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      mImageNum = getArguments() != null ? getArguments().getInt(IMAGE_DATA_EXTRA) : -1;
-      mGalleryReference = getArguments() != null ? getArguments().getInt(IMAGE_GALLERY_DATA_EXTRA) : -1;
-      mImagePath = getArguments() != null ? getArguments().getString(IMAGE_PATH_DATA_EXTRA) : "";
-
-      Log.d(TAG, "mImageNum: " + mImageNum);
-      Log.d(TAG, "mGalleryReference: " + mGalleryReference);
-      Log.d(TAG, "mImagePath: " + mImagePath);
-
+    super.onCreate(savedInstanceState);
+    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
+    if (getArguments() == null) {
+      throw new RuntimeException("Missing arguments");
+    }
+    Cursor cursor = db.getImageDetails(getArguments().getString(IMAGE_ID_EXTRA), null);
+    imagePath = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_FILENAME));
+    caption = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_CAPTION));
+    credit = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_CREDIT));
   }
 
   @Override
@@ -104,98 +79,19 @@ public class ImageDetailFragment extends Fragment {
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    if (mGalleryReference != -1) {
-      Log.d(TAG, "Got extraCurrentGallery: " + mGalleryReference);
-      String[] tmpImages = getResources().getStringArray(mGalleryReference);
-      String filename = tmpImages[mImageNum].substring(0,2) + ".jpg";
-      String filedesc = tmpImages[mImageNum].substring(2);
-      String filecred = "Map by Parks Victoria";
-      try {
-        Log.d(TAG, "filedesc.1: " + filedesc);
-        filedesc = filedesc.substring(0, tmpImages[mImageNum].indexOf("_Photo")-1);
-        Log.d(TAG, "filedesc.2: " + filedesc);
-        filecred = tmpImages[mImageNum].substring(tmpImages[mImageNum].indexOf("_Photo"));
-      } catch (Exception e) {
-        // TODO: Do something.
-      }
-
-      filedesc = filedesc.replaceAll("_", " ").replaceAll(".jpg", "").trim();
-      filecred = filecred.replaceAll("_", " ").replaceAll(".jpg", "").trim();
-
-      filedesc += ".";
-      filecred += ".";
-
-      String imgPath = "data/images/park/gallery/full/"+filename;
-
-      Log.d(TAG, "Displaying photo: " + filedesc + "(" + filename + ") BY " + filecred);
-
-      if (mGalleryReference == R.array.list_images_maps) {
-        imgPath = "data/images/park/maps/full/"+filename;
-      }
-
-      Drawable d = null;
-      try {
-        //d = Drawable.createFromStream(getActivity().getAssets().open(imgPath), null);
-
-        d = Drawable.createFromStream(Utilities.getAssetInputStream(getActivity(), imgPath), null);
-
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-
-      // set the default image display type
-      mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
-      //mImageView.setImageDrawable(d, true, null, 5.0f);
-      mImageView.setImageDrawable(d);
-      mImageDescription.setText(Html.fromHtml(filedesc));
-      mImageCredit.setText(Html.fromHtml(filecred));
-
-    } else if (mImageNum != -1) {
-      String imgPath = Images.imageUrls[mImageNum];
-      String[] imageDetails = Images.imageDescrptions[mImageNum].split("__");
-
-      Drawable d = null;
-      try {
-        // d = Drawable.createFromStream(getActivity().getAssets().open(imgPath), null);
-
-        d = Drawable.createFromStream(Utilities.getAssetInputStream(getActivity(), imgPath), null);
-
-
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-
-      // set the default image display type
-      mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
-          //mImageView.setImageDrawable(d, true, null, 5.0f);
-      mImageView.setImageDrawable(d);
-          mImageDescription.setText(Html.fromHtml(imageDetails[0]));
-          mImageCredit.setText(Html.fromHtml(imageDetails[1]));
-
-    } else if (mImagePath != null) {
-      String imgPath = "data/images/species/full/192266.jpg";
-      String filedesc = "Image description";
-      String filecred = "Image credit";
-
-      Drawable d = null;
-      try {
-        // d = Drawable.createFromStream(getActivity().getAssets().open(imgPath), null);
-
-        d = Drawable.createFromStream(Utilities.getAssetInputStream(getActivity(), imgPath), null);
-
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-
-      // set the default image display type
-      mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
-      mImageView.setImageDrawable(d);
-          mImageDescription.setText(filedesc);
-          mImageCredit.setText(filecred);
+    Drawable d = null;
+    try {
+      d = Drawable.createFromStream(Utilities.getAssetInputStream(getActivity(),
+          Utilities.SPECIES_IMAGES_FULL_PATH + imagePath), null);
+    } catch (Exception e) {
+      Log.i(TAG, "Failed to load drawable");
     }
+
+    // set the default image display type
+    mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
+    mImageView.setImageDrawable(d);
+    mImageDescription.setText(Html.fromHtml(caption));
+    mImageCredit.setText(Html.fromHtml(credit));
 
     mImageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
       @Override
@@ -207,15 +103,5 @@ public class ImageDetailFragment extends Fragment {
         }
       }
     });
-  }
-
-  /**
-   * Cancels the asynchronous work taking place on the ImageView, called by the adapter backing
-   * the ViewPager when the child is destroyed.
-   */
-  public void cancelWork() {
-    ImageWorker.cancelWork(mImageView);
-    mImageView.setImageDrawable(null);
-    mImageView = null;
   }
 }

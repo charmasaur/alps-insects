@@ -33,7 +33,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.provider.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesDetailPagerAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
@@ -51,6 +50,7 @@ public class SpeciesItemDetailFragment extends Fragment {
   private FieldGuideDatabase fgdb;
   private Cursor cursor;
   private Cursor cursorImages;
+  private String speciesId;
 
   public static SpeciesItemDetailFragment newInstance(String speciesId) {
     Bundle arguments = new Bundle();
@@ -71,26 +71,22 @@ public class SpeciesItemDetailFragment extends Fragment {
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    String displayText = "No species found";
-
-    String spIdentifier = null;
-    spIdentifier = getArguments().getString(ARGUMENT_SPECIES_ID);
-    Log.w(TAG, "Getting details for " + spIdentifier);
+    speciesId = getArguments().getString(ARGUMENT_SPECIES_ID);
+    Log.w(TAG, "Getting details for " + speciesId);
 
     fgdb = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
-    cursor = fgdb.getSpeciesDetails(spIdentifier, null);
-
-    String label = "No species";
-    if (cursor != null) {
-      label = cursor.getString(cursor.getColumnIndex("label"));
-      String identifier = cursor.getString(cursor
-          .getColumnIndex("identifier"));
-      cursorImages = fgdb.getSpeciesImages(identifier);
-
-      displayText = "Displaying species info for '" + label + "'";
-
-      displaySpeciesInformation();
+    cursor = fgdb.getSpeciesDetails(speciesId, null);
+    if (cursor == null) {
+      throw new RuntimeException("No species details found for species: " + speciesId);
     }
+
+    String label = cursor.getString(cursor.getColumnIndex("label"));
+    cursorImages = fgdb.getSpeciesImages(speciesId, null);
+    if (cursorImages == null) {
+      throw new RuntimeException("No images found for species: " + speciesId);
+    }
+
+    //displaySpeciesInformation();
   }
 
   @Override
@@ -121,19 +117,14 @@ public class SpeciesItemDetailFragment extends Fragment {
   @Override
   public void onDestroy() {
 
-    if (cursorImages != null) {
-      cursorImages.close();
-    }
-
+    cursorImages.close();
     cursor.close();
-    fgdb.close();
 
     super.onDestroy();
   }
 
   @Override
   public void onStop() {
-
     super.onStop();
   }
 
@@ -240,93 +231,61 @@ public class SpeciesItemDetailFragment extends Fragment {
       }
     }
 
-
-    // Load the Species images
-    ArrayList<String> imageList = new ArrayList<String>();
+    // Load images.
     LinearLayout speciesimages = (LinearLayout) getActivity().findViewById(R.id.speciesimages);
 
-    if (speciesimages != null) {
-      // speciesimages.removeAllViews();
+    Log.i(TAG, "Loading images");
+    if (speciesimages != null && speciesimages.getChildCount() == 0) {
 
-      if (speciesimages.getChildCount() == 0) {
+      int imgThumbSize = r.getDimensionPixelSize(R.dimen.species_image_thumbnail_size);
+      int imgThumbPadding = r.getDimensionPixelSize(R.dimen.image_detail_pager_margin);
 
-        if (cursorImages != null) {
-          Log.d(TAG, "Got " + cursorImages.getCount() + " images");
-          cursorImages.moveToFirst();
+      int counter = 0;
+      for (cursorImages.moveToFirst(); !cursorImages.isAfterLast(); cursorImages.moveToNext()) {
+        String imagePath = Utilities.SPECIES_IMAGES_FULL_PATH
+            + cursorImages.getString(cursorImages.getColumnIndex(FieldGuideDatabase.MEDIA_FILENAME));
 
-          for (cursorImages.moveToFirst(); !cursorImages.isAfterLast(); cursorImages.moveToNext()) {
-            String filename = cursorImages.getString(cursorImages.getColumnIndex("filename"));
-            //String caption = cursorImages.getString(cursorImages.getColumnIndex("caption"));
-            String caption = speciesnamedisplay;
-            String credit = cursorImages.getString(cursorImages.getColumnIndex("credit"));
+        ImageView image = new ImageView(getActivity());
+        image.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        image.setPadding(imgThumbPadding, imgThumbPadding,imgThumbPadding, imgThumbPadding);
 
-            if (!TextUtils.isEmpty(caption)) {
-              if (caption.startsWith("em>")) {
-                caption = "<" + caption;
-              }
-            }
-            Log.d(TAG, "Adding image: " + filename + "__" + caption + "__" + credit);
-
-            imageList.add(filename + "__" + caption + "__" + credit);
+        image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(getActivity(), imagePath),imgThumbSize, imgThumbSize));
+        // TODO: Try to use this. Also consider trying to use ZipResourceFile.getAssetFileDescriptor instead. It looks like the ImageResizer used to work with those. See http://stackoverflow.com/questions/13031240/reading-mp3-from-expansion-file -- looks like the zip needs to be uncompressed to do this.
+        //try {
+        //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+        //      Utilities.getAssetInputStreamZipFile(getActivity().getApplicationContext(), imagePath), imgThumbSize,
+        //      imgThumbSize));
+        //} catch (Exception e) {
+        //  Log.i(TAG, "Exception loading image bitmap:" + e);
+        //  image.setImageBitmap(null);
+        //}
+        //try {
+        //  android.content.res.AssetFileDescriptor fd =
+        //    Utilities.getAssetsFileDescriptor(getActivity(), imagePath);
+        //  Log.i(TAG, "FD: " + fd);
+        //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFD(
+        //      fd.getFileDescriptor(), imgThumbSize, imgThumbSize));
+        //} catch (java.io.IOException e) {
+        //  Log.i(TAG, "Exception loading image bitmap:" + e);
+        //  image.setImageBitmap(null);
+        //}
+        final int imagePosition = counter;
+        image.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            final Intent intent = new Intent(getActivity(), ImageDetailActivity.class);
+            intent.putExtra(ImageDetailActivity.EXTRA_SPECIES_ID, speciesId);
+            intent.putExtra(ImageDetailActivity.EXTRA_IMAGE, imagePosition);
+            getActivity().startActivity(intent);
           }
-        }
+        });
 
-        int imgThumbSize = r.getDimensionPixelSize(R.dimen.species_image_thumbnail_size);
-        int imgThumbPadding = r.getDimensionPixelSize(R.dimen.image_detail_pager_margin);
+        speciesimages.addView(image);
 
-        String[] mImageList = new String[imageList.size()];
-        String[] imageDescriptions = new String[imageList.size()];
-
-        for (int i = 0; i < imageList.size(); i++) {
-          final int imagePosition = i;
-          String[] imgDetails = imageList.get(i).split("__");
-
-          Log.d(TAG, "Loading image: " + imgDetails[0] + " with " + imgDetails[1]);
-
-          String img = Utilities.SPECIES_IMAGES_FULL_PATH + imgDetails[0];
-          mImageList[i] = img;
-          imageDescriptions[i] = imgDetails[1] + "__" + imgDetails[2];
-
-          ImageView image = new ImageView(getActivity());
-          image.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-          image.setPadding(imgThumbPadding, imgThumbPadding,imgThumbPadding, imgThumbPadding);
-
-          image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(getActivity(), img),imgThumbSize, imgThumbSize));
-          // TODO: Try to use this. Also consider trying to use ZipResourceFile.getAssetFileDescriptor instead. It looks like the ImageResizer used to work with those. See http://stackoverflow.com/questions/13031240/reading-mp3-from-expansion-file -- looks like the zip needs to be uncompressed to do this.
-          //try {
-          //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
-          //      Utilities.getAssetInputStreamZipFile(getActivity().getApplicationContext(), img), imgThumbSize,
-          //      imgThumbSize));
-          //} catch (Exception e) {
-          //  Log.i(TAG, "Exception loading image bitmap:" + e);
-          //  image.setImageBitmap(null);
-          //}
-          //try {
-          //  android.content.res.AssetFileDescriptor fd =
-          //    Utilities.getAssetsFileDescriptor(getActivity(), img);
-          //  Log.i(TAG, "FD: " + fd);
-          //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFD(
-          //      fd.getFileDescriptor(), imgThumbSize, imgThumbSize));
-          //} catch (java.io.IOException e) {
-          //  Log.i(TAG, "Exception loading image bitmap:" + e);
-          //  image.setImageBitmap(null);
-          //}
-          image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              final Intent intent = new Intent(getActivity(), ImageDetailActivity.class);
-              intent.putExtra(ImageDetailActivity.EXTRA_IMAGE,imagePosition);
-              getActivity().startActivity(intent);
-            }
-          });
-
-          speciesimages.addView(image);
-        }
-        Images.loadSpeciesImages(mImageList, imageDescriptions);
+        ++counter;
       }
+      Log.i(TAG, "Loaded " + counter + " images.");
     }
-
-    // End loading species imges
 
     // Load Location and Depth information
     ImageView depthShoreImage = (ImageView) getActivity().findViewById(R.id.depthShoreImage);
