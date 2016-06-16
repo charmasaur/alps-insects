@@ -30,7 +30,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.AboutFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageGridFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
