@@ -16,6 +16,7 @@ import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageWorker;
+import au.com.museumvictoria.fieldguide.vic.fork.util.NonBrokenImageViewTouch;
 import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 public class ImageDetailFragment extends Fragment {
@@ -29,7 +30,7 @@ public class ImageDetailFragment extends Fragment {
   private int mGalleryReference;
   private String mImagePath;
 
-  private ImageViewTouch mImageView;
+  private NonBrokenImageViewTouch mImageView;
   private TextView mImageDescription;
   private TextView mImageCredit;
   private RelativeLayout imageDetailsLayout;
@@ -92,7 +93,7 @@ public class ImageDetailFragment extends Fragment {
       Bundle savedInstanceState) {
       // Inflate and locate the main ImageView
       final View v = inflater.inflate(R.layout.image_detail_fragment, container, false);
-      mImageView = (ImageViewTouch) v.findViewById(R.id.imageView);
+      mImageView = (NonBrokenImageViewTouch) v.findViewById(R.id.imageView);
       mImageDescription = (TextView) v.findViewById(R.id.imageDescription);
       mImageCredit = (TextView) v.findViewById(R.id.imageCredit);
       imageDetailsLayout = (RelativeLayout) v.findViewById(R.id.imageDetailsLayout);

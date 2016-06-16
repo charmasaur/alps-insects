@@ -35,7 +35,7 @@
         android:contentDescription=" _at_ string / imageview_description" />
     -->
 
-    <it.sephiroth.android.library.imagezoom.ImageViewTouch
+    <au.com.museumvictoria.fieldguide.vic.fork.util.NonBrokenImageViewTouch
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
