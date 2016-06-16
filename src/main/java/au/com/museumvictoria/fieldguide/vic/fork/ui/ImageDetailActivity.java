@@ -2,6 +2,7 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -17,11 +18,16 @@ import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.ImageDetailFragment;
 
-public class ImageDetailActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ImageDetailActivity extends AppCompatActivity
+    implements ImageDetailFragment.Callback {
   public static final String EXTRA_SPECIES_ID = "species_id";
   public static final String EXTRA_IMAGE = "extra_image";
+  public static final String EXTRA_SPECIES_LABEL = "species_label";
 
-  public static final String EXTRA_GALLERY = "extra_gallery";
+  private final LabelVisibilityManager labelVisibilityManager = new LabelVisibilityManager();
 
   private ImagePagerAdapter mAdapter;
   private ViewPager mPager;
@@ -50,13 +56,13 @@ public class ImageDetailActivity extends AppCompatActivity {
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    // TODO: Set title to image name and accreditation?
 
     actionBar = getSupportActionBar();
+    labelVisibilityManager.setActionBar(actionBar);
 
     // Enable "up" navigation on ActionBar icon and hide title text
+    actionBar.setTitle(getIntent().getStringExtra(EXTRA_SPECIES_LABEL));
     actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setDisplayShowTitleEnabled(false);
 
     // Start low profile mode and hide ActionBar
 //    mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
@@ -95,6 +101,21 @@ public class ImageDetailActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  @Override
+  public void onImageTapped() {
+    labelVisibilityManager.onImageTapped();
+  }
+
+  @Override
+  public void registerLabelVisibilityListener(ImageDetailFragment.Callback.Listener listener) {
+    labelVisibilityManager.register(listener);
+  }
+
+  @Override
+  public void unregisterLabelVisibilityListener(ImageDetailFragment.Callback.Listener listener) {
+    labelVisibilityManager.unregister(listener);
+  }
+
   /**
    * The main adapter that backs the ViewPager. A subclass of FragmentStatePagerAdapter as there
    * could be a large number of items in the ViewPager and we don't want to retain them all in
@@ -125,6 +146,52 @@ public class ImageDetailActivity extends AppCompatActivity {
       final ImageDetailFragment fragment = (ImageDetailFragment) object;
       // As the item gets destroyed we try and cancel any existing work.
       super.destroyItem(container, position, object);
+    }
+  }
+
+  /**
+   * Manages the visibility of the labels and action bar.
+   */
+  private static final class LabelVisibilityManager {
+    private final List<ImageDetailFragment.Callback.Listener> listeners = new ArrayList<>();
+    @Nullable
+    private ActionBar actionBar;
+
+    private boolean visibility = true;
+
+    public void onImageTapped() {
+      visibility = !visibility;
+      for (ImageDetailFragment.Callback.Listener listener : listeners) {
+        listener.onVisibilityChanged(visibility);
+      }
+      if (actionBar != null) {
+        setActionBarVisibility();
+      }
+    }
+
+    public void register(ImageDetailFragment.Callback.Listener listener) {
+      listeners.add(listener);
+      listener.onVisibilityChanged(visibility);
+    }
+
+    public void unregister(ImageDetailFragment.Callback.Listener listener) {
+      boolean removed = listeners.remove(listener);
+      if (!removed) {
+        throw new RuntimeException("Tried to remove a non-added listener, something's wrong");
+      }
+    }
+
+    public void setActionBar(ActionBar actionBar) {
+      this.actionBar = actionBar;
+      setActionBarVisibility();
+    }
+
+    private void setActionBarVisibility() {
+      if (visibility) {
+        actionBar.show();
+      } else {
+        actionBar.hide();
+      }
     }
   }
 }

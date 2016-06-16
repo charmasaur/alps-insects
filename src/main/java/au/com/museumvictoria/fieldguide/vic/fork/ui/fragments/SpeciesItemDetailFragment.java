@@ -85,8 +85,6 @@ public class SpeciesItemDetailFragment extends Fragment {
     if (cursorImages == null) {
       throw new RuntimeException("No images found for species: " + speciesId);
     }
-
-    //displaySpeciesInformation();
   }
 
   @Override
@@ -276,6 +274,8 @@ public class SpeciesItemDetailFragment extends Fragment {
             final Intent intent = new Intent(getActivity(), ImageDetailActivity.class);
             intent.putExtra(ImageDetailActivity.EXTRA_SPECIES_ID, speciesId);
             intent.putExtra(ImageDetailActivity.EXTRA_IMAGE, imagePosition);
+            intent.putExtra(ImageDetailActivity.EXTRA_SPECIES_LABEL,
+                getColumnValue(FieldGuideDatabase.SPECIES_LABEL));
             getActivity().startActivity(intent);
           }
         });
