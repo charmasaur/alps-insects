@@ -108,7 +108,6 @@ public class GroupFragment extends Fragment {
   @Override
   public void onDestroy() {
     mCursor.close();
-    fgdb.close();
 
     super.onDestroy();
   }
