@@ -276,6 +276,33 @@ public class FieldGuideDatabase {
   }
 
   private final class FieldGuideOpenHelper extends SQLiteOpenHelper {
+    //private static final String SPECIES_TABLE_CREATE = "CREATE TABLE " + SPECIES_TABLE_NAME + " ("
+    //    + SPECIES_IDENTIFIER + " TEXT, "
+    //    + SPECIES_LABEL + " TEXT, "
+    //    + SPECIES_SUBLABEL + " TEXT, "
+    //    + SPECIES_SEARCHTEXT + " TEXT, "
+    //    + SPECIES_THUMBNAIL + " TEXT, "
+    //    + SPECIES_SEARCHICON + " TEXT, "
+    //    + SPECIES_GROUP + " TEXT, "
+    //    + SPECIES_SUBGROUP + " TEXT, "
+    //    + SPECIES_DESCRIPTION + " TEXT, "
+    //    + SPECIES_BITE + " TEXT, "
+    //    + SPECIES_BIOLOGY + " TEXT, "
+    //    + diet + " TEXT, "
+    //    + habitat + " TEXT, "
+    //    + nativeStatus + " TEXT, "
+    //    + distinctive + " TEXT, "
+    //    + distribution + " TEXT, "
+    //    + depth + " TEXT, "
+    //    + location + " TEXT, "
+    //    + taxaPhylum + " TEXT, "
+    //    + taxaClass + " TEXT, "
+    //    + taxaOrder + " TEXT, "
+    //    + taxaFamily + " TEXT, "
+    //    + taxaGenus + " TEXT, "
+    //    + taxaSpecies + " TEXT, "
+    //    + commonNames + " TEXT, "
+    //    + otherNames + " TEXT); ";
     private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
         + SPECIES_TABLE_NAME
         + " (identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
