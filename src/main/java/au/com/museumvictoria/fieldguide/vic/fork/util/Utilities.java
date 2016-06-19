@@ -23,7 +23,7 @@ public class Utilities {
   // The shared path to all app expansion files
   public final static String EXP_PATH = "/Android/obb/";
   public final static String EXP_DATA_PATH = "/Android/data/";
-  public final static long EXP_FILE_SIZE = 4726527;
+  public final static long EXP_FILE_SIZE = 4726485;
   public final static int MAIN_VERSION = 2;
   public final static int PATCH_VERSION = 0;
 

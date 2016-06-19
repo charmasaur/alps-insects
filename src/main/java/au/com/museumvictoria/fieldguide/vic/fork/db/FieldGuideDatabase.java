@@ -42,7 +42,7 @@ public class FieldGuideDatabase {
   private static final String TAG = FieldGuideDatabase.class.getSimpleName();
 
   // database
-  private static final int DATABASE_VERSION = 2;
+  private static final int DATABASE_VERSION = 3;
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";
@@ -53,35 +53,17 @@ public class FieldGuideDatabase {
    * A numeric identifier of the species.
    */
   public static final String SPECIES_ID = "rowid";
-  /**
-   * The identifier listed in the data.
-   */
-  private static final String SPECIES_IDENTIFIER = "identifier";
   public static final String SPECIES_LABEL = "label";
   public static final String SPECIES_SUBLABEL = "sublabel";
   public static final String SPECIES_SEARCHTEXT = "searchText";
   public static final String SPECIES_THUMBNAIL = "squareThumbnail";
-  public static final String SPECIES_GROUP = "groupLabel";
-  public static final String SPECIES_SUBGROUP = "subgroupLabel";
   public static final String SPECIES_DESCRIPTION = "description";
-  public static final String SPECIES_BITE = "bite";
-  public static final String SPECIES_BIOLOGY = "biology";
-  public static final String SPECIES_DIET = "diet";
-  public static final String SPECIES_HABITAT = "habitat";
-  public static final String SPECIES_NATIVE_STATUS = "nativeStatus";
-  public static final String SPECIES_DISTINCTIVE = "distinctive";
-  public static final String SPECIES_DISTRIBUTION = "distribution";
-  public static final String SPECIES_DEPTH = "depth";
-  public static final String SPECIES_LOCATION = "location";
-  public static final String SPECIES_IS_COMMERCIAL = "isCommercial";
-  public static final String SPECIES_TAXA_PHYLUM = "taxaPhylum";
-  public static final String SPECIES_TAXA_CLASS = "taxaClass";
   public static final String SPECIES_TAXA_ORDER = "taxaOrder";
   public static final String SPECIES_TAXA_FAMILY = "taxaFamily";
   public static final String SPECIES_TAXA_GENUS = "taxaGenus";
   public static final String SPECIES_TAXA_SPECIES = "taxaSpecies";
-  public static final String SPECIES_COMMON_NAMES = "commonNames";
-  public static final String SPECIES_OTHER_NAMES = "otherNames";
+  public static final String SPECIES_LICENSE = "license";
+  public static final String SPECIES_LICENSE_LINK = "licenseLink";
   public static final String SPECIES_SEARCHICON = "searchIcon";
 
   // images column mapping
@@ -148,8 +130,8 @@ public class FieldGuideDatabase {
 
   @Nullable
   public Cursor getSpeciesMatches(String query) {
-    String[] columns = new String[] { SPECIES_ID, SPECIES_IDENTIFIER, SPECIES_LABEL,
-        SPECIES_SUBLABEL, SPECIES_THUMBNAIL };
+    String[] columns = new String[] { SPECIES_ID, SPECIES_LABEL, SPECIES_SUBLABEL,
+        SPECIES_THUMBNAIL };
 
     return getSpeciesMatches(query, columns);
   }
@@ -200,11 +182,9 @@ public class FieldGuideDatabase {
    */
   @Nullable
   public Cursor getSpeciesDetails(String identifier, String[] columns) {
-    //String selection = SPECIES_IDENTIFIER + " = ?";
     String selection = SPECIES_ID + " = ?";
     String[] selectionArgs = new String[] { identifier };
 
-    //return query(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME, columns, selection, selectionArgs, null, null);
     return query(SPECIES_TABLE_NAME, columns, selection, selectionArgs, null, null);
   }
 
@@ -242,9 +222,6 @@ public class FieldGuideDatabase {
      * column names
      */
     SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-    // builder.setTables(SPECIES_TABLE_NAME +
-    // " LEFT OUTER JOIN bar ON ("+SPECIES_TABLE_NAME+".identifier = "+MEDIA_TABLE_NAME+".identifier)");
-    // builder.setTables(SPECIES_TABLE_NAME + "," + MEDIA_TABLE_NAME);
     builder.setTables(tables);
 
     Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(), columns, selection,
@@ -264,48 +241,20 @@ public class FieldGuideDatabase {
     return cursor;
   }
 
-  private Species cursorToSpecies(Cursor cursor) {
-    Species sp = new Species();
-
-    sp.setIdentifier(cursor.getString(1));
-    sp.setLabel(cursor.getString(2));
-    sp.setSublabel(cursor.getString(3));
-    sp.setSquareThumbnail(cursor.getString(4));
-
-    return sp;
-  }
-
   private final class FieldGuideOpenHelper extends SQLiteOpenHelper {
-    //private static final String SPECIES_TABLE_CREATE = "CREATE TABLE " + SPECIES_TABLE_NAME + " ("
-    //    + SPECIES_IDENTIFIER + " TEXT, "
-    //    + SPECIES_LABEL + " TEXT, "
-    //    + SPECIES_SUBLABEL + " TEXT, "
-    //    + SPECIES_SEARCHTEXT + " TEXT, "
-    //    + SPECIES_THUMBNAIL + " TEXT, "
-    //    + SPECIES_SEARCHICON + " TEXT, "
-    //    + SPECIES_GROUP + " TEXT, "
-    //    + SPECIES_SUBGROUP + " TEXT, "
-    //    + SPECIES_DESCRIPTION + " TEXT, "
-    //    + SPECIES_BITE + " TEXT, "
-    //    + SPECIES_BIOLOGY + " TEXT, "
-    //    + diet + " TEXT, "
-    //    + habitat + " TEXT, "
-    //    + nativeStatus + " TEXT, "
-    //    + distinctive + " TEXT, "
-    //    + distribution + " TEXT, "
-    //    + depth + " TEXT, "
-    //    + location + " TEXT, "
-    //    + taxaPhylum + " TEXT, "
-    //    + taxaClass + " TEXT, "
-    //    + taxaOrder + " TEXT, "
-    //    + taxaFamily + " TEXT, "
-    //    + taxaGenus + " TEXT, "
-    //    + taxaSpecies + " TEXT, "
-    //    + commonNames + " TEXT, "
-    //    + otherNames + " TEXT); ";
-    private static final String SPECIES_TABLE_CREATE = "CREATE TABLE "
-        + SPECIES_TABLE_NAME
-        + " (identifier TEXT, label TEXT, sublabel TEXT, searchText TEXT, squareThumbnail TEXT, searchIcon TEXT, groupLabel TEXT, subgroupLabel TEXT, description TEXT, bite TEXT, biology TEXT, diet TEXT, habitat TEXT, nativeStatus TEXT, distinctive TEXT, distribution TEXT, depth TEXT, location TEXT, isCommercial BOOL, taxaPhylum TEXT, taxaClass TEXT, taxaOrder TEXT, taxaFamily TEXT, taxaGenus TEXT, taxaSpecies TEXT, commonNames TEXT, otherNames TEXT); ";
+    private static final String SPECIES_TABLE_CREATE = "CREATE TABLE " + SPECIES_TABLE_NAME + " ("
+        + SPECIES_LABEL + " TEXT, "
+        + SPECIES_SUBLABEL + " TEXT, "
+        + SPECIES_SEARCHTEXT + " TEXT, "
+        + SPECIES_THUMBNAIL + " TEXT, "
+        + SPECIES_DESCRIPTION + " TEXT, "
+        + SPECIES_TAXA_ORDER + " TEXT, "
+        + SPECIES_TAXA_FAMILY + " TEXT, "
+        + SPECIES_TAXA_GENUS + " TEXT, "
+        + SPECIES_TAXA_SPECIES + " TEXT, "
+        + SPECIES_LICENSE + " TEXT, "
+        + SPECIES_LICENSE_LINK + " TEXT, "
+        + SPECIES_SEARCHICON + " TEXT); ";
     private static final String IMAGES_TABLE_CREATE = "CREATE TABLE " + IMAGES_TABLE_NAME + " ("
         + MEDIA_FILENAME + " TEXT, "
         + MEDIA_CAPTION + " TEXT, "
@@ -391,32 +340,17 @@ public class FieldGuideDatabase {
       String speciesSQL = getInsertSQL(
           SPECIES_TABLE_NAME,
           Arrays.asList(
-              SPECIES_IDENTIFIER,
               SPECIES_LABEL,
               SPECIES_SUBLABEL,
               SPECIES_SEARCHTEXT,
               SPECIES_THUMBNAIL,
-              SPECIES_GROUP,
-              SPECIES_SUBGROUP,
               SPECIES_DESCRIPTION,
-              SPECIES_BITE,
-              SPECIES_BIOLOGY,
-              SPECIES_DIET,
-              SPECIES_HABITAT,
-              SPECIES_NATIVE_STATUS,
-              SPECIES_DISTINCTIVE,
-              SPECIES_DISTRIBUTION,
-              SPECIES_DEPTH,
-              SPECIES_LOCATION,
-              SPECIES_IS_COMMERCIAL,
-              SPECIES_TAXA_PHYLUM,
-              SPECIES_TAXA_CLASS,
               SPECIES_TAXA_ORDER,
               SPECIES_TAXA_FAMILY,
               SPECIES_TAXA_GENUS,
               SPECIES_TAXA_SPECIES,
-              SPECIES_COMMON_NAMES,
-              SPECIES_OTHER_NAMES,
+              SPECIES_LICENSE,
+              SPECIES_LICENSE_LINK,
               SPECIES_SEARCHICON),
           speciesColumns);
 
@@ -462,52 +396,21 @@ public class FieldGuideDatabase {
         for (int i = 0; i < splist.size(); i++) {
           Species s = gson.fromJson(splist.get(i), Species.class);
 
-          speciesStatement.bindString(speciesColumns.get(SPECIES_IDENTIFIER), s.getIdentifier());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_LABEL), s.getLabel());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_SUBLABEL), s.getSublabel());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_SEARCHTEXT), s.getSearchText());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_THUMBNAIL), s.getSquareThumbnail());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_GROUP), s.getGroup());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_SUBGROUP), s.getSubgroup());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_DESCRIPTION), s.getDetails().getDescription());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_BITE), s.getDetails().getBite());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_BIOLOGY), s.getDetails().getBiology());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_DIET), s.getDetails().getDiet());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_HABITAT), s.getDetails().getHabitat());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_NATIVE_STATUS), s.getDetails().getNativeStatus());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_DISTINCTIVE), s.getDetails().getDistinctive());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_DISTRIBUTION), s.getDetails().getDistribution());
-          speciesStatement.bindString(speciesColumns.get(SPECIES_DEPTH), "");
-          speciesStatement.bindString(speciesColumns.get(SPECIES_LOCATION), "");
-          speciesStatement.bindLong(
-              speciesColumns.get(SPECIES_IS_COMMERCIAL), s.getDetails().isCommercial() ? 1 : 0);
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_PHYLUM), s.getDetails().getTaxaPhylum());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_CLASS), s.getDetails().getTaxaClass());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_ORDER), s.getDetails().getTaxaOrder());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_FAMILY), s.getDetails().getTaxaFamily());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_GENUS), s.getDetails().getTaxaGenus());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_TAXA_SPECIES), s.getDetails().getTaxaSpecies());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_COMMON_NAMES), s.getDetails().getCommonNames());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_OTHER_NAMES), s.getDetails().getOtherNames());
-          speciesStatement.bindString(
-              speciesColumns.get(SPECIES_SEARCHICON),
+          Log.i(TAG, s.getLabel() + s.getSublabel() + s.getSearchText());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_LABEL), s.getLabel());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_SUBLABEL), s.getSublabel());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_SEARCHTEXT), s.getSearchText());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_THUMBNAIL),
+              s.getSquareThumbnail());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_DESCRIPTION), s.getDescription());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_TAXA_ORDER), s.getOrder());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_TAXA_FAMILY), s.getFamily());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_TAXA_GENUS), s.getGenus());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_TAXA_SPECIES), s.getSpecies());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_LICENSE), s.getLicense());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_LICENSE_LINK),
+              s.getLicenseLink());
+          maybeBind(speciesStatement, speciesColumns.get(SPECIES_SEARCHICON),
               "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/"
                   + s.getSquareThumbnail());
 
@@ -518,11 +421,11 @@ public class FieldGuideDatabase {
           while (imgs.hasNext()) {
             Images img = imgs.next();
 
-            imageStatement.bindString(imagesColumns.get(MEDIA_FILENAME), img.getFilename());
-            imageStatement.bindString(imagesColumns.get(MEDIA_CAPTION), img.getImageDescription());
-            imageStatement.bindString(imagesColumns.get(MEDIA_CREDIT), img.getCredit());
-            imageStatement.bindString(
-                imagesColumns.get(MEDIA_SPECIES_ID), Long.toString(speciesId));
+            maybeBind(imageStatement, imagesColumns.get(MEDIA_FILENAME), img.getFilename());
+            maybeBind(imageStatement, imagesColumns.get(MEDIA_CAPTION), img.getImageDescription());
+            maybeBind(imageStatement, imagesColumns.get(MEDIA_CREDIT), img.getCredit());
+            maybeBind(imageStatement, imagesColumns.get(MEDIA_SPECIES_ID),
+                Long.toString(speciesId));
 
             imageStatement.executeInsert();
             imageStatement.clearBindings();
@@ -534,16 +437,16 @@ public class FieldGuideDatabase {
         for (int i = 0; i < groupsList.size(); ++i) {
           Group group = gson.fromJson(groupsList.get(i), Group.class);
 
-          groupsStatement.bindString(groupsColumns.get(GROUPS_ORDER), group.getOrder());
-          groupsStatement.bindString(groupsColumns.get(GROUPS_LABEL), group.getLabel());
-          groupsStatement.bindString(
-              groupsColumns.get(GROUPS_ICON_WHITE_FILENAME), group.getIconWhiteFilename());
-          groupsStatement.bindString(
-              groupsColumns.get(GROUPS_ICON_DARK_FILENAME), group.getIconDarkFilename());
-          groupsStatement.bindString(
-              groupsColumns.get(GROUPS_ICON_CREDIT), group.getIconCredit());
-          groupsStatement.bindString(
-              groupsColumns.get(GROUPS_DESCRIPTION), group.getDescription());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_ORDER), group.getOrder());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_LABEL), group.getLabel());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_WHITE_FILENAME),
+              group.getIconWhiteFilename());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_DARK_FILENAME),
+              group.getIconDarkFilename());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_CREDIT),
+              group.getIconCredit());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_DESCRIPTION),
+              group.getDescription());
 
           groupsStatement.executeInsert();
           groupsStatement.clearBindings();
@@ -562,6 +465,13 @@ public class FieldGuideDatabase {
       }
 
       Log.i(TAG, "Done populating database");
+    }
+
+    private void maybeBind(SQLiteStatement statement, int column, @Nullable String string) {
+      if (string == null) {
+        return;
+      }
+      statement.bindString(column, string);
     }
   }
 

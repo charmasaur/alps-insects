@@ -7,120 +7,119 @@ import java.util.Arrays;
  * Stores data about a species.
  */
 public class Species {
-  private String identifier;
-	private String label;
-	private String sublabel;
-	private String searchText;
-	private String squareThumbnail;
-	private String group;
-	private String subgroup;
-	private String template;
-	private Detail details;
-	private ArrayList<Images> images;
-	
-	public Species() {}
+  private String label;
+  private String sublabel;
+  private String searchText;
+  private String squareThumbnail;
+  private String description;
+  private String order;
+  private String family;
+  private String genus;
+  private String species;
+  private String license;
+  private String licenseLink;
+  private ArrayList<Images> images;
 
-	public String getIdentifier() {
-		return identifier;
-	}
+  public Species() {}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public String getLabel() {
-		return label;
-	}
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+  public String getSublabel() {
+    return sublabel;
+  }
 
-	public String getSublabel() {
-		return sublabel;
-	}
+  public void setSublabel(String sublabel) {
+    this.sublabel = sublabel;
+  }
 
-	public void setSublabel(String sublabel) {
-		this.sublabel = sublabel;
-	}
+  public String getSearchText() {
+    return searchText;
+  }
 
-	public String getSearchText() {
-		
-		if (searchText == null) {
-			searchText = ""; 
-			if (details != null) {
-				if (details.getOtherNames() != null && !details.getOtherNames().equals("null")) {
-					searchText += " " + details.getOtherNames().replaceAll(",", " "); 
-				}
-			}
-			searchText += (group.replaceAll(" and ", " ").replaceAll(" allies ", " ").replaceAll(",", "")).trim(); 
-			searchText += " " + subgroup + " " + label + " " + sublabel;
-		}
-		
-		return searchText.trim().toLowerCase();
-	}
+  public void setSearchText(String searchText) {
+    this.searchText = searchText;
+  }
 
-	public void setSearchText(String searchText) {
-		this.searchText = searchText;
-	}
+  public String getSquareThumbnail() {
+    return squareThumbnail;
+  }
 
-	public String getSquareThumbnail() {
-		return squareThumbnail;
-	}
+  public void setSquareThumbnail(String squareThumbnail) {
+    this.squareThumbnail = squareThumbnail;
+  }
 
-	public void setSquareThumbnail(String squareThumbnail) {
-		this.squareThumbnail = squareThumbnail;
-	}
+  public String getDescription() {
+    return description;
+  }
 
-	public String getGroup() {
-		return group;
-	}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+  public String getOrder() {
+    return order;
+  }
 
-	public String getSubgroup() {
-		if (subgroup == null) {
-			subgroup = ""; 
-		}
-		return subgroup;
-	}
+  public void setOrder(String order) {
+    this.order = order;
+  }
 
-	public void setSubgroup(String subgroup) {
-		this.subgroup = subgroup;
-	}
+  public String getFamily() {
+    return family;
+  }
 
-	public String getTemplate() {
-		return template;
-	}
+  public void setFamily(String family) {
+    this.family = family;
+  }
 
-	public void setTemplate(String template) {
-		this.template = template;
-	}
+  public String getGenus() {
+    return genus;
+  }
 
-	public Detail getDetails() {
-		return details;
-	}
+  public void setGenus(String genus) {
+    this.genus = genus;
+  }
 
-	public void setDetails(Detail details) {
-		this.details = details;
-	}
+  public String getSpecies() {
+    return species;
+  }
 
-	public ArrayList<Images> getImages() {
-		return images;
-	}
+  public void setSpecies(String species) {
+    this.species = species;
+  }
 
-	public void setImages(ArrayList<Images> images) {
-		this.images = images;
-	}
+  public String getLicense() {
+    return license;
+  }
 
-	@Override
-	public String toString() {
-		return "Species [identifier=" + identifier + ", label=" + label
-				+ ", sublabel=" + sublabel + ", searchText=" + searchText
-				+ ", squareThumbnail=" + squareThumbnail + ", group=" + group
-				+ ", subgroup=" + subgroup + ", template=" + template
-				+ ", details=" + details + ", images=" + images + "]";
-	}
+  public void setLicense(String license) {
+    this.license = license;
+  }
+
+  public String getLicenseLink() {
+    return licenseLink;
+  }
+
+  public void setLicenseLink(String licenseLink) {
+    this.licenseLink = licenseLink;
+  }
+
+  public ArrayList<Images> getImages() {
+    return images;
+  }
+
+  public void setImages(ArrayList<Images> images) {
+    this.images = images;
+  }
+
+  @Override
+  public String toString() {
+    return "Species [label=" + label + "]";
+  }
 }

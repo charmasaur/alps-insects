@@ -113,7 +113,7 @@ public class SpeciesGroupListFragment extends Fragment {
     public GroupListCursorAdapter(Context context, Cursor c, int flags) {
       super(context, c, flags);
 
-      mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_GROUP),
+      mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.GROUPS_LABEL),
           " ABCDEFGHIJKLMNOPQRTSUVWXYZ");
       mAlphabetIndexer.setCursor(c);
     }
