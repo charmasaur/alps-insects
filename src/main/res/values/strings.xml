@@ -36,6 +36,10 @@
     <string name="text_button_cancel">Cancel</string>
     <string name="text_button_cancel_verify">Cancel Verification</string>
     
+    <!-- Species details -->
+    <string name="species_tab_details">Details</string>
+    <string name="species_tab_other">Other</string>
+    <string name="species_heading_description">Description</string>
     
     <!-- Preferences -->
     <string name="pref_analytics_title">Send usage statistics</string>
