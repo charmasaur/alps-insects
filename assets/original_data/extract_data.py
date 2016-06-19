@@ -54,7 +54,7 @@ for (ide, order, family, genus, scientific_name, label, sublabel, italicise_subl
 
     entry = {
             "identifier" : ide,
-            "taxaOrder" : order,
+            "order" : order,
             "label" : label,
             "sublabel" : sublabel, # TODO: Italicise here?
             "italiciseSublabel" : get_bool(italicise_sublabel),
@@ -62,15 +62,16 @@ for (ide, order, family, genus, scientific_name, label, sublabel, italicise_subl
             "squareThumbnail" : thumb,
             "images" : get_images([p1, p2, p3, p4, p5, p6], [c1, c2, c3, c4, c5, c6])};
             
-    # TODO: Better to leave this fields unset or set them to the empty string?
     if is_present(family):
-        entry["taxaFamily"] = family;
+        entry["family"] = family;
     if is_present(genus):
-        entry["taxaGenus"] = genus;
+        entry["genus"] = genus;
     if is_present(scientific_name):
-        entry["scientificName"] = scientific_name;
-    if is_present(license_link):
+        entry["species"] = scientific_name;
+    if is_present(license):
         entry["licenseLink"] = license_link;
+    if is_present(license_link):
+        entry["license"] = license_link;
 
     species_entries.append(entry);
 
