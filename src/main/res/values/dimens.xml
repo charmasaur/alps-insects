@@ -22,4 +22,8 @@
     <dimen name="image_thumbnail_spacing">1dp</dimen>
     <dimen name="image_detail_pager_margin">10dp</dimen>
 
+    <dimen name="group_column_width">140dp</dimen>
+    <dimen name="group_item_padding_bottom">5dp</dimen>
+    <dimen name="group_item_spacing">10dp</dimen>
+
 </resources>

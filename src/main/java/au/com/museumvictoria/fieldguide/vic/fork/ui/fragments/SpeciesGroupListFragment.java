@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AlphabetIndexer;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +38,7 @@ public class SpeciesGroupListFragment extends Fragment {
 
   private Callback callback;
 
-  private ListView mListView;
+  private GridView groupList;
   private Cursor mCursor;
   private FieldGuideDatabase database;
   private GroupListCursorAdapter mAdapter;
@@ -76,11 +76,11 @@ public class SpeciesGroupListFragment extends Fragment {
     // column.
     mCursor = database.getSpeciesGroups(GroupListCursorAdapter.getRequiredColumns());
 
-    mListView = (ListView) getView().findViewById(R.id.group_list);
-    mListView.setFastScrollEnabled(true);
+    groupList = (GridView) getView().findViewById(R.id.group_list);
+    groupList.setFastScrollEnabled(true);
     mAdapter = new GroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
-    mListView.setAdapter(mAdapter);
-    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    groupList.setAdapter(mAdapter);
+    groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "Click" + position + " " + mAdapter.getItem(position));
@@ -140,10 +140,10 @@ public class SpeciesGroupListFragment extends Fragment {
           cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME));
       String iconPath = Utilities.SPECIES_GROUPS_PATH + iconLabel;
 
-      TextView txtView1 = (TextView) view.findViewById(R.id.speciesLabel);
+      TextView txtView1 = (TextView) view.findViewById(R.id.label);
       txtView1.setText(groupLabel);
 
-      ImageView imgView = (ImageView) view.findViewById(R.id.speciesIcon);
+      ImageView imgView = (ImageView) view.findViewById(R.id.icon);
       // imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromAsset(getActivity().getAssets(), iconPath, 75, 75));
 
       Log.w(TAG, "Getting AssetsFileDescriptor for species group icon: " + iconPath);
@@ -156,16 +156,12 @@ public class SpeciesGroupListFragment extends Fragment {
 //      imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(istr, 75, 75));
       imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
             Utilities.getFullExternalDataPath(context, iconPath), 75, 75));
-
-      TextView txtView2 = (TextView) view.findViewById(R.id.speciesSublabel);
-      // txtView2.setText(cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
-      txtView2.setVisibility(View.GONE);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
       LayoutInflater inflater = LayoutInflater.from(context);
-      View newView = inflater.inflate(R.layout.species_list, parent, false);
+      View newView = inflater.inflate(R.layout.group_item, parent, false);
       return newView;
     }
 

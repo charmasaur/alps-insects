@@ -3,9 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <ListView
+    <GridView
         android:id="@+id/group_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/group_item_spacing"
+        android:paddingRight="@dimen/group_item_spacing"
+        android:paddingTop="@dimen/group_item_spacing"
+        android:paddingBottom="@dimen/group_item_spacing"
+        android:columnWidth="@dimen/group_column_width"
+        android:verticalSpacing="@dimen/group_item_spacing"
+        android:horizontalSpacing="@dimen/group_item_spacing"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:gravity="center_horizontal"/>
 
 </FrameLayout>
