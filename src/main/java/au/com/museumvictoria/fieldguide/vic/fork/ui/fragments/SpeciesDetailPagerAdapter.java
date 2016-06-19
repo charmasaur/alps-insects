@@ -179,11 +179,22 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
         .setText(getColumnValue(FieldGuideDatabase.SPECIES_TAXA_ORDER));
     ((TextView) view.findViewById(R.id.taxa_family))
         .setText(getColumnValue(FieldGuideDatabase.SPECIES_TAXA_FAMILY));
-    // TODO: Hide iff appropriate.
-    ((TextView) view.findViewById(R.id.taxa_genus))
+
+    if (hasColumnValue(FieldGuideDatabase.SPECIES_TAXA_GENUS)) {
+      view.findViewById(R.id.taxa_genus_row).setVisibility(View.VISIBLE);
+      ((TextView) view.findViewById(R.id.taxa_genus))
         .setText(getColumnValue(FieldGuideDatabase.SPECIES_TAXA_GENUS));
-    ((TextView) view.findViewById(R.id.taxa_species))
+    } else {
+      view.findViewById(R.id.taxa_genus_row).setVisibility(View.GONE);
+    }
+
+    if (hasColumnValue(FieldGuideDatabase.SPECIES_TAXA_SPECIES)) {
+      view.findViewById(R.id.taxa_species_row).setVisibility(View.VISIBLE);
+      ((TextView) view.findViewById(R.id.taxa_species))
         .setText(getColumnValue(FieldGuideDatabase.SPECIES_TAXA_SPECIES));
+    } else {
+      view.findViewById(R.id.taxa_species_row).setVisibility(View.GONE);
+    }
 
     return view;
   }
@@ -196,6 +207,10 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
     ((TextView) view.findViewById(R.id.license_link)).setText("A license link");
 
     return view;
+  }
+
+  private boolean hasColumnValue(String columnName) {
+    return !detailsCursor.isNull(detailsCursor.getColumnIndex(columnName));
   }
 
   private String getColumnValue(String columnName) {
