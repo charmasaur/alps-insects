@@ -65,7 +65,9 @@ public class ImageDetailFragment extends Fragment {
   private Callback callback;
 
   private String imagePath;
+  @Nullable
   private String caption;
+  @Nullable
   private String credit;
 
   private NonBrokenImageViewTouch mImageView;
@@ -108,9 +110,13 @@ public class ImageDetailFragment extends Fragment {
       throw new RuntimeException("Missing arguments");
     }
     Cursor cursor = db.getImageDetails(getArguments().getString(IMAGE_ID_EXTRA), null);
-    imagePath = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_FILENAME));
-    caption = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_CAPTION));
-    credit = cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.MEDIA_CREDIT));
+    imagePath = getStringOrNull(cursor, FieldGuideDatabase.MEDIA_FILENAME);
+    if (imagePath == null) {
+      throw new RuntimeException("Missing image path for image: "
+          + getArguments().getString(IMAGE_ID_EXTRA));
+    }
+    caption = getStringOrNull(cursor, FieldGuideDatabase.MEDIA_CAPTION);
+    credit = getStringOrNull(cursor, FieldGuideDatabase.MEDIA_CREDIT);
     cursor.close();
   }
 
@@ -144,8 +150,18 @@ public class ImageDetailFragment extends Fragment {
     // set the default image display type
     mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
     mImageView.setImageDrawable(d);
-    mImageDescription.setText(Html.fromHtml(caption));
-    mImageCredit.setText(Html.fromHtml(credit));
+    if (caption != null) {
+      mImageDescription.setVisibility(View.VISIBLE);
+      mImageDescription.setText(Html.fromHtml(caption));
+    } else {
+      mImageDescription.setVisibility(View.GONE);
+    }
+    if (credit != null) {
+      mImageCredit.setVisibility(View.VISIBLE);
+      mImageCredit.setText(Html.fromHtml(credit));
+    } else {
+      mImageCredit.setVisibility(View.GONE);
+    }
 
     mImageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
       @Override
@@ -175,6 +191,14 @@ public class ImageDetailFragment extends Fragment {
   public void onDetach() {
     callback = null;
     super.onDetach();
+  }
+
+  private static String getStringOrNull(Cursor cursor, String columnName) {
+    int columnIndex = cursor.getColumnIndex(columnName);
+    if (cursor.isNull(columnIndex)) {
+      return null;
+    }
+    return cursor.getString(columnIndex);
   }
 
   private final Callback.Listener callbackListener = new Callback.Listener() {
