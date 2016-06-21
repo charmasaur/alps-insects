@@ -129,9 +129,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Blattodea",
+      "searchText": "Bark cockroach Laxta granicollis Cockroaches ",
       "species": "Laxta granicollis",
       "squareThumbnail": "thumb_001.jpg",
-      "sublabel": "Laxta granicollis"
+      "sublabel": "<i>Laxta granicollis</i>"
     },
     {
       "description": "This species is one of Australia's larger cockroaches, and often found in the damp soil beneath rotting logs. Members of this genus are easily recognized by their large, spiny legs. ",
@@ -149,9 +150,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Blattodea",
+      "searchText": "Australian woodland cockroach Panesthia australis Cockroaches ",
       "species": "Panesthia australis",
       "squareThumbnail": "thumb_002.jpg",
-      "sublabel": "Panesthia australis"
+      "sublabel": "<i>Panesthia australis</i>"
     },
     {
       "description": "These large, glossy, wingless cockroaches are often found in fallen tree back and leaf litter. ",
@@ -169,9 +171,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Blattodea",
+      "searchText": "Black woodland cockroach Platyzosteria melanaria Cockroaches ",
       "species": "Platyzosteria melanaria",
       "squareThumbnail": "thumb_003.jpg",
-      "sublabel": "Platyzosteria melanaria"
+      "sublabel": "<i>Platyzosteria melanaria</i>"
     },
     {
       "description": "This shimmering green flightless cockroach is one of the most charismatic insects of the Australian Alps. Both sexes of this species are wingless. ",
@@ -195,9 +198,10 @@
       "italiciseSublabel": true,
       "label": "Alpine metallic cockroach",
       "order": "Blattodea",
+      "searchText": "Alpine metallic cockroach Polyzosteria viridissima Cockroaches ",
       "species": "Polyzosteria viridissima",
       "squareThumbnail": "thumb_004.jpg",
-      "sublabel": "Polyzosteria viridissima"
+      "sublabel": "<i>Polyzosteria viridissima</i>"
     },
     {
       "description": "The genus Rhinotia and other belid weevils are called \"primitive\" because they lack the elbowed antennae and other specialized features of the \"higher\" weevils. Rhinotia is easily recognized by its long, narrow, pointed body with vivid white stripes along the underside.",
@@ -213,8 +217,9 @@
       "italiciseSublabel": true,
       "label": "Primitive weevils",
       "order": "Coleoptera",
+      "searchText": "Primitive weevils Rhinotia Beetles ",
       "squareThumbnail": "thumb_005.jpg",
-      "sublabel": "Rhinotia"
+      "sublabel": "<i>Rhinotia</i>"
     },
     {
       "description": "Like other species in the family Buprestidae, this large beetle is brightly coloured and can often be seen perching on leaves. These beetles are also known as \"borers\" for their laval habit of boring tunnels through the sapwood of trees and shrubs.",
@@ -230,9 +235,10 @@
       "italiciseSublabel": true,
       "label": "Jewel beetles",
       "order": "Coleoptera",
+      "searchText": "Jewel beetles Castiarina spp Beetles ",
       "species": "several",
       "squareThumbnail": "thumb_006.jpg",
-      "sublabel": "Castiarina spp."
+      "sublabel": "<i>Castiarina spp.</i>"
     },
     {
       "description": "This striking green-and-yellow beetle is most often spotted in the early spring, when mating pairs appear in vast swarms on buildings, vegetation, and other surfaces throughout Southeastern Australia. Despite its name, the soldier beetle does not bite; it does, however, exude a foul-tasting defensive chemical when threatened. ",
@@ -252,9 +258,10 @@
       "italiciseSublabel": true,
       "label": "Plague soldier beetle",
       "order": "Coleoptera",
+      "searchText": "Plague soldier beetle Chauliognathus lugubris Beetles ",
       "species": "Chauliognathus lugubris",
       "squareThumbnail": "thumb_007.jpg",
-      "sublabel": "Chauliognathus lugubris"
+      "sublabel": "<i>Chauliognathus lugubris</i>"
     },
     {
       "description": "Like other members of the family Carabidae, these large, black beetles are fast-moving predators of other small arthropods. As their name suggests, ground beetles can often be found on or in the soil, usually under stones or logs. ",
@@ -270,9 +277,10 @@
       "italiciseSublabel": true,
       "label": "Ground beetle",
       "order": "Coleoptera",
+      "searchText": "Ground beetle Percolestus blackburni Beetles ",
       "species": "Percolestus blackburni",
       "squareThumbnail": "thumb_008.jpg",
-      "sublabel": "Percolestus blackburni"
+      "sublabel": "<i>Percolestus blackburni</i>"
     },
     {
       "description": "These small, extremely glossy black beetles are predatory and often found in damp leaf litter at high elevations throughout New South Wales and Victoria. ",
@@ -290,8 +298,9 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Coleoptera",
+      "searchText": "Shining ground beetles Pseudagonica Beetles ",
       "squareThumbnail": "thumb_009.jpg",
-      "sublabel": "Pseudagonica"
+      "sublabel": "<i>Pseudagonica</i>"
     },
     {
       "description": "New South Wales is home to many species of these large, dome-shaped leaf beetles. Paropsines, like all leaf beetles, can be recognized by their wide, flattened feet (for gripping leaf surfaces) and prominent, jellybean-shaped eyes. All Paropsis species feed exclusively on eucalyptus leaves. ",
@@ -311,9 +320,10 @@
       "italiciseSublabel": true,
       "label": "Eucalyptus leaf beetles",
       "order": "Coleoptera",
+      "searchText": "Eucalyptus leaf beetles Castiarina spp Beetles ",
       "species": "several",
       "squareThumbnail": "thumb_010.jpg",
-      "sublabel": "Castiarina spp."
+      "sublabel": "<i>Castiarina spp.</i>"
     },
     {
       "description": "The most frequently spotted ladybird beetles are members of the subfamily Coccinellinae, which are typically medium-sized and dome-shaped, with bright red, black, and/or yellow colouration. These \"warning colours\" tell predators that the beetles are noxious and foul-tasting. ",
@@ -328,6 +338,7 @@
       "italiciseSublabel": false,
       "label": "Ladybird beetles",
       "order": "Coleoptera",
+      "searchText": "Ladybird beetles Family Coccinellidae Beetles ",
       "squareThumbnail": "thumb_012.jpg",
       "sublabel": "Family Coccinellidae"
     },
@@ -349,8 +360,9 @@
       "italiciseSublabel": true,
       "label": "Broad-nosed weevils",
       "order": "Coleoptera",
+      "searchText": "Broadnosed weevils Adelognatha Beetles ",
       "squareThumbnail": "thumb_013.jpg",
-      "sublabel": "Adelognatha"
+      "sublabel": "<i>Adelognatha</i>"
     },
     {
       "description": "These long, oval-shaped beetles superficially resemble jewel beetles (family Buprestidae) but can be recognized by their ability to flip or jump by \"clicking\" a special joint in their thorax. ",
@@ -365,6 +377,7 @@
       "italiciseSublabel": false,
       "label": "Click beetles",
       "order": "Coleoptera",
+      "searchText": "Click beetles Family Elateridae Beetles ",
       "squareThumbnail": "thumb_014.jpg",
       "sublabel": "Family Elateridae"
     },
@@ -384,9 +397,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Coleoptera",
+      "searchText": "Handsome fungus beetle Erotendomychus bimaculatus Beetles ",
       "species": "Erotendomychus bimaculatus",
       "squareThumbnail": "thumb_015.jpg",
-      "sublabel": "Erotendomychus bimaculatus"
+      "sublabel": "<i>Erotendomychus bimaculatus</i>"
     },
     {
       "description": "As their name suggests, these small, elongate beetles are usually spotted on or near flowers, where they feed on pollen or small insects. Like ladybirds and soldier beetles, melyrids are often brightly coloured to warn predators of their foul-tasting defensive chemicals.",
@@ -401,6 +415,7 @@
       "italiciseSublabel": false,
       "label": "Soft-winged flower beetles",
       "order": "Coleoptera",
+      "searchText": "Softwinged flower beetles Family Melyridae Beetles ",
       "squareThumbnail": "thumb_016.jpg",
       "sublabel": "Family Melyridae"
     },
@@ -421,6 +436,7 @@
       "italiciseSublabel": false,
       "label": "Feather-horned beetles",
       "order": "Coleoptera",
+      "searchText": "Featherhorned beetles Family Rhipiceridae Beetles ",
       "squareThumbnail": "thumb_017.jpg",
       "sublabel": "Family Rhipiceridae"
     },
@@ -446,8 +462,9 @@
       "italiciseSublabel": true,
       "label": "Green scarab beetles",
       "order": "Coleoptera",
+      "searchText": "Green scarab beetles Diphucephala spp Beetles ",
       "squareThumbnail": "thumb_018.jpg",
-      "sublabel": "Diphucephala spp."
+      "sublabel": "<i>Diphucephala spp.</i>"
     },
     {
       "description": "These large flies are big-eyed, swift-flying predators of other insects and are often seen resting on leaves or twigs with their freshly-caught prey.",
@@ -462,6 +479,7 @@
       "italiciseSublabel": false,
       "label": "Robber flies, Assassin flies",
       "order": "Diptera",
+      "searchText": "Robber flies Assassin flies Family Asilidae Flies ",
       "squareThumbnail": "thumb_019.jpg",
       "sublabel": "Family Asilidae"
     },
@@ -479,9 +497,10 @@
       "italiciseSublabel": true,
       "label": "Bush fly",
       "order": "Diptera",
+      "searchText": "Bush fly Musca vetustissima Flies ",
       "species": "Musca vetustissima",
       "squareThumbnail": "thumb_020.jpg",
-      "sublabel": "Musca vetustissima"
+      "sublabel": "<i>Musca vetustissima</i>"
     },
     {
       "description": "Hoverflies may mimic wasps with their vivid black and yellow stripes, but these flies do not bite or sting and are usually seen hovering near (or perching on) flowers.",
@@ -496,6 +515,7 @@
       "italiciseSublabel": false,
       "label": "Hoverflies",
       "order": "Diptera",
+      "searchText": "Hoverflies Family Syrphidae Flies ",
       "squareThumbnail": "thumb_021.jpg",
       "sublabel": "Family Syrphidae"
     },
@@ -521,8 +541,9 @@
       "italiciseSublabel": true,
       "label": "Horse flies, March flies",
       "order": "Diptera",
+      "searchText": "Horse flies March flies Scaptia spp Flies ",
       "squareThumbnail": "thumb_022.jpg",
-      "sublabel": "Scaptia spp."
+      "sublabel": "<i>Scaptia spp.</i>"
     },
     {
       "description": "These small flies are found anywhere near ripe fruit. Alpine species often lay eggs into the seeds of daisies (Asteraceae). ",
@@ -537,6 +558,7 @@
       "italiciseSublabel": false,
       "label": "Fruit flies",
       "order": "Diptera",
+      "searchText": "Fruit flies Family Tephritidae Flies ",
       "squareThumbnail": "thumb_023.jpg",
       "sublabel": "Family Tephritidae"
     },
@@ -557,6 +579,7 @@
       "italiciseSublabel": false,
       "label": "Crane flies",
       "order": "Diptera",
+      "searchText": "Crane flies Family Tipulidae Flies ",
       "squareThumbnail": "thumb_024.jpg",
       "sublabel": "Family Tipulidae"
     },
@@ -574,9 +597,10 @@
       "italiciseSublabel": true,
       "label": "Mayfly",
       "order": "Ephemeroptera",
+      "searchText": "Mayfly Ameletoides lacusalbiniae Mayflies ",
       "species": "Ameletoides lacusalbiniae",
       "squareThumbnail": "thumb_025.jpg",
-      "sublabel": "Ameletoides lacusalbiniae"
+      "sublabel": "<i>Ameletoides lacusalbiniae</i>"
     },
     {
       "description": "These tiny, plant-feeding bugs are a favorite prey of ladybird beetles and lacewings. Aphids are often found in large groups on their host plant, with many different life stages clustered together. In early spring, it is common to see dead aphids littering the snow. They are blown up to the mountains from surrounding countryside and die on the snow.",
@@ -595,6 +619,7 @@
       "italiciseSublabel": false,
       "label": "Aphids",
       "order": "Hemiptera",
+      "searchText": "Aphids Family Aphididae True bugs ",
       "squareThumbnail": "thumb_026.jpg",
       "sublabel": "Family Aphididae"
     },
@@ -611,6 +636,7 @@
       "italiciseSublabel": false,
       "label": "Leafhoppers",
       "order": "Hemiptera",
+      "searchText": "Leafhoppers Family Cicadellidae True bugs ",
       "squareThumbnail": "thumb_027.jpg",
       "sublabel": "Family Cicadellidae"
     },
@@ -628,6 +654,7 @@
       "italiciseSublabel": false,
       "label": "Cicadas",
       "order": "Hemiptera",
+      "searchText": "Cicadas Family Cicadidae True bugs ",
       "squareThumbnail": "thumb_028.jpg",
       "sublabel": "Family Cicadidae"
     },
@@ -648,6 +675,7 @@
       "italiciseSublabel": false,
       "label": "Stink bugs, Shield bugs",
       "order": "Hemiptera",
+      "searchText": "Stink bugs Shield bugs Family Pentatomidae True bugs ",
       "squareThumbnail": "thumb_029.jpg",
       "sublabel": "Family Pentatomidae"
     },
@@ -665,9 +693,10 @@
       "italiciseSublabel": true,
       "label": "Bicolour xylopine",
       "order": "Hymenoptera",
+      "searchText": "Bicolour xylopine Exoneura bicolor Bees wasps and ants ",
       "species": "Exoneura bicolor",
       "squareThumbnail": "thumb_030.jpg",
-      "sublabel": "Exoneura bicolor"
+      "sublabel": "<i>Exoneura bicolor</i>"
     },
     {
       "description": "These graceful, slender wasps area often seen hunting for other insects to use as provisions for their larvae. Female parasitoid wasps can be recognized by the long, slender ovipositor arising from the tip of the abdomen. ",
@@ -686,6 +715,7 @@
       "italiciseSublabel": false,
       "label": "Braconid wasps",
       "order": "Hymenoptera",
+      "searchText": "Braconid wasps Family Braconidae Bees wasps and ants ",
       "squareThumbnail": "thumb_031.jpg",
       "sublabel": "Family Braconidae"
     },
@@ -707,6 +737,7 @@
       "italiciseSublabel": false,
       "label": "Rainbow ants",
       "order": "Hymenoptera",
+      "searchText": "Rainbow ants Family Formicidae Bees wasps and ants ",
       "squareThumbnail": "thumb_032.jpg",
       "sublabel": "Family Formicidae"
     },
@@ -724,9 +755,10 @@
       "italiciseSublabel": true,
       "label": "Jack-jumper ant",
       "order": "Hymenoptera",
+      "searchText": "Jackjumper ant Myrmecia forficata Bees wasps and ants ",
       "species": "Myrmecia forficata",
       "squareThumbnail": "thumb_033.jpg",
-      "sublabel": "Myrmecia forficata"
+      "sublabel": "<i>Myrmecia forficata</i>"
     },
     {
       "description": "As adults, these insects have wasp-like heads and wings but lack the slender, constricted waist characteristic of other Hymenoptera. The caterpillar-like larvae of sawflies are known as \"spitfires\" and are often found in dense family groups, feeding together on Eucalyptus leaves. ",
@@ -750,9 +782,10 @@
       "italiciseSublabel": true,
       "label": "Sawfly",
       "order": "Hymenoptera",
+      "searchText": "Sawfly Pseudoperga lewisii Bees wasps and ants ",
       "species": "Pseudoperga lewisii",
       "squareThumbnail": "thumb_034.jpg",
-      "sublabel": "Pseudoperga lewisii"
+      "sublabel": "<i>Pseudoperga lewisii</i>"
     },
     {
       "description": "Although these moths are typically drab brown as adults, geometrid caterpillars are easily recognized by their \"inching\" gait as they travel across vegetation.",
@@ -775,6 +808,7 @@
       "italiciseSublabel": false,
       "label": "Geometer moths",
       "order": "Lepidoptera",
+      "searchText": "Geometer moths Family Geometridae Moths  butterflies ",
       "squareThumbnail": "thumb_035.jpg",
       "sublabel": "Family Geometridae"
     },
@@ -794,9 +828,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Lepidoptera",
+      "searchText": "Grass skippers Anisynta dominula Anisynta monticolae Moths  butterflies ",
       "species": "Anisynta dominula, Anisynta monticolae",
       "squareThumbnail": "thumb_036.jpg",
-      "sublabel": "Anisynta dominula, Anisynta monticolae"
+      "sublabel": "<i>Anisynta dominula, Anisynta monticolae</i>"
     },
     {
       "description": "Skipper butterflies can be recognized by their relatively small size, stout bodies, and characteristic \"semi-erect\" wing posture. The underside of the wing is typically more vividly patterned than the dorsal side.",
@@ -818,9 +853,10 @@
       "license": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "licenseLink": "http://creativecommons.org/licenses/by-nc/3.0/au/",
       "order": "Lepidoptera",
+      "searchText": "Alpine Sedgeskipper Oreisplanus munionga Moths  butterflies ",
       "species": "Oreisplanus munionga",
       "squareThumbnail": "thumb_037.jpg",
-      "sublabel": "Oreisplanus munionga"
+      "sublabel": "<i>Oreisplanus munionga</i>"
     },
     {
       "description": "These small, delicate butterflies are often blue-winged, but may also be copper-coloured or purple. They can be recognized by their small size, black-and-white banded antennae, and fine white border along the outer edges of the wings. Many species have small eyespots on the underside of the hindwing.",
@@ -839,6 +875,7 @@
       "italiciseSublabel": false,
       "label": "Gossamer-winged butterflies",
       "order": "Lepidoptera",
+      "searchText": "Gossamerwinged butterflies Family Lycaenidae Moths  butterflies ",
       "squareThumbnail": "thumb_038.jpg",
       "sublabel": "Family Lycaenidae"
     },
@@ -856,9 +893,10 @@
       "italiciseSublabel": true,
       "label": "Bogong moth",
       "order": "Lepidoptera",
+      "searchText": "Bogong moth Agrotis infusa Moths  butterflies ",
       "species": "Agrotis infusa",
       "squareThumbnail": "thumb_039.jpg",
-      "sublabel": "Agrotis infusa"
+      "sublabel": "<i>Agrotis infusa</i>"
     },
     {
       "description": "This alpine butterfly belongs to the family Nymphalidae and can be recognized by its checkerspot wing pattern with both dorsal and ventral eyespots. ",
@@ -878,9 +916,10 @@
       "italiciseSublabel": true,
       "label": "Silver Xenica",
       "order": "Lepidoptera",
+      "searchText": "Silver Xenica Oreixenica orichora Oreixenica correae Moths  butterflies ",
       "species": "Oreixenica orichora, Oreixenica correae",
       "squareThumbnail": "thumb_040.jpg",
-      "sublabel": "Oreixenica orichora, Oreixenica correae"
+      "sublabel": "<i>Oreixenica orichora, Oreixenica correae</i>"
     },
     {
       "description": "These moths are large, attractive insects with broad, feather-like antennae and usually with conspicuous eyespots on the dorsal side of the wings. Larvae are enormous caterpillars, often found feeding on the leaves of gum trees. This group is not common in the mountains, but the emperor gum moth (Opodiphthera eucalypti) and Helena moth (Opodiphthera helena) are sometimes found in montane woodlands.",
@@ -907,6 +946,7 @@
       "italiciseSublabel": false,
       "label": "Saturniid moths",
       "order": "Lepidoptera",
+      "searchText": "Saturniid moths Family Saturniidae Moths  butterflies ",
       "squareThumbnail": "thumb_042.jpg",
       "sublabel": "Family Saturniidae"
     },
@@ -928,9 +968,10 @@
       "italiciseSublabel": true,
       "label": "Long-tailed bombyx",
       "order": "Lepidoptera",
+      "searchText": "Longtailed bombyx Trichiocercus sparshalli Moths  butterflies ",
       "species": "Trichiocercus sparshalli",
       "squareThumbnail": "thumb_043.jpg",
-      "sublabel": "Trichiocercus sparshalli"
+      "sublabel": "<i>Trichiocercus sparshalli</i>"
     },
     {
       "description": "These scorpionflies derive their common name from the habit of dangling from vegetation by their hooked feet, waiting to ambush small prey. ",
@@ -944,6 +985,7 @@
       "italiciseSublabel": false,
       "label": "Hangingflies",
       "order": "Mecoptera",
+      "searchText": "Hangingflies Family Bittacidae Scorpionflies ",
       "squareThumbnail": "thumb_044.jpg",
       "sublabel": "Family Bittacidae"
     },
@@ -961,6 +1003,7 @@
       "italiciseSublabel": false,
       "label": "Mantisflies",
       "order": "Neuroptera",
+      "searchText": "Mantisflies Family Mantispidae Lacewings  mantisflies ",
       "squareThumbnail": "thumb_045.jpg",
       "sublabel": "Family Mantispidae"
     },
@@ -982,9 +1025,10 @@
       "italiciseSublabel": true,
       "label": "Alpine darner",
       "order": "Odonata",
+      "searchText": "Alpine darner Austroaeschna flavomaculata Dragonflies  damselflies ",
       "species": "Austroaeschna flavomaculata",
       "squareThumbnail": "thumb_046.jpg",
-      "sublabel": "Austroaeschna flavomaculata"
+      "sublabel": "<i>Austroaeschna flavomaculata</i>"
     },
     {
       "description": "The common montane grasshopper is common on mountains below 1600 m in New South Wales and the Australian Capital Territory. It is less common in Victoria, but can be found on the Bogong High Plains and near Mt Hotham. Males and females have black \"knees\", which distinguishes them from close relatives, and their colouring ranges from brown to green-brown. Adults can be found between January and May. This species has short wings and cannot fly.",
@@ -1000,9 +1044,10 @@
       "italiciseSublabel": true,
       "label": "Common montane grasshopper",
       "order": "Orthoptera",
+      "searchText": "Common montane grasshopper Kosciuscola cognatus Grasshoppers crickets  katydids ",
       "species": "Kosciuscola cognatus",
       "squareThumbnail": "thumb_047.jpg",
-      "sublabel": "Kosciuscola cognatus"
+      "sublabel": "<i>Kosciuscola cognatus</i>"
     },
     {
       "description": "The brown kosciuscola is the least common of the four Kosicuscola species that are found on the mainland. Although it can be found in sub-alpine areas of Victoria, New South Wales and the Australian Capital Territory, it usually occurs in low numbers. Males and females are dark brown with black \"knees\", making them difficult to distinguish from the common montane grasshopper (Kosciuscola cognatus). A thick pale stripe across the top of each wing can usually be used to identify the brown kosciuscola. This species has short wings and cannot fly.",
@@ -1018,9 +1063,10 @@
       "italiciseSublabel": true,
       "label": "Brown kosciuscola",
       "order": "Orthoptera",
+      "searchText": "Brown kosciuscola Kosciuscola cuneatus Grasshoppers crickets  katydids ",
       "species": "Kosciuscola cuneatus",
       "squareThumbnail": "thumb_048.jpg",
-      "sublabel": "Kosciuscola cuneatus"
+      "sublabel": "<i>Kosciuscola cuneatus</i>"
     },
     {
       "description": "The common kosciuscola is common in the Australian Capital Territory, New South Wales and northern Victorian mountains, above 1500 m. It is often found together with the alpine thermocolour grasshopper, but is easily distinguished from that species by its grassy-green colour and two yellow stripes that run down its head and back. Adults are often found in high densitites between February and May. This species has short wings and cannot fly.",
@@ -1044,9 +1090,10 @@
       "italiciseSublabel": true,
       "label": "Common Kosciuscola ",
       "order": "Orthoptera",
+      "searchText": "Common Kosciuscola  Kosciuscola usitatus Grasshoppers crickets  katydids ",
       "species": "Kosciuscola usitatus",
       "squareThumbnail": "thumb_049.jpg",
-      "sublabel": "Kosciuscola usitatus"
+      "sublabel": "<i>Kosciuscola usitatus</i>"
     },
     {
       "description": "The alpine thermocolour (or chameleon) grasshopper is the most common grasshopper above 1600 m. Males are easily distinguished from other species by their bright blue colour, while the much larger females are mottled brown. The species is found from Mt Baw Baw north to Mt Jagungal and adults occur in high densitites between February and May. Like many mountain grasshoppers, and all of the Kosciuscola, this species has short wings and cannot fly.",
@@ -1082,9 +1129,10 @@
       "italiciseSublabel": true,
       "label": "Alpine thermocolour grasshopper, Chameleon grasshopper",
       "order": "Orthoptera",
+      "searchText": "Alpine thermocolour grasshopper Chameleon grasshopper Kosicuscola tristis Grasshoppers crickets  katydids ",
       "species": "Kosicuscola tristis",
       "squareThumbnail": "thumb_050.jpg",
-      "sublabel": "Kosicuscola tristis"
+      "sublabel": "<i>Kosicuscola tristis</i>"
     },
     {
       "description": "Not a lot is known about this grasshopper, which can be found in sub-alpine areas of Victoria and New South Wales. It is found in sub-alpine shrubs, and can sometimes be seen laying eggs on foot tracks. It is a member of the sub-family Catantopinae, the \"spur-throated grasshoppers\", which are enormously diverse in Australia. ",
@@ -1100,9 +1148,10 @@
       "italiciseSublabel": true,
       "label": "Mountain grasshopper",
       "order": "Orthoptera",
+      "searchText": "Mountain grasshopper Percassa rugifrons Grasshoppers crickets  katydids ",
       "species": "Percassa rugifrons",
       "squareThumbnail": "thumb_051.jpg",
-      "sublabel": "Percassa rugifrons"
+      "sublabel": "<i>Percassa rugifrons</i>"
     },
     {
       "description": "Although called the wingless grasshopper, many individuals (particularly at low elevations) have wings and can fly. Wingless grasshoppers are widespread throughout Australia and can be found from lowland areas up to around 1800 m. ",
@@ -1118,9 +1167,10 @@
       "italiciseSublabel": true,
       "label": "Wingless grasshopper",
       "order": "Orthoptera",
+      "searchText": "Wingless grasshopper Phaulacridium vittatum Grasshoppers crickets  katydids ",
       "species": "Phaulacridium vittatum",
       "squareThumbnail": "thumb_052.jpg",
-      "sublabel": "Phaulacridium vittatum"
+      "sublabel": "<i>Phaulacridium vittatum</i>"
     },
     {
       "description": "These small, black, crickets are common in the Australian Alps. They are usually found in grassland and are very active on sunny days. They are small (7-9 mm), so keep a sharp eye out for them. Like most crickets, male Bobilla \"chirp\" by rubbing their wings together. At least three species of Bobilla live in the Australian Alps, (B. victoriae, B. gullanae, and B. plurampe) but they are virtually indistinguishable in the field.",
@@ -1140,8 +1190,9 @@
       "italiciseSublabel": true,
       "label": "Grassland pygmy cricket",
       "order": "Orthoptera",
+      "searchText": "Grassland pygmy cricket Bobilla sp Grasshoppers crickets  katydids ",
       "squareThumbnail": "thumb_053.jpg",
-      "sublabel": "Bobilla sp."
+      "sublabel": "<i>Bobilla sp.</i>"
     },
     {
       "description": "The mountain spotted grasshopper is an easily identified species with its black body and yellow or white spots. This species makes its own anti-freeze, allowing it to survive cold alpine winters and be among the first insects to emerge after the snow melts. This species has short wings and cannot fly.",
@@ -1174,9 +1225,10 @@
       "italiciseSublabel": true,
       "label": "Mountain spotted grasshopper",
       "order": "Orthoptera",
+      "searchText": "Mountain spotted grasshopper Monistria concinna Grasshoppers crickets  katydids ",
       "species": "Monistria concinna",
       "squareThumbnail": "thumb_054.jpg",
-      "sublabel": "Monistria concinna"
+      "sublabel": "<i>Monistria concinna</i>"
     },
     {
       "description": "Also called the \"alpine grasshopper\", this charismatic species is highly recognisable. When startled, they lift their wings to reveal a bright, red-and-blue striped abdomen. Males have long wings and can often be found basking on their sides in the sun. They produce a buzzing sound by rubbing their wings together. They are common above 1500 m in snowgum understory, but can also be found at lower elevations.",
@@ -1211,9 +1263,10 @@
       "italiciseSublabel": true,
       "label": "Mountain katydid",
       "order": "Orthoptera",
+      "searchText": "Mountain katydid Acripeza reticulata Grasshoppers crickets  katydids ",
       "species": "Acripeza reticulata",
       "squareThumbnail": "thumb_055.jpg",
-      "sublabel": "Acripeza reticulata"
+      "sublabel": "<i>Acripeza reticulata</i>"
     },
     {
       "description": "This katydid is common below the treeline, particularly in and around low shrubs. It is darkly coloured and has a distinctive jerking motion when it jumps. Unlike many katydids, it is not predaceous and instead eats flowers, seeds, and grass.  The only species in the Austrodectes genus, A. monticolus is also the only Australian member of the katydid sub-family tettigoniinae to occur at high elevation.",
@@ -1233,9 +1286,10 @@
       "italiciseSublabel": true,
       "label": "Alpine katydid, Australian shield-back",
       "order": "Orthoptera",
+      "searchText": "Alpine katydid Australian shieldback Austrodectes monticolus Grasshoppers crickets  katydids ",
       "species": "Austrodectes monticolus",
       "squareThumbnail": "thumb_056.jpg",
-      "sublabel": "Austrodectes monticolus"
+      "sublabel": "<i>Austrodectes monticolus</i>"
     },
     {
       "description": "Stick insects are long, slender insects that specialize in mimicking leaves and twigs. When not moving, these insects are extremely difficult to spot. In the Alps, stick insects are rare.",
@@ -1255,6 +1309,7 @@
       "italiciseSublabel": false,
       "label": "Stick insects",
       "order": "Phasmatodea",
+      "searchText": "Stick insects Family Phasmatidae Stick insects ",
       "squareThumbnail": "thumb_057.jpg",
       "sublabel": "Family Phasmatidae"
     },
@@ -1272,9 +1327,10 @@
       "italiciseSublabel": true,
       "label": "Stonefly",
       "order": "Plecoptera",
+      "searchText": "Stonefly Eusthenia venosa Stoneflies ",
       "species": "Eusthenia venosa",
       "squareThumbnail": "thumb_058.jpg",
-      "sublabel": "Eusthenia venosa"
+      "sublabel": "<i>Eusthenia venosa</i>"
     },
     {
       "description": "Tinzeda is a classic leaf mimic, a camouflage strategy common among katydids around the world. They can be recognised by their characteristic white wing stripes that resemble leaf veins. Two species of Tinzeda, T. soror (Kosciuszko tinzeda) and T. albosignata (Stout tinzeda) occur in the Australian Alps, often together, and are difficult to tell apart. Both males and females are long-winged and able to fly and they are usually encountered in shrubbery in the sub-alpine zone.",
@@ -1294,9 +1350,10 @@
       "italiciseSublabel": true,
       "label": "Kosciuszko tinzeda, Stout tinzeda",
       "order": "Orthoptera",
+      "searchText": "Kosciuszko tinzeda Stout tinzeda Tinzeda soror Tinzeda albosignata Grasshoppers crickets  katydids ",
       "species": "Tinzeda soror, Tinzeda albosignata",
       "squareThumbnail": "thumb_059.jpg",
-      "sublabel": "Tinzeda soror, Tinzeda albosignata"
+      "sublabel": "<i>Tinzeda soror, Tinzeda albosignata</i>"
     },
     {
       "description": "The European honey bee is the most common and widely distributed of all bees. It is a generalist and can be found on a wide range of native and non-native flower species. It has only recently been recorded in the Australian Alps but is now very common across the Bogong High Plains. ",
@@ -1316,9 +1373,10 @@
       "italiciseSublabel": true,
       "label": "European honey bee",
       "order": "Hymenoptera",
+      "searchText": "European honey bee Apis mellifera Bees wasps and ants ",
       "species": "Apis mellifera",
       "squareThumbnail": "thumb_060.jpg",
-      "sublabel": "Apis mellifera"
+      "sublabel": "<i>Apis mellifera</i>"
     },
     {
       "description": "These tiny flies (usually < 5 mm) are common but easily missed. Not much is known about their ecology but, in the mountains, they are often found on alpine daisies. ",
@@ -1337,6 +1395,7 @@
       "italiciseSublabel": false,
       "label": "Frit flies, Grass flies",
       "order": "Diptera",
+      "searchText": "Frit flies Grass flies Family Chloropidae Flies ",
       "squareThumbnail": "thumb_061.jpg",
       "sublabel": "Family Chloropidae"
     },
@@ -1358,9 +1417,10 @@
       "italiciseSublabel": true,
       "label": "Owlet moth",
       "order": "Lepidoptera",
+      "searchText": "Owlet moth Phalaenoides tristifica Moths  butterflies ",
       "species": "Phalaenoides tristifica",
       "squareThumbnail": "thumb_062.jpg",
-      "sublabel": "Phalaenoides tristifica"
+      "sublabel": "<i>Phalaenoides tristifica</i>"
     },
     {
       "description": "The endangered Alpine Stonefly is found only on the Bogong High Plains in Victoria and is known from only 12 sites within this region. Nymphs are usually found in narrow, stony streams, while adults live in nearby rocks and vegetation. The species is long-lived, spending approximately three years developing to the adult stage. Adults emerge between February and May each year, and live for only two months. The largest of Australia's stoneflies, the nymphs are also the top insect predators in streams and eat a variety of both plant and animal material.",
@@ -1376,9 +1436,10 @@
       "italiciseSublabel": true,
       "label": "Alpine stonefly",
       "order": "Plecoptera",
+      "searchText": "Alpine stonefly Thaumatoperla alpina Stoneflies ",
       "species": "Thaumatoperla alpina",
       "squareThumbnail": "thumb_063.jpg",
-      "sublabel": "Thaumatoperla alpina"
+      "sublabel": "<i>Thaumatoperla alpina</i>"
     },
     {
       "description": "These peculiar moths are often encountered as caterpillars, when they construct and live in a \"bag\" of twigs, leaf fragments, or pine needles. Adults are hairy, drab, and rather disheveled in appearance; in many species, adult females are soft-bodied and completely wingless. The alpine case moth is one of two species (the other being the alpine swift moth/grass grub) often blamed for large-scale damage to snowgrass (Poa spp.).",
@@ -1394,9 +1455,10 @@
       "italiciseSublabel": true,
       "label": "Alpine case moth",
       "order": "Lepidoptera",
+      "searchText": "Alpine case moth Lomera caespitosae Moths  butterflies ",
       "species": "Lomera caespitosae",
       "squareThumbnail": "thumb_064.jpg",
-      "sublabel": "Lomera caespitosae"
+      "sublabel": "<i>Lomera caespitosae</i>"
     }
   ],
   "version": 1.0

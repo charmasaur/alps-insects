@@ -16,9 +16,7 @@ import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,19 +138,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
     Log.i(TAG, "Species selected: " + speciesId);
 
-    // TODO: Consider moving the formatting of the labels into the fragment.
-    SpannableString subnameFormatted;
     // TODO: For now just hide the secondary text (since the italicisation looks silly -- too
     // slanted), but if Rachel thinks we should show it always then we can figure something out.
     subname = null;
-    if (subname == null) {
-      subnameFormatted = null;
-    } else {
-      subnameFormatted = new SpannableString(subname);
-      subnameFormatted.setSpan(new StyleSpan(Typeface.ITALIC), 0, subname.length(),
-          Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
-    backStackScreens.put("SPECIES", new Screen(name, subnameFormatted));
+    backStackScreens.put("SPECIES",
+        new Screen(Html.fromHtml(name), subname == null ? null : Html.fromHtml(subname)));
     setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES");
   }
 

@@ -151,7 +151,6 @@ public class FieldGuideContentProvider extends ContentProvider {
     // Need _id so that the suggestions can show in a list.
 		String[] columns = new String[] { FieldGuideDatabase.SPECIES_ID + " AS _id",
 				FieldGuideDatabase.SPECIES_LABEL + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1,
-				FieldGuideDatabase.SPECIES_SUBLABEL + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_2,
 				FieldGuideDatabase.SPECIES_SEARCHICON + " AS " + SearchManager.SUGGEST_COLUMN_ICON_1,
 				FieldGuideDatabase.SPECIES_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID };
 

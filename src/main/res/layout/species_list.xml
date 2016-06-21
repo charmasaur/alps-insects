@@ -32,7 +32,6 @@
         android:layout_toRightOf="@id/speciesIcon"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:textSize="14dp"
-        android:textStyle="italic" />
+        android:textSize="14dp" />
 
 </RelativeLayout>

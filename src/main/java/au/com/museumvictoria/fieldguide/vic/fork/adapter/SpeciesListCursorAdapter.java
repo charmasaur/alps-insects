@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,13 +40,13 @@ public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIn
     TextView sublabelView = (TextView) view.findViewById(R.id.speciesSublabel);
     ImageView iconView = (ImageView) view.findViewById(R.id.speciesIcon);
 
-    labelView.setText(getLabel(cursor));
+    labelView.setText(Html.fromHtml(getLabel(cursor)));
     String sublabel = getSublabel(cursor);
     if (sublabel == null) {
       sublabelView.setVisibility(View.GONE);
     } else {
       sublabelView.setVisibility(View.VISIBLE);
-      sublabelView.setText(sublabel);
+      sublabelView.setText(Html.fromHtml(sublabel));
     }
 
     String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH

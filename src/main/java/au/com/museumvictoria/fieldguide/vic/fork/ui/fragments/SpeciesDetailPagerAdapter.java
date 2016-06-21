@@ -165,12 +165,16 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
     Log.i(TAG, "Loaded " + imagesCounter + " images");
 
     ((TextView) view.findViewById(R.id.label)).setText(
-        getColumnValue(FieldGuideDatabase.SPECIES_LABEL));
+        Html.fromHtml(getColumnValue(FieldGuideDatabase.SPECIES_LABEL)));
 
     TextView sublabelView = (TextView) view.findViewById(R.id.sublabel);
-    sublabelView.setText(getColumnValue(FieldGuideDatabase.SPECIES_SUBLABEL));
-    // TODO: Set italic iff it's meant to be.
-    sublabelView.setTypeface(sublabelView.getTypeface(), Typeface.ITALIC);
+    String sublabel = getColumnValue(FieldGuideDatabase.SPECIES_SUBLABEL);
+    if (sublabel == null) {
+      sublabelView.setVisibility(View.GONE);
+    } else {
+      sublabelView.setText(Html.fromHtml(sublabel));
+      sublabelView.setVisibility(View.VISIBLE);
+    }
 
     ((TextView) view.findViewById(R.id.description)).setText(Html.fromHtml(
         getColumnValue(FieldGuideDatabase.SPECIES_DESCRIPTION)));
