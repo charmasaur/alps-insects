@@ -7,6 +7,7 @@ public class Group {
   private String iconDarkFilename;
   private String iconCredit;
   private String description;
+  private String licenseLink;
 
 	public Group() {}
 
@@ -57,4 +58,12 @@ public class Group {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+  public String getLicenseLink() {
+    return licenseLink;
+  }
+
+  public void setLicenseLink(String licenseLink) {
+    this.licenseLink = licenseLink;
+  }
 }

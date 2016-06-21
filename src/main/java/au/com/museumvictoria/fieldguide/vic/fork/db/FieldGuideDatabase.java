@@ -42,7 +42,7 @@ public class FieldGuideDatabase {
   private static final String TAG = FieldGuideDatabase.class.getSimpleName();
 
   // database
-  private static final int DATABASE_VERSION = 3;
+  private static final int DATABASE_VERSION = 4;
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";
@@ -86,6 +86,7 @@ public class FieldGuideDatabase {
   public static final String GROUPS_ICON_WHITE_FILENAME = "iconWhiteFilename";
   public static final String GROUPS_ICON_DARK_FILENAME = "iconDarkFilename";
   public static final String GROUPS_ICON_CREDIT = "iconCredit";
+  public static final String GROUPS_LICENSE_LINK = "licenseLink";
   public static final String GROUPS_DESCRIPTION = "description";
 
   private final FieldGuideOpenHelper mDatabaseOpenHelper;
@@ -202,6 +203,14 @@ public class FieldGuideDatabase {
         null);
   }
 
+  @Nullable
+  public Cursor getGroupDetails(String order, String[] columns) {
+    String selection = GROUPS_ORDER + " = ?";
+    String[] selectionArgs = new String[] { order };
+
+    return query(GROUPS_TABLE_NAME, columns, selection, selectionArgs, null, null);
+  }
+
   /**
    * Performs a database query.
    *
@@ -266,6 +275,7 @@ public class FieldGuideDatabase {
         + GROUPS_ICON_WHITE_FILENAME + " TEXT, "
         + GROUPS_ICON_DARK_FILENAME + " TEXT, "
         + GROUPS_ICON_CREDIT + " TEXT, "
+        + GROUPS_LICENSE_LINK + " TEXT, "
         + GROUPS_DESCRIPTION + " TEXT); ";
 
     private final Context mHelperContext;
@@ -369,6 +379,7 @@ public class FieldGuideDatabase {
             GROUPS_ICON_WHITE_FILENAME,
             GROUPS_ICON_DARK_FILENAME,
             GROUPS_ICON_CREDIT,
+            GROUPS_LICENSE_LINK,
             GROUPS_DESCRIPTION),
           groupsColumns);
 
@@ -445,6 +456,8 @@ public class FieldGuideDatabase {
               group.getIconDarkFilename());
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_CREDIT),
               group.getIconCredit());
+          maybeBind(groupsStatement, groupsColumns.get(GROUPS_LICENSE_LINK),
+              group.getLicenseLink());
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_DESCRIPTION),
               group.getDescription());
 
