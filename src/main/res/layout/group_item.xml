@@ -11,6 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:paddingLeft="@dimen/group_icon_padding"
+        android:paddingRight="@dimen/group_icon_padding"
+        android:paddingTop="@dimen/group_icon_padding"
+        android:paddingBottom="@dimen/group_icon_padding"
         android:scaleType="fitCenter"/>
 
     <TextView

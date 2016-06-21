@@ -25,6 +25,7 @@
     <dimen name="group_column_width">140dp</dimen>
     <dimen name="group_item_padding_bottom">5dp</dimen>
     <dimen name="group_item_spacing">10dp</dimen>
+    <dimen name="group_icon_padding">10dp</dimen>
 
     <dimen name="species_list_thumbnail_size">72px</dimen>
 
