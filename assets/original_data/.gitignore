@@ -1,1 +1,5 @@
 output.json
+*.jpg
+*.JPG
+*.jpeg
+*.png
