@@ -145,6 +145,26 @@
 
         </TableLayout>
 
+        <TextView
+            style="@style/SpeciesDetailsSubheading"
+            android:id="@+id/license_heading"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/species_heading_image_license"/>
+
+        <TextView
+            style="@style/SpeciesDetailsText"
+            android:id="@+id/license"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/SpeciesDetailsText"
+            android:id="@+id/license_link"
+            android:autoLink="web"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 </ScrollView>

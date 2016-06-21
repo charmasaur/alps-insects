@@ -26,9 +26,8 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 public class SpeciesDetailPagerAdapter extends PagerAdapter {
   private static final String TAG = SpeciesDetailPagerAdapter.class.getSimpleName();
 
-  private static final int TAB_COUNT = 2;
+  private static final int TAB_COUNT = 1;
   private static final int DETAILS_POSITION = 0;
-  private static final int OTHER_POSITION = 1;
 
   private final LayoutInflater layoutInflater;
   private final String speciesId;
@@ -55,7 +54,6 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
 
     Context context = layoutInflater.getContext();
     tabNames[DETAILS_POSITION] = context.getString(R.string.species_tab_details);
-    tabNames[OTHER_POSITION] = context.getString(R.string.species_tab_other);
   }
 
   public void destroy() {
@@ -69,9 +67,6 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
     switch (position) {
       case DETAILS_POSITION:
         view = createDetailsView(container);
-        break;
-      case OTHER_POSITION:
-        view = createOtherView(container);
         break;
       default:
         throw new RuntimeException("Unrecognised position: " + position);
@@ -200,15 +195,25 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
       view.findViewById(R.id.taxa_species_row).setVisibility(View.GONE);
     }
 
-    return view;
-  }
-
-  private View createOtherView(ViewGroup container) {
-    View view = layoutInflater.inflate(R.layout.species_tab_other, container, false);
-
-    // TODO: This.
-    ((TextView) view.findViewById(R.id.license)).setText("A license");
-    ((TextView) view.findViewById(R.id.license_link)).setText("A license link");
+    boolean licenseOrLink = false;
+    View licenseHeadingView = view.findViewById(R.id.license_heading);
+    TextView licenseView = (TextView) view.findViewById(R.id.license);
+    TextView licenseLinkView = (TextView) view.findViewById(R.id.license_link);
+    if (hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE)) {
+      licenseOrLink = true;
+      licenseView.setVisibility(View.VISIBLE);
+      licenseView.setText(getColumnValue(FieldGuideDatabase.SPECIES_LICENSE));
+    } else {
+      licenseView.setVisibility(View.GONE);
+    }
+    if (hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK)) {
+      licenseOrLink = true;
+      licenseLinkView.setVisibility(View.VISIBLE);
+      licenseLinkView.setText(getColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK));
+    } else {
+      licenseLinkView.setVisibility(View.GONE);
+    }
+    licenseHeadingView.setVisibility(licenseOrLink ? View.VISIBLE : View.GONE);
 
     return view;
   }

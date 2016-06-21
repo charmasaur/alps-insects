@@ -43,6 +43,9 @@ public class SpeciesItemDetailFragment extends Fragment {
 
     adapter = new SpeciesDetailPagerAdapter(getActivity().getLayoutInflater(),
         FieldGuideDatabase.getInstance(getActivity().getApplicationContext()), speciesId);
+    if (adapter.getCount() < 2) {
+      getView().findViewById(R.id.pagerTabStrip).setVisibility(View.GONE);
+    }
     ((ViewPager) getView().findViewById(R.id.viewPager)).setAdapter(adapter);
   }
 

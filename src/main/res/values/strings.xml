@@ -40,6 +40,12 @@
     <string name="species_tab_details">Details</string>
     <string name="species_tab_other">Other</string>
     <string name="species_heading_description">Description</string>
+    <string name="species_heading_image_license">Images license</string>
+    <string name="species_heading_taxonomy">Taxonomy</string>
+    <string name="species_taxonomy_order">Order:</string>
+    <string name="species_taxonomy_family">Family:</string>
+    <string name="species_taxonomy_genus">Genus:</string>
+    <string name="species_taxonomy_species">Species:</string>
     
     <!-- Preferences -->
     <string name="pref_analytics_title">Send usage statistics</string>
