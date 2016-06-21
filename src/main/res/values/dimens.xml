@@ -29,4 +29,6 @@
 
     <dimen name="species_list_thumbnail_size">72px</dimen>
 
+    <dimen name="details_page_padding">20dp</dimen>
+
 </resources>
