@@ -3,7 +3,6 @@ package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
