@@ -115,10 +115,10 @@ for (ide, order, family, genus, scientific_name, label, sublabel, italicise_subl
         entry["genus"] = genus;
     if is_present(scientific_name):
         entry["species"] = scientific_name;
-    if is_present(license):
-        entry["licenseLink"] = license_link;
     if is_present(license_link):
-        entry["license"] = license_link;
+        entry["licenseLink"] = license_link;
+    if is_present(license):
+        entry["license"] = license;
 
     species_entries.append(entry);
 
