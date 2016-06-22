@@ -430,11 +430,11 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
             float averageVerifySpeed = 0;
             long totalBytesRemaining = totalCompressedLength;
             long timeRemaining;
-            
+
             // Then calculate a CRC for every file in the Zip file, comparing it to what is stored
             // in the Zip directory. Note that for compressed Zip files we must extract the
             // contents to do this comparison.
-            
+
             for (ZipEntryRO entry : entries) {
               if (-1 != entry.mCRC32) {
                 long length = entry.mUncompressedLength;
