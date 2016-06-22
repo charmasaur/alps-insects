@@ -95,7 +95,6 @@ public class SpeciesGroupListFragment extends Fragment {
   @Override
   public void onDestroy() {
     mCursor.close();
-    database.close();
 
     super.onDestroy();
   }
