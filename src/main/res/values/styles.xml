@@ -15,6 +15,10 @@
         <item name="android:windowFullscreen">true</item>
     </style>
     
+    <style name="Theme.FieldGuide.Splash" parent="Theme.FieldGuide.FullScreen">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     
     <!-- actionbar styles -->
     <style name="Theme.FieldGuide.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">

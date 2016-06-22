@@ -95,9 +95,6 @@ public class FieldGuideDatabase {
 
   private SQLiteDatabase mDatabase;
 
-  private int currCount = 0;
-  private int totalCount = 0;
-
   private FieldGuideDatabase(Context context) {
     mDatabaseOpenHelper = new FieldGuideOpenHelper(context);
   }
@@ -114,15 +111,7 @@ public class FieldGuideDatabase {
   }
 
   public void close() {
-    //mDatabaseOpenHelper.close();
-  }
-
-  public int getCurrCount() {
-    return currCount;
-  }
-
-  public int getTotalCount() {
-    return totalCount;
+    mDatabaseOpenHelper.close();
   }
 
   public long getSpeciesCount() {
@@ -298,19 +287,13 @@ public class FieldGuideDatabase {
       db.execSQL(IMAGES_TABLE_CREATE);
       db.execSQL(GROUPS_TABLE_CREATE);
 
-      Log.i(TAG, "Starting thread to load database");
-      new Thread(new Runnable() {
-        @Override
-        public void run() {
-          try {
-            loadData(db);
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          } catch (JSONException e) {
-            throw new RuntimeException(e);
-          }
-        }
-      }).start();
+      try {
+        loadData(db);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      } catch (JSONException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     @Override
@@ -393,8 +376,6 @@ public class FieldGuideDatabase {
       JsonArray splist = json.get("species_data").getAsJsonArray();
       JsonArray groupsList = json.get("groups_data").getAsJsonArray();
 
-      totalCount = splist.size() + groupsList.size();
-
       db.beginTransaction();
 
       SQLiteStatement speciesStatement = db.compileStatement(speciesSQL);
@@ -441,8 +422,6 @@ public class FieldGuideDatabase {
             imageStatement.executeInsert();
             imageStatement.clearBindings();
           }
-
-          ++currCount;
         }
 
         for (int i = 0; i < groupsList.size(); ++i) {
@@ -463,8 +442,6 @@ public class FieldGuideDatabase {
 
           groupsStatement.executeInsert();
           groupsStatement.clearBindings();
-
-          ++currCount;
         }
 
 

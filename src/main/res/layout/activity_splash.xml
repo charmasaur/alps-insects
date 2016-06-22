@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_phone" >
+    android:background="@color/open_background">
 
     <!--
     <TextView
@@ -70,19 +70,36 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="160dp"
-        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/icon"
+        android:indeterminate="true"/>
 
     <TextView
         android:id="@+id/textProgress"
+        android:textColor="@color/open_text_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/progressBar"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/progressBar"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="8dp"
         android:text="Loading..." />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/splash_icon"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/splash_mountains"
+        android:scaleType="fitXY"/>
 
 </RelativeLayout>

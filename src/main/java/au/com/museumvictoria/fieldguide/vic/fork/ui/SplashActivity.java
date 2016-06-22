@@ -12,7 +12,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Messenger;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -41,13 +40,7 @@ import com.google.android.vending.expansion.downloader.IStub;
 public class SplashActivity extends AppCompatActivity implements IDownloaderClient {
   private static final String TAG = SplashActivity.class.getSimpleName();
 
-  private final Handler mHandler = new Handler();
-
-  private TextView mProgressText;
-  private ProgressBar mProgress;
-  private int mProgressStatus = 0;
-
-  FieldGuideDatabase mDatabase;
+  private FieldGuideDatabase mDatabase;
 
   private ProgressBar mPB;
   private TextView mStatusText;
@@ -69,6 +62,7 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    setTheme(R.style.Theme_FieldGuide_FullScreen);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_splash);
 
@@ -141,10 +135,6 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
     super.onDestroy();
   }
 
-  /**
-   * Load up the acitivity after 2 seconds of splash screen
-   *
-   */
   private void startFieldGuide() {
     Log.d(TAG, "Starting Field Guide");
     Intent home = new Intent(getApplicationContext(), MainActivity.class);
@@ -166,8 +156,8 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
   private void startApp() {
     setContentView(R.layout.activity_splash);
 
-    mProgress = (ProgressBar) findViewById(R.id.progressBar);
-    mProgressText = (TextView) findViewById(R.id.textProgress);
+    final ProgressBar mProgress = (ProgressBar) findViewById(R.id.progressBar);
+    final TextView mProgressText = (TextView) findViewById(R.id.textProgress);
 
     // Restore preferences
     SharedPreferences settings = getSharedPreferences(Utilities.PREFS_NAME, MODE_PRIVATE);
@@ -190,8 +180,9 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
     if (isFirstRun) {
       // initialise the database for first run
 
-      mProgress.setVisibility(View.VISIBLE);
-      mProgressText.setVisibility(View.VISIBLE);
+      // Don't show any text or spinner. It's pretty obvious what's happening.
+      mProgress.setVisibility(View.INVISIBLE);
+      mProgressText.setVisibility(View.INVISIBLE);
 
       Log.w(TAG, "About to start loading data for first run...");
 
@@ -205,55 +196,18 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
           File dataDir = Utilities.getExternalDataPath(getApplicationContext());
 
           if (!dataDir.exists()) {
-            mProgress.setIndeterminate(true);
-            mProgressText.setText("Expanding data... ");
-
             dataDir.mkdirs();
 
             Log.d(TAG, "Unzipping main expansion file to: "
                 + dataDir.toString());
             Utilities.unzipExpansionFile(expfiles[0], dataDir);
-
-            mProgress.setIndeterminate(false);
-            // mProgressText.setText("Expanding data... done");
           }
 
+          Log.i(TAG, "Loading DB");
           mDatabase = FieldGuideDatabase.getInstance(getApplicationContext());
           mDatabase.open();
 
-          Log.i(TAG, "Loading");
-          while (mProgressStatus < 100) {
-            mProgressStatus = doLoadDatabase();
-
-            // Update the progress bar
-            mHandler.post(new Runnable() {
-              @Override
-              public void run() {
-                mProgress.setProgress(mProgressStatus);
-
-                if (mProgressStatus == -9999) {
-                  mProgressText
-                      .setText("Reading in field guide data...");
-                } else if (mProgressStatus == 0) {
-                  mProgressText
-                      .setText("Loading field guide data...");
-                } else if (mProgressStatus == 100) {
-                  mProgressText
-                      .setText("Loading species: Completed");
-                } else {
-                  mProgressText.setText("Loading species: "
-                      + mProgressStatus + "% done");
-                }
-              }
-            });
-          }
-
-          // database now populated. Let's start
-          if (mProgressStatus >= 100) {
-            mDatabase.close();
-
-            startFieldGuide();
-          }
+          startFieldGuide();
         }
       }).start();
     } else {
@@ -262,42 +216,7 @@ public class SplashActivity extends AppCompatActivity implements IDownloaderClie
       mProgress.setVisibility(View.INVISIBLE);
       mProgressText.setVisibility(View.INVISIBLE);
 
-      final Handler handler = new Handler();
-      handler.postDelayed(new Runnable() {
-        @Override
-        public void run() {
-          startFieldGuide();
-        }
-      }, 1000);
-
-    }
-
-  }
-
-  /**
-   * Load the database
-   *
-   * @return int Progress
-   */
-  private int doLoadDatabase() {
-
-    double currCount = mDatabase.getCurrCount();
-    double totalCount = mDatabase.getTotalCount();
-    int percentage = 0;
-
-    try {
-      double dd = (currCount / totalCount);
-      percentage = (int) (dd * 100);
-    } catch (ArithmeticException ae) {
-      // TODO: catch divide by 0
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
-
-    if (totalCount == 0) {
-      return -9999;
-    } else {
-      return percentage;
+      startFieldGuide();
     }
   }
 
