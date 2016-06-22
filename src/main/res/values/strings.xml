@@ -7,6 +7,8 @@
     <!-- menu -->
     <string name="menu_search_name">Search</string>
     <string name="menu_about_name">About</string>
+    <string name="menu_get_involved_name">Get involved</string>
+    <string name="menu_resources_name">Resources</string>
 
     <!-- titles -->
     <string name="title_activity_main">MainActivity</string>
@@ -68,36 +70,91 @@
     <!-- data -->
     <string name="distributioninfo">This map is based on specimens held in Australia\'s museums. Museums do not collect from all possible locations so these maps may underestimate the actual range of the species. The collections also include historical records, so the map may show localities where a species was once found but is no longer. Interpret this map as \'the species is found within the green or blue highlighted areas where suitable habitat occurs\'.</string>
 
-    <string name="threatenedstatusinfo">
-        <![CDATA[
-                <p>Victorian status is drawn from the <a href="http://www.dse.vic.gov.au/plants-and-animals/native-plants-and-animals/threatened-species-and-communities/threatened-species-advisory-lists">DSE Advisory Lists of threatened fauna</a>.</p>
-                <p>Australian status is drawn from the <a href="http://www.environment.gov.au/cgi-bin/sprat/public/sprat.pl">Environment Protection and Biodiversity Conservation Act 1999</a>.</p>
-                <p>Worldwide status is drawn from the <a href="http://www.iucnredlist.org/">IUCN Red List</a>.</p>
-        ]]>
-    </string>
-    <string name="aboutthreatenedstatus">
+    <string name="about_string">
         <![CDATA[
             <html>
             <head>
-            <style type="text/css">
-                body {color: #ffffff; font: 15px/23px "Helvetica Neue"; }
-                section { border-top: 1px solid rgba(190,210,159,0.75); width: 100%; padding: 8px 0 0 0; margin: 0 auto; clear: both;}
-                p { margin: 0 0 20px 10; }
-                a { color: #749f36; text-decoration: none; }
-            </style>
             </head>
             <body>
-              <h1>About Threatened Status</h1>
+              <h1>Code</h1>
               <section>
-                  <p>Victorian status is drawn from the <a href="http://www.dse.vic.gov.au/plants-and-animals/native-plants-and-animals/threatened-species-and-communities/threatened-species-advisory-lists">DSE Advisory Lists of threatened fauna</a>.</p>
-                  <p>Australian status is drawn from the <a href="http://www.environment.gov.au/cgi-bin/sprat/public/sprat.pl">Environment Protection and Biodiversity Conservation Act 1999</a>.</p>
-                  <p>Worldwide status is drawn from the <a href="http://www.iucnredlist.org/">IUCN Red List</a>.</p>
-                </section>
+              <p>Based on Museum Victoria\'s <a href="http://github.com/museumvictoria/mv-fieldguide-android"><em>Field Guide to Victorian Fauna</em></a>.</p>
+              </section>
+              <h1>Acknowledgements</h1>
+              <section>
+              <p>The development of this field guide was made possible by grants from the <a href="http://nwf.org.au">Norman Wettenhall Foundation</a> and the <a href="http://sustainable.unimelb.edu.au">Melbourne Sustainable Society Institute</a>.</p>
+              </section>
+              <h1>Images</h1>
+              <section>
+              <p>The images in this app are from the collections of people involved in this project, or sourced from external photographers under Creative Commons Licenses. All images are credited to the photographer.</p>
+              </section>
+              <h1>Project contributors</h1>
+              <section>
+              <p>Harry Slatyer, Rachel Slatyer, Kate Umbers, Ainsley Seago, Nik Tatarnic</p>
+              </section>
             </body>
             </html>
         ]]>
     </string>
 
+    <string name="get_involved_string">
+        <![CDATA[
+            <html>
+            <head>
+            </head>
+            <body>
+            <p>There are many hundreds of insect species in the Australian Alps that are not yet included in this field guide. We will continue to build on the number of species, and you can help!</p>
+
+            <p>
+            All you need to do is:<br>
+            1. Take photos! When you\'re out enjoying the mountains, keep a sharp eye out for insects and keep your camera ready.<br>
+            2. Keep a note of where the photo was taken. GPS coordinates (latitude and longitude) are the best and you can get them from Google Maps, by using a compass or GPS app on your smart phone, or from a dedicated GPS device. With or without the coordinates, a description of the location is also useful.<br>
+            3. Join <a href="http://www.bowerbird.org.au">BowerBird</a>. BowerBird is a web-based biodiversity workspace, which anyone can get involved in.<br>
+            4. Upload your photos onto the <em>Insects of the Australian Alps Project</em> page on BowerBird. BowerBird is a community workspace. If you can\'t identify your insect, that\'s OK - others can help!<br>
+            </p>
+
+            <p>
+            By being involved you will be helping to:<br>
+            &#8226; Develop this field guide into a comprehensive source of information on Australia\'s mountain insects.<br>
+            &#8226; Determine which species are found in the Australian Alps.<br>
+            &#8226; Build knowledge on where species occur (very little is known about most insect species in the Australian Alps).<br>
+            &#8226; Detect and monitor changes in where species occur.<br>
+            </p>
+            </body>
+            </html>
+        ]]>
+    </string>
+
+    <string name="resources_string">
+        <![CDATA[
+            <html>
+            <head>
+            </head>
+            <body>
+            <h1>Books</h1>
+            <section>
+            <p>A Field Guide to Wildlife of the Australian Snow Country (2012) by Ken Green and William Osborne</p>
+            <p>Australian Alps: Kosciuszko, Alpine and Namadgi National Parks (2015) by Deirdre Slattery</p>
+            <p>Insects of South-Eastern Australia: an Ecological and Behavioural Guide (2016) by Roger Farrow</p>
+            </section>
+
+            <h1>Apps</h1>
+            <section>
+            <p>Field Guide to Victorian Fauna (Play Store)</p>
+            <p>Field Guide to NSW Fauna (Play Store)</p>
+            <p>Field Guide to ACT Fauna (Play Store)</p>
+            </section>
+
+            <h1>Other</h1>
+            <section>
+            <p>Australian Alps smartphone guide and map (available <a href="http://theaustralianalps.wordpress.com/the-alps-partnership/publications-and-research/australian-alps-smartphone-guide-and-map/">here</a>)</p>
+            </section>
+            </body>
+            </html>
+        ]]>
+    </string>
+
+    <string name="threatenedstatusinfo">Hi</string>
 
     <!-- open source licence info -->
     <string name="opensourcelicences">

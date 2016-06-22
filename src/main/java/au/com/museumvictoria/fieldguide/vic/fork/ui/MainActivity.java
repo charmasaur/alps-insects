@@ -26,8 +26,8 @@ import android.support.v7.widget.SearchView;
 
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.AboutFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.GroupFragment;
+import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HtmlTextFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
@@ -112,8 +112,20 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_about:
+        // TODO: Licenses plus other things (ImageViewZoom)
         backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
-        setFragment(AboutFragment.newInstance(), "ABOUT");
+        setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT");
+        break;
+      case R.id.menu_get_involved:
+        backStackScreens.put("INVOLVED",
+            new Screen(getString(R.string.menu_get_involved_name), null));
+        setFragment(HtmlTextFragment.newInstance(R.string.get_involved_string), "INVOLVED");
+        break;
+      case R.id.menu_resources:
+        // TODO: Play store links.
+        backStackScreens.put("RESOURCES",
+            new Screen(getString(R.string.menu_resources_name), null));
+        setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES");
         break;
       case android.R.id.home:
         onBackPressed();
