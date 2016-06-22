@@ -16,6 +16,8 @@
 
 <resources>
     
+    <color name="open_background">#8fcfdb</color>
+    <color name="open_text_color">#aa000000</color>
     <color name="actionBarStart">#265f19</color>
     <color name="actionBarEnd">#64922F</color>
     <color name="parkTitle">#92e7e7</color>
