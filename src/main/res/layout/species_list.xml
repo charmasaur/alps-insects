@@ -10,28 +10,31 @@
         android:layout_width="@dimen/species_list_thumbnail_size"
         android:layout_height="@dimen/species_list_thumbnail_size"
         android:layout_marginRight="6dip"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/speciesLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/speciesIcon"
-        android:gravity="center_vertical"
         android:textSize="20dp"
         android:textStyle="bold" />
+
+    <!-- Dummy view to make the labels centered. Not sure if necessary -->
+    <View
+        android:id="@+id/centerline"
+        android:layout_width="fill_parent"
+        android:layout_height="0px"
+        android:layout_toRightOf="@id/speciesIcon"
+        android:layout_below="@id/speciesLabel"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/speciesSublabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/speciesLabel"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/centerline"
         android:layout_toRightOf="@id/speciesIcon"
-        android:ellipsize="marquee"
-        android:singleLine="true"
         android:textSize="14dp" />
 
 </RelativeLayout>
