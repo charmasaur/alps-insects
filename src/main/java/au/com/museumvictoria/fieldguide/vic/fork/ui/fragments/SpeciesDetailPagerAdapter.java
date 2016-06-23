@@ -103,9 +103,9 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
 
     final Context context = layoutInflater.getContext();
     int imgThumbSize =
-      context.getResources().getDimensionPixelSize(R.dimen.species_image_thumbnail_size);
+        context.getResources().getDimensionPixelSize(R.dimen.species_detail_thumbnail_size);
     int imgThumbPadding =
-      context.getResources().getDimensionPixelSize(R.dimen.image_detail_pager_margin);
+        context.getResources().getDimensionPixelSize(R.dimen.image_detail_pager_margin);
 
     int imagesCounter = 0;
     for (imagesCursor.moveToFirst(); !imagesCursor.isAfterLast(); imagesCursor.moveToNext()) {
