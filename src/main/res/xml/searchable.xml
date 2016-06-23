@@ -24,7 +24,7 @@
         android:includeInGlobalSearch="true"
         android:imeOptions="actionSearch"
         android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
-        android:voicePromptText="Speak a species name. Example. Birds"
+        android:voicePromptText="Speak a name. Example. Flies"
         >
  </searchable>
  
