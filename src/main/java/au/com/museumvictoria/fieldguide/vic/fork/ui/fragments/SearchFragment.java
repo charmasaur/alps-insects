@@ -18,7 +18,7 @@ import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 
 /**
  * Gets started to handle a search query (that is actually entered, rather than aborted by
@@ -118,8 +118,9 @@ public class SearchFragment extends Fragment {
       //     new SimpleCursorAdapter(this, R.layout.layout2_species_list_2, cursor, from, to, 0);
       // mListView.setAdapter(words);
 
-      final SpeciesListCursorAdapter adapter =
-          new SpeciesListCursorAdapter(getActivity().getApplicationContext(), cursor, 0);
+      final SpeciesListCursorAdapter adapter = new SpeciesListCursorAdapter(
+          getActivity().getApplicationContext(), cursor, 0,
+          DataProviderFactory.getDataProvider(getActivity().getApplicationContext()));
 
       mListView.setAdapter(adapter);
       mListView.setOnItemClickListener(new OnItemClickListener() {

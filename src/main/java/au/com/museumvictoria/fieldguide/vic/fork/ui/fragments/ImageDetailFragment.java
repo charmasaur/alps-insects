@@ -4,7 +4,6 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase.DisplayType;
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
+import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 import au.com.museumvictoria.fieldguide.vic.fork.util.NonBrokenImageViewTouch;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
  * Shows an image that can be panned and zoomed.
@@ -139,17 +138,11 @@ public class ImageDetailFragment extends Fragment {
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    Drawable d = null;
-    try {
-      d = Drawable.createFromStream(Utilities.getAssetInputStream(getActivity(),
-          Utilities.SPECIES_IMAGES_FULL_PATH + imagePath), null);
-    } catch (Exception e) {
-      Log.i(TAG, "Failed to load drawable");
-    }
-
     // set the default image display type
-    mImageView.setDisplayType( DisplayType.FIT_IF_BIGGER );
-    mImageView.setImageDrawable(d);
+    mImageView.setDisplayType(DisplayType.FIT_IF_BIGGER);
+    mImageView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+        DataProviderFactory.getDataProvider(getActivity().getApplicationContext())
+            .getSpeciesImage(imagePath)));
     if (caption != null) {
       mImageDescription.setVisibility(View.VISIBLE);
       mImageDescription.setText(Html.fromHtml(caption));

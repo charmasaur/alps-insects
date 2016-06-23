@@ -21,8 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
-import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
  * Displays a block of HTML text.

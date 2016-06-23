@@ -19,8 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
  * Displays a list of groups.
@@ -78,7 +79,8 @@ public class SpeciesGroupListFragment extends Fragment {
 
     groupList = (GridView) getView().findViewById(R.id.group_list);
     groupList.setFastScrollEnabled(true);
-    mAdapter = new GroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0);
+    mAdapter = new GroupListCursorAdapter(getActivity().getApplicationContext(), mCursor, 0,
+        DataProviderFactory.getDataProvider(getActivity().getApplicationContext()));
     groupList.setAdapter(mAdapter);
     groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -108,9 +110,12 @@ public class SpeciesGroupListFragment extends Fragment {
   private static final class GroupListCursorAdapter extends CursorAdapter
       implements SectionIndexer {
     private final AlphabetIndexer mAlphabetIndexer;
+    private final DataProvider dataProvider;
 
-    public GroupListCursorAdapter(Context context, Cursor c, int flags) {
+    public GroupListCursorAdapter(Context context, Cursor c, int flags,
+        DataProvider dataProvider) {
       super(context, c, flags);
+      this.dataProvider = dataProvider;
 
       mAlphabetIndexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.GROUPS_LABEL),
           " ABCDEFGHIJKLMNOPQRTSUVWXYZ");
@@ -137,24 +142,13 @@ public class SpeciesGroupListFragment extends Fragment {
       String groupLabel = getGroupName(cursor);
       String iconLabel =
           cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME));
-      String iconPath = Utilities.SPECIES_GROUPS_PATH + iconLabel;
 
       TextView txtView1 = (TextView) view.findViewById(R.id.label);
       txtView1.setText(groupLabel);
 
       ImageView imgView = (ImageView) view.findViewById(R.id.icon);
-      // imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromAsset(getActivity().getAssets(), iconPath, 75, 75));
-
-      Log.w(TAG, "Getting AssetsFileDescriptor for species group icon: " + iconPath);
-//      InputStream istr = null;
-//      try {
-//        istr = Utilities.getAssetInputStream(getActivity(), iconPath);
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
-//      imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(istr, 75, 75));
-      imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
-            Utilities.getFullExternalDataPath(context, iconPath), 75, 75));
+      imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+          dataProvider.getGroupIcon(iconLabel)));
     }
 
     @Override

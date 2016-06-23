@@ -31,7 +31,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.HtmlTextFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SearchFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesGroupListFragment;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.fragments.SpeciesItemDetailFragment;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 import java.util.HashMap;
 import java.util.Map;

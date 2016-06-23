@@ -15,16 +15,19 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIndexer {
+  private final DataProvider dataProvider;
   private final AlphabetIndexer indexer;
   private final Resources resources;
 
-  public SpeciesListCursorAdapter(Context context, Cursor c, int flags) {
+  public SpeciesListCursorAdapter(Context context, Cursor c, int flags,
+      DataProvider dataProvider) {
     super(context, c, flags);
 
+    this.dataProvider = dataProvider;
     resources = context.getResources();
 
     indexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL),
@@ -54,8 +57,10 @@ public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIn
     }
 
     int iconSize = resources.getDimensionPixelSize(R.dimen.species_list_thumbnail_size);
-    iconView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
-        Utilities.getFullExternalDataPath(context, iconPath), iconSize, iconSize));
+    iconView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+        dataProvider.getSpeciesThumbnail(
+            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL))),
+        iconSize, iconSize));
   }
 
   @Override

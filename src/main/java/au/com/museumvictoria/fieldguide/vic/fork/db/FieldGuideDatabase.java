@@ -30,7 +30,8 @@ import android.util.Log;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Group;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -93,9 +94,11 @@ public class FieldGuideDatabase {
 
   private static FieldGuideDatabase mInstance = null;
 
+  private final DataProvider dataProvider;
   private SQLiteDatabase mDatabase;
 
   private FieldGuideDatabase(Context context) {
+    dataProvider = DataProviderFactory.getDataProvider(context);
     mDatabaseOpenHelper = new FieldGuideOpenHelper(context);
   }
 
@@ -367,8 +370,7 @@ public class FieldGuideDatabase {
           groupsColumns);
 
       Log.i(TAG, "Reading assets");
-      JsonReader reader = new JsonReader(new InputStreamReader(
-            Utilities.getAssetInputStreamZipFile(mHelperContext, Utilities.SPECIES_DATA_FILE)));
+      JsonReader reader = new JsonReader(new InputStreamReader(dataProvider.getData()));
 
       JsonParser parser = new JsonParser();
       JsonObject json = parser.parse(reader).getAsJsonObject();

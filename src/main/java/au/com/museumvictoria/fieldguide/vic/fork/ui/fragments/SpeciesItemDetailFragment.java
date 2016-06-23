@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 
 /**
  * Shows information about a species.
@@ -42,7 +43,8 @@ public class SpeciesItemDetailFragment extends Fragment {
     }
 
     adapter = new SpeciesDetailPagerAdapter(getActivity().getLayoutInflater(),
-        FieldGuideDatabase.getInstance(getActivity().getApplicationContext()), speciesId);
+        FieldGuideDatabase.getInstance(getActivity().getApplicationContext()),
+        DataProviderFactory.getDataProvider(getActivity().getApplicationContext()), speciesId);
     if (adapter.getCount() < 2) {
       getView().findViewById(R.id.pagerTabStrip).setVisibility(View.GONE);
     }

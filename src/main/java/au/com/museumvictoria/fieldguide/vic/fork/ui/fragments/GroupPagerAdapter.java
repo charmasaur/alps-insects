@@ -17,6 +17,7 @@ import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
 
 /**
  * Shows information about a group.
@@ -36,16 +37,18 @@ public class GroupPagerAdapter extends PagerAdapter {
   private static final int OTHER_POSITION = 1;
 
   private final LayoutInflater layoutInflater;
+  private final DataProvider dataProvider;
   private final Callback callback;
   private final Cursor speciesListCursor;
   private final Cursor groupDetailsCursor;
   private final String[] tabNames = new String[TAB_COUNT];
 
   public GroupPagerAdapter(LayoutInflater layoutInflater, FieldGuideDatabase db, String groupOrder,
-      Callback callback) {
+      DataProvider dataProvider, Callback callback) {
     super();
 
     this.layoutInflater = layoutInflater;
+    this.dataProvider = dataProvider;
     this.callback = callback;
 
     speciesListCursor =
@@ -112,8 +115,8 @@ public class GroupPagerAdapter extends PagerAdapter {
     ListView listView = (ListView) view.findViewById(R.id.species_list);
     listView.setFastScrollEnabled(true);
 
-    final SpeciesListCursorAdapter adapter =
-        new SpeciesListCursorAdapter(layoutInflater.getContext(), speciesListCursor, 0);
+    final SpeciesListCursorAdapter adapter = new SpeciesListCursorAdapter(
+        layoutInflater.getContext(), speciesListCursor, 0, dataProvider);
 
     listView.setAdapter(adapter);
     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

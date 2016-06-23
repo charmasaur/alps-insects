@@ -16,8 +16,8 @@ import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.ui.ImageDetailActivity;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
 import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
-import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 /**
  * Populates the species details pages.
@@ -29,16 +29,18 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
   private static final int DETAILS_POSITION = 0;
 
   private final LayoutInflater layoutInflater;
+  private final DataProvider dataProvider;
   private final String speciesId;
   private final Cursor detailsCursor;
   private final Cursor imagesCursor;
   private final String[] tabNames = new String[TAB_COUNT];
 
   public SpeciesDetailPagerAdapter(LayoutInflater layoutInflater, FieldGuideDatabase db,
-      String speciesId) {
+      DataProvider dataProvider, String speciesId) {
     super();
 
     this.layoutInflater = layoutInflater;
+    this.dataProvider = dataProvider;
     this.speciesId = speciesId;
 
     detailsCursor = db.getSpeciesDetails(speciesId, null);
@@ -109,36 +111,16 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
 
     int imagesCounter = 0;
     for (imagesCursor.moveToFirst(); !imagesCursor.isAfterLast(); imagesCursor.moveToNext()) {
-      String imagePath = Utilities.SPECIES_IMAGES_FULL_PATH
-          + imagesCursor.getString(imagesCursor.getColumnIndex(FieldGuideDatabase.MEDIA_FILENAME));
-
       ImageView image = new ImageView(context);
       image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
           LinearLayout.LayoutParams.WRAP_CONTENT));
       image.setPadding(imgThumbPadding, imgThumbPadding, imgThumbPadding, imgThumbPadding);
 
-      image.setImageBitmap(
-          ImageResizer.decodeSampledBitmapFromFile(Utilities.getFullExternalDataPath(
-              context, imagePath), imgThumbSize, imgThumbSize));
-      // TODO: Try to use this. Also consider trying to use ZipResourceFile.getAssetFileDescriptor instead. It looks like the ImageResizer used to work with those. See http://stackoverflow.com/questions/13031240/reading-mp3-from-expansion-file -- looks like the zip needs to be uncompressed to do this.
-      //try {
-      //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
-      //      Utilities.getAssetInputStreamZipFile(getActivity().getApplicationContext(), imagePath), imgThumbSize,
-      //      imgThumbSize));
-      //} catch (Exception e) {
-      //  Log.i(TAG, "Exception loading image bitmap:" + e);
-      //  image.setImageBitmap(null);
-      //}
-      //try {
-      //  android.content.res.AssetFileDescriptor fd =
-      //    Utilities.getAssetsFileDescriptor(getActivity(), imagePath);
-      //  Log.i(TAG, "FD: " + fd);
-      //  image.setImageBitmap(ImageResizer.decodeSampledBitmapFromFD(
-      //      fd.getFileDescriptor(), imgThumbSize, imgThumbSize));
-      //} catch (java.io.IOException e) {
-      //  Log.i(TAG, "Exception loading image bitmap:" + e);
-      //  image.setImageBitmap(null);
-      //}
+      image.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
+          dataProvider.getSpeciesImage(imagesCursor.getString(
+              imagesCursor.getColumnIndex(FieldGuideDatabase.MEDIA_FILENAME))),
+          imgThumbSize, imgThumbSize));
+
       final int imagePosition = imagesCounter;
       image.setOnClickListener(new View.OnClickListener() {
         @Override

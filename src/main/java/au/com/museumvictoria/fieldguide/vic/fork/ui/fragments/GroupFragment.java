@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 
 /**
  * Shows information about a group.
@@ -69,6 +70,7 @@ public class GroupFragment extends Fragment {
 
     adapter = new GroupPagerAdapter(getActivity().getLayoutInflater(),
         FieldGuideDatabase.getInstance(getActivity().getApplicationContext()), groupOrder,
+        DataProviderFactory.getDataProvider(getActivity().getApplicationContext()),
         adapterCallback);
     if (adapter.getCount() < 2) {
       getView().findViewById(R.id.pagerTabStrip).setVisibility(View.GONE);
