@@ -1,6 +1,7 @@
 package au.com.museumvictoria.fieldguide.vic.fork.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.CursorAdapter;
@@ -19,9 +20,12 @@ import au.com.museumvictoria.fieldguide.vic.fork.util.Utilities;
 
 public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIndexer {
   private final AlphabetIndexer indexer;
+  private final Resources resources;
 
   public SpeciesListCursorAdapter(Context context, Cursor c, int flags) {
     super(context, c, flags);
+
+    resources = context.getResources();
 
     indexer = new AlphabetIndexer(c, c.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL),
         " ABCDEFGHIJKLMNOPQRTSUVWXYZ");
@@ -49,12 +53,9 @@ public class SpeciesListCursorAdapter extends CursorAdapter implements SectionIn
       sublabelView.setText(Html.fromHtml(sublabel));
     }
 
-    String iconPath = Utilities.SPECIES_IMAGES_THUMBNAILS_PATH
-        + cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_THUMBNAIL));
-
-    // TODO: Fix?
+    int iconSize = resources.getDimensionPixelSize(R.dimen.species_list_thumbnail_size);
     iconView.setImageBitmap(ImageResizer.decodeSampledBitmapFromFile(
-        Utilities.getFullExternalDataPath(context, iconPath), 150, 150));
+        Utilities.getFullExternalDataPath(context, iconPath), iconSize, iconSize));
   }
 
   @Override
