@@ -1,8 +1,0 @@
-include ':thing'
-project(':thing').projectDir = new File(settingsDir, './libs/downloader_library')
-
-include ':thing_zip'
-project(':thing_zip').projectDir = new File(settingsDir, './libs/zip_file')
-
-include ':thing_lic'
-project(':thing_lic').projectDir = new File(settingsDir, './libs/licensing')

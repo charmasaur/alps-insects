@@ -9,25 +9,6 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
-    <!-- Required to access Google Play Licensing -->
-    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
-
-    <!-- Required to download files from Google Play -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Required to keep CPU alive while downloading files (NOT to keep screen awake) -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Required to poll the state of the network connection and respond to changes -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!-- Required to check whether Wi-Fi is enabled -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-    <!-- Required to read and write the expansion files on shared storage -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
-
     <application
         android:allowBackup="false"
         android:hardwareAccelerated="true"
@@ -72,10 +53,6 @@
             android:name="au.com.museumvictoria.fieldguide.vic.fork.provider.AssetsProvider"
             android:authorities="au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider"
             android:exported="false" />
-        
-        <service android:name=".service.FieldGuideDownloaderService" />
-        <receiver android:name=".service.FieldGuideAlarmReceiver" />
-
         
         <!-- Points to searchable activity so the whole app can invoke search. -->
         <meta-data
