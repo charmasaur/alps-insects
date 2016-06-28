@@ -31,7 +31,9 @@ public class GroupFragment extends Fragment {
   private GroupPagerAdapter adapter;
 
   /**
-   * TODO: Document exactly what groupName we expect.
+   * Returns a new {@link GroupFragment} instance corresponding to a particular group.
+   *
+   * @param groupName the {@link GROUPS_ORDER} value of the group
    */
   public static GroupFragment newInstance(String groupName) {
     Bundle arguments = new Bundle();

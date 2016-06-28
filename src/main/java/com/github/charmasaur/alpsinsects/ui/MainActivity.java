@@ -172,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     }
     switch (intent.getAction()) {
       case Intent.ACTION_VIEW:
-        // TODO: Handle this (could occur when a search suggestion is clicked).
         Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
         onSpeciesSelected(
             cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_ID)),
@@ -234,10 +233,4 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
       updateScreen();
     }
   };
-
-  // TODO: Deal with everything below this line.
-
-  public void backToGroups(View view) {
-    onBackPressed();
-  }
 }
