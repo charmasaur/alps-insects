@@ -1,4 +1,4 @@
-package au.com.museumvictoria.fieldguide.vic.fork.adapter;
+package au.com.museumvictoria.fieldguide.vic.fork.ui.fragments;
 
 import android.content.Context;
 import android.content.res.Resources;

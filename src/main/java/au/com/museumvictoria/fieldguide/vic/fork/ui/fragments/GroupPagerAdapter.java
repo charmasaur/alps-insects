@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
-import au.com.museumvictoria.fieldguide.vic.fork.adapter.SpeciesListCursorAdapter;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
 
