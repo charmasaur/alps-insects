@@ -46,12 +46,12 @@
 
         <!-- Provides search suggestions for species and it's details. -->
         <provider
-            android:name="au.com.museumvictoria.fieldguide.vic.fork.provider.FieldGuideContentProvider"
-            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.FieldGuideContentProvider"
+            android:name=".provider.FieldGuideContentProvider"
+            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.provider.FieldGuideContentProvider"
             android:exported="false" />
         <provider
-            android:name="au.com.museumvictoria.fieldguide.vic.fork.provider.AssetsProvider"
-            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider"
+            android:name=".provider.AssetsProvider"
+            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.provider.FieldGuideAssetsProvider"
             android:exported="false" />
         
         <!-- Points to searchable activity so the whole app can invoke search. -->

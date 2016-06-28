@@ -26,8 +26,6 @@ import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 public class SearchFragment extends Fragment {
   private static final String TAG = SearchFragment.class.getSimpleName();
 
-  private static final String ARGUMENT_QUERY = "query";
-
   /**
    * Callback interface to be notified when a species is selected. Activities using this fragment
    * must implement this interface.
@@ -93,7 +91,7 @@ public class SearchFragment extends Fragment {
 
   private void searchSpecies(String query) {
     FieldGuideDatabase fgdb =
-      FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
+        FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
     Cursor cursor = fgdb.getSpeciesMatches(query, SpeciesListCursorAdapter.getRequiredColumns());
 
     if (cursor == null) {

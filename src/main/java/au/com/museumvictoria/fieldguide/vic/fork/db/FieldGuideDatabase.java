@@ -30,6 +30,7 @@ import android.util.Log;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Group;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Images;
 import au.com.museumvictoria.fieldguide.vic.fork.model.Species;
+import au.com.museumvictoria.fieldguide.vic.fork.provider.AssetsProvider;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProviderFactory;
 
@@ -405,8 +406,7 @@ public class FieldGuideDatabase {
           maybeBind(speciesStatement, speciesColumns.get(SPECIES_LICENSE_LINK),
               s.getLicenseLink());
           maybeBind(speciesStatement, speciesColumns.get(SPECIES_SEARCHICON),
-              "content://au.com.museumvictoria.fieldguide.vic.fork.FieldGuideAssestsProvider/"
-                  + s.getSquareThumbnail());
+              "content://" + AssetsProvider.AUTHORITY + "/" + s.getSquareThumbnail());
 
           long speciesId = speciesStatement.executeInsert();
           speciesStatement.clearBindings();

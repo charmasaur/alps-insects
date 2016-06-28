@@ -17,6 +17,8 @@
 
     <!-- search -->
     <string name="search_hint">e.g. Grasshopper</string>
+    <string name="voice_search_hint">Speak a keyword, e.g. "flies"</string>
+
     <!-- Shown above search results when we receive a search request. -->
     <plurals name="search_results">
         <item quantity="one">%1$d result for \"%2$s\"</item>
