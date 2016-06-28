@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="au.com.museumvictoria.fieldguide.vic.fork"
+    package="com.github.charmasaur.alpsinsects"
     android:versionCode="2"
     android:versionName="1.1" >
 
@@ -47,11 +47,11 @@
         <!-- Provides search suggestions for species and it's details. -->
         <provider
             android:name=".provider.FieldGuideContentProvider"
-            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.provider.FieldGuideContentProvider"
+            android:authorities="com.github.charmasaur.alpsinsects.provider.FieldGuideContentProvider"
             android:exported="false" />
         <provider
             android:name=".provider.AssetsProvider"
-            android:authorities="au.com.museumvictoria.fieldguide.vic.fork.provider.FieldGuideAssetsProvider"
+            android:authorities="com.github.charmasaur.alpsinsects.provider.FieldGuideAssetsProvider"
             android:exported="false" />
         
         <!-- Points to searchable activity so the whole app can invoke search. -->
