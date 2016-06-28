@@ -11,6 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/group_details_icon"
+            android:layout_height="@dimen/group_details_icon"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter"/>
+
         <TextView
             style="@style/SpeciesDetailsSubheading"
             android:layout_width="fill_parent"

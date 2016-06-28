@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import au.com.museumvictoria.fieldguide.vic.fork.R;
 import au.com.museumvictoria.fieldguide.vic.fork.db.FieldGuideDatabase;
 import au.com.museumvictoria.fieldguide.vic.fork.provider.DataProvider;
+import au.com.museumvictoria.fieldguide.vic.fork.util.ImageResizer;
 
 /**
  * Shows information about a group.
@@ -132,6 +134,10 @@ public class GroupPagerAdapter extends PagerAdapter {
 
   private View createOtherView(ViewGroup container) {
     View view = layoutInflater.inflate(R.layout.group_tab_other, container, false);
+
+    ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(
+        ImageResizer.decodeSampledBitmapFromStream(dataProvider.getGroupIcon(
+            getDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME))));
 
     ((TextView) view.findViewById(R.id.description)).setText(
         Html.fromHtml(getDetailsColumnValue(FieldGuideDatabase.GROUPS_DESCRIPTION)));
