@@ -16,6 +16,8 @@
         android:horizontalSpacing="@dimen/group_item_spacing"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
+        android:scrollbars="none"
+        android:clipToPadding="false"
         android:gravity="center_horizontal"/>
 
 </FrameLayout>
