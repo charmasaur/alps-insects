@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- general app -->
-    <string name="app_name">Australian Alps Insects</string>
-
     <!-- menu -->
     <string name="menu_search_name">Search</string>
     <string name="menu_about_name">About</string>

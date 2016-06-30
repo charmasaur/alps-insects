@@ -11,13 +11,13 @@ import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import com.github.charmasaur.alpsinsects.BuildConfig;
 import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
 
 public class FieldGuideContentProvider extends ContentProvider {
   private static final String TAG = FieldGuideContentProvider.class.getSimpleName();
 
-  public static final String AUTHORITY =
-      "com.github.charmasaur.alpsinsects.provider.FieldGuideContentProvider";
+  public static final String AUTHORITY = BuildConfig.CONTENT_PROVIDER_AUTHORITY;
 
   private FieldGuideDatabase mDatabase;
 

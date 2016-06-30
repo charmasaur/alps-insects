@@ -44,7 +44,7 @@ public class FieldGuideDatabase {
   private static final String TAG = FieldGuideDatabase.class.getSimpleName();
 
   // database
-  private static final int DATABASE_VERSION = 4;
+  private static final int DATABASE_VERSION = 5;
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";

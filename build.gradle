@@ -10,11 +10,62 @@ buildscript {
 
 apply plugin: 'com.android.application'
 
+ext.rootAppId = "com.github.charmasaur.alpsinsects"
+
+def getContentProviderAuthority(suffix) {
+  return rootAppId + ".provider" + suffix + ".FieldGuideContentProvider"
+}
+
+def getAssetsProviderAuthority(suffix) {
+  return rootAppId + ".provider" + suffix + ".FieldGuideAssetsProvider"
+}
+
+def getSearchSuggestIntentData(suffix) {
+  return "content://" + getContentProviderAuthority(suffix) + "/fieldguide"
+}
+
 android {
   compileSdkVersion 23
   buildToolsVersion "23.0.3"
   lintOptions {
     abortOnError false
+  }
+  defaultConfig {
+    applicationId "${rootAppId}"
+    minSdkVersion 16
+    targetSdkVersion 17
+    versionCode 2
+    versionName "2.0"
+  }
+  buildTypes {
+    debug {
+      def final suffix = ".debug"
+      resValue "string", "app_name", "Australian Alps Insects Debug"
+
+      applicationIdSuffix "${suffix}"
+      versionNameSuffix "${suffix}"
+
+      buildConfigField "String", "CONTENT_PROVIDER_AUTHORITY", "\"${getContentProviderAuthority(suffix)}\""
+      buildConfigField "String", "ASSETS_PROVIDER_AUTHORITY", "\"${getAssetsProviderAuthority(suffix)}\""
+
+      resValue "string", "content_provider_authority", "${getContentProviderAuthority(suffix)}"
+      resValue "string", "assets_provider_authority", "${getAssetsProviderAuthority(suffix)}"
+      resValue "string", "suggest_intent_data", "${getSearchSuggestIntentData(suffix)}"
+    }
+    release {
+      def final suffix = ""
+      resValue "string", "app_name", "Australian Alps Insects"
+
+      applicationIdSuffix "${suffix}"
+      versionNameSuffix "${suffix}"
+
+      buildConfigField "String", "CONTENT_PROVIDER_AUTHORITY", "\"${getContentProviderAuthority(suffix)}\""
+      buildConfigField "String", "ASSETS_PROVIDER_AUTHORITY", "\"${getAssetsProviderAuthority(suffix)}\""
+
+      resValue "string", "content_provider_authority", "${getContentProviderAuthority(suffix)}"
+      resValue "string", "assets_provider_authority", "${getAssetsProviderAuthority(suffix)}"
+      resValue "string", "suggest_intent_data", "${getSearchSuggestIntentData(suffix)}"
+    }
   }
 }
 

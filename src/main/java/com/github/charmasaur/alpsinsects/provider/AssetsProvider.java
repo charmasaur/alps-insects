@@ -9,9 +9,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
+import com.github.charmasaur.alpsinsects.BuildConfig;
+
 public class AssetsProvider extends ContentProvider {
-  public static final String AUTHORITY =
-      "com.github.charmasaur.alpsinsects.provider.FieldGuideAssetsProvider";
+  public static final String AUTHORITY = BuildConfig.ASSETS_PROVIDER_AUTHORITY;
 
   @Override
   public boolean onCreate() {
