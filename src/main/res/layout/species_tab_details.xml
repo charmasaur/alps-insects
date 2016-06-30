@@ -158,13 +158,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>
 
-        <TextView
-            style="@style/SpeciesDetailsText"
-            android:id="@+id/license_link"
-            android:autoLink="web"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-
     </LinearLayout>
 
 </ScrollView>

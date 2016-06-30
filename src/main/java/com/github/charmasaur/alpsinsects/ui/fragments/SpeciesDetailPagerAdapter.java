@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,25 +177,30 @@ public class SpeciesDetailPagerAdapter extends PagerAdapter {
       view.findViewById(R.id.taxa_species_row).setVisibility(View.GONE);
     }
 
-    boolean licenseOrLink = false;
     View licenseHeadingView = view.findViewById(R.id.license_heading);
     TextView licenseView = (TextView) view.findViewById(R.id.license);
-    TextView licenseLinkView = (TextView) view.findViewById(R.id.license_link);
-    if (hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE)) {
-      licenseOrLink = true;
+
+    String license = hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE)
+        ? getColumnValue(FieldGuideDatabase.SPECIES_LICENSE) : null;
+
+    if (hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK)) {
+      licenseHeadingView.setVisibility(View.VISIBLE);
       licenseView.setVisibility(View.VISIBLE);
-      licenseView.setText(getColumnValue(FieldGuideDatabase.SPECIES_LICENSE));
+
+      String licenseLink = getColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK);
+      licenseView.setText(Html.fromHtml("<a href=\"" + licenseLink + "\">"
+          + (license == null ? licenseLink : license) + "</a>"));
+      licenseView.setMovementMethod(LinkMovementMethod.getInstance());
+    } else if (license != null) {
+      licenseHeadingView.setVisibility(View.VISIBLE);
+      licenseView.setVisibility(View.VISIBLE);
+
+      licenseView.setText(license);
+      licenseView.setMovementMethod(null);
     } else {
+      licenseHeadingView.setVisibility(View.GONE);
       licenseView.setVisibility(View.GONE);
     }
-    if (hasColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK)) {
-      licenseOrLink = true;
-      licenseLinkView.setVisibility(View.VISIBLE);
-      licenseLinkView.setText(getColumnValue(FieldGuideDatabase.SPECIES_LICENSE_LINK));
-    } else {
-      licenseLinkView.setVisibility(View.GONE);
-    }
-    licenseHeadingView.setVisibility(licenseOrLink ? View.VISIBLE : View.GONE);
 
     return view;
   }
