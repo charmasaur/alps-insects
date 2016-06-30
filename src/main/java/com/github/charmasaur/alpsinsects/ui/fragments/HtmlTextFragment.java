@@ -1,26 +1,14 @@
 package com.github.charmasaur.alpsinsects.ui.fragments;
 
-import android.app.Activity;
-import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AlphabetIndexer;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.github.charmasaur.alpsinsects.R;
-import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
 
 /**
  * Displays a block of HTML text.
