@@ -141,7 +141,7 @@ public class SpeciesGroupListFragment extends Fragment {
     public void bindView(View view, Context context, Cursor cursor) {
       String groupLabel = getGroupName(cursor);
       String iconLabel =
-          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME));
+          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_DARK_FILENAME));
 
       TextView txtView1 = (TextView) view.findViewById(R.id.label);
       txtView1.setText(groupLabel);
@@ -169,7 +169,7 @@ public class SpeciesGroupListFragment extends Fragment {
 
     public static String[] getRequiredColumns() {
       return new String[] { FieldGuideDatabase.GROUPS_ID + " AS _id",
-        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME,
+        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_DARK_FILENAME,
         FieldGuideDatabase.GROUPS_LABEL };
     }
 

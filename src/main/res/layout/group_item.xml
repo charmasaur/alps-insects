@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/group_column_width"
     android:paddingBottom="@dimen/group_item_padding_bottom"
-    android:background="#44000000"
+    android:background="@color/group_item_background"
     android:orientation="vertical">
 
     <ImageView
@@ -19,6 +19,7 @@
 
     <TextView
         android:id="@+id/label"
+        android:textColor="@color/open_text_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
