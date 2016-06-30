@@ -8,6 +8,8 @@
     <string name="menu_resources_name">Resources</string>
 
     <!-- titles -->
+    <string name="title_group_list">Field Guide</string>
+    <string name="subtitle_group_list">Insects of the Australian Alps</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>

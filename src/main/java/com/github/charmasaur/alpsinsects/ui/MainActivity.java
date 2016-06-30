@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    homeScreen = new Screen("Field Guide", "Australian Alpine Insects");
+    homeScreen =
+        new Screen(getString(R.string.title_group_list), getString(R.string.subtitle_group_list));
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
