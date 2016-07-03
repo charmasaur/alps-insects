@@ -23,4 +23,9 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:showAsAction="collapseActionView|never"
         android:title="@string/menu_resources_name"/>
 
+    <item
+        android:id="@+id/menu_licenses"
+        android:showAsAction="collapseActionView|never"
+        android:title="@string/menu_licenses_name"/>
+
 </menu>

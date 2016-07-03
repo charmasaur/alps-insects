@@ -6,6 +6,7 @@
     <string name="menu_about_name">About</string>
     <string name="menu_get_involved_name">Get involved</string>
     <string name="menu_resources_name">Resources</string>
+    <string name="menu_licenses_name">Open-source licenses</string>
 
     <!-- titles -->
     <string name="title_group_list">Field Guide</string>
