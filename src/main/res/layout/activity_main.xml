@@ -10,10 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/toolbar_color"
-        android:elevation="4dp"/>
-        <!-- Uncomment for dark text (except slightly broken search)
-            app:theme="@style/Theme.FieldGuide.Toolbar"
-            app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
-        -->
+        android:elevation="4dp"
+        app:theme="@style/Theme.FieldGuide.Toolbar"
+        app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
 
 </LinearLayout>

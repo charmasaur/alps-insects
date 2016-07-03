@@ -1,6 +1,7 @@
 <resources>
     <style name="Theme.FieldGuide" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/toolbar_color</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
     <style name="Theme.FieldGuide.FullScreen" parent="Theme.FieldGuide">
@@ -15,10 +16,31 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
-    <!-- Possibly unused -->
     <style name="Theme.FieldGuide.Toolbar" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
+        <item name="android:dropDownItemStyle">@style/DropDownItemStyle</item>
     </style>
+
+    <!-- Use a dark theme for the overflow menu. -->
     <style name="Theme.FieldGuide.ToolbarPopup" parent="ThemeOverlay.AppCompat.Dark">
+    </style>
+
+    <!-- Use a custom search suggestion layout so that our icons will be scaled properly. -->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="suggestionRowLayout">@layout/search_suggest</item>
+    </style>
+
+    <!--
+        Not sure why setting android:background seems to be the only way to set the background of
+        the drop down list of the search box, but whatever. Stupid Android.
+    -->
+    <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:background">@color/background_material_dark</item>
+    </style>
+
+    <!-- In similar hacky spirit, set the text colour explicitly. -->
+    <style name="DropDownItemStyle" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textColor">@color/abc_primary_text_material_dark</item>
     </style>
 
     <!-- text styles -->
