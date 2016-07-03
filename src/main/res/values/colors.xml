@@ -18,25 +18,8 @@
     
     <color name="open_background">#8fcfdb</color>
     <color name="open_text_color">#aa000000</color>
-    <color name="actionBarStart">#265f19</color>
-    <color name="actionBarEnd">#64922F</color>
-    <color name="parkTitle">#92e7e7</color>
-    <color name="parkSubTitle">#E1F9F8</color>
-    <color name="parkFieldGuide">#dcfafa</color>
     <color name="headingText">#bed29f</color>
-    
-    <color name="pressed_example">#CC51cee1</color>
 
     <color name="group_item_background">#b3d5db</color>
-    
-    
-    <!-- sample -->
-    <color name="android_green">#FFA4C639</color>
-    <color name="honeycombish_blue">#FF58BAED</color>
-    <color name="soft_grey">#FF777777</color>
-    <color name="background">#FFEFEFEF</color>
-    
-    
-    
     
 </resources>

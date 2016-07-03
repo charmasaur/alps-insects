@@ -31,6 +31,7 @@ import com.github.charmasaur.alpsinsects.ui.fragments.HtmlTextFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.SearchFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.SpeciesGroupListFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.SpeciesItemDetailFragment;
+import com.github.charmasaur.alpsinsects.ui.fragments.WebViewFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_about:
-        // TODO: Licenses plus other things (ImageViewZoom)
         backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
         setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT");
         break;
@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         backStackScreens.put("RESOURCES",
             new Screen(getString(R.string.menu_resources_name), null));
         setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES");
+        break;
+      case R.id.menu_licenses:
+        backStackScreens.put("LICENSES",
+            new Screen(getString(R.string.menu_licenses_name), null));
+        setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES");
         break;
       case android.R.id.home:
         onBackPressed();
