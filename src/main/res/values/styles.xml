@@ -1,38 +1,27 @@
 <resources>
     <style name="Theme.FieldGuide" parent="Theme.AppCompat.NoActionBar">
-        <item name="dropDownListViewStyle">@style/Theme.FieldGuide.DropDownListView</item>
-        <item name="android:dropDownListViewStyle">@style/Theme.FieldGuide.DropDownListView</item>
-        
-        <item name="actionDropDownStyle">@style/Theme.FieldGuide.DropDownNav</item>
-        
+        <item name="colorPrimary">@color/toolbar_color</item>
     </style>
-    
-    <style name="Theme.FieldGuide.FullScreen" parent="Theme.AppCompat.NoActionBar">
+
+    <style name="Theme.FieldGuide.FullScreen" parent="Theme.FieldGuide">
         <item name="android:windowFullscreen">true</item>
     </style>
-    
+
     <style name="Theme.FieldGuide.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowFullscreen">true</item>
     </style>
-    
+
     <style name="Theme.FieldGuide.Splash" parent="Theme.FieldGuide.FullScreen">
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
-    
-    <!-- actionbar styles -->
-    <style name="Theme.FieldGuide.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
-
+    <!-- Possibly unused -->
+    <style name="Theme.FieldGuide.Toolbar" parent="ThemeOverlay.AppCompat.Light">
     </style>
-    
-    <style name="Theme.FieldGuide.DropDownNav" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
+    <style name="Theme.FieldGuide.ToolbarPopup" parent="ThemeOverlay.AppCompat.Dark">
     </style>
 
-    <style name="Theme.FieldGuide.DropDownListView" parent="Widget.AppCompat.ListView.DropDown">
-    </style>
-
-
-    <!-- text styles -->    
+    <!-- text styles -->
     <style name="SpeciesDetailsSubheading">
         <item name="android:textStyle">bold</item>
         <item name="android:paddingTop">19dp</item>
@@ -40,13 +29,13 @@
         <item name="android:textColor">#eaeaea</item>
         <item name="android:textSize">17dp</item>
     </style>
-    
+
     <style name="SpeciesDetailsText">
         <item name="android:textSize">15dp</item>
         <item name="android:lineSpacingExtra">4dp</item>
     </style>
-    
-    
+
+
     <!-- table styles -->
     <style name="tablerowstyle">
         <item name="android:paddingTop">2dp</item>

@@ -20,6 +20,8 @@
     <color name="open_text_color">#aa000000</color>
     <color name="headingText">#bed29f</color>
 
-    <color name="group_item_background">#b3d5db</color>
+    <color name="group_item_background">#44000000</color>
+
+    <color name="toolbar_color">#0081a1</color>
     
 </resources>

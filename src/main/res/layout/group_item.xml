@@ -19,7 +19,6 @@
 
     <TextView
         android:id="@+id/label"
-        android:textColor="@color/open_text_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
