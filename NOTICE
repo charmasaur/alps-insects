@@ -1,0 +1,36 @@
+Field Guide to Insects of the Australian Alps
+Copyright 2016 Harry J. Slatyer
+
+---
+
+This software is based on code from Museum Victoria's "Field Guide to Victorian Fauna - Android"
+(https://github.com/museumvictoria/mv-fieldguide-android), and also uses the following open source
+libraries:
+ - ImageViewZoom (https://github.com/sephiroth74/ImageViewZoom)
+ - Gson (https://github.com/google/gson)
+ - SVG Android (https://github.com/japgolly/svg-android)
+
+The licenses for these libraries may be found at src/main/assets/open_source_licenses.html.
+
+---
+
+In addition, the SVG Android library includes the following attributions:
+
+Apache Batik
+Copyright 1999-2007 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+This software contains code from the World Wide Web Consortium (W3C) for the
+Document Object Model API (DOM API) and SVG Document Type Definition (DTD).
+
+This software contains code from the International Organisation for
+Standardization for the definition of character entities used in the software's
+documentation.
+
+This product includes images from the Tango Desktop Project
+(http://tango.freedesktop.org/).
+
+This product includes images from the Pasodoble Icon Theme
+(http://www.jesusda.com/projects/pasodoble).
