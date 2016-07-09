@@ -1,11 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?android:textColorPrimary"
+        android:background="@android:drawable/title_bar"
+        android:id="@+id/details_heading"
+        android:text="Details"
+        android:textSize="20sp"
+        android:padding="10dp"/>
+
+    <FrameLayout
+        android:id="@+id/species_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/group_item_background"
+        android:padding="4dp"
+        android:visibility="gone">
+
+        <include layout="@layout/group_tab_other"/>
+
+    </FrameLayout>
 
     <ListView
         android:id="@+id/species_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</FrameLayout>
+</LinearLayout>

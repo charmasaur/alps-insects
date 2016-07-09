@@ -33,7 +33,7 @@ public class GroupPagerAdapter extends PagerAdapter {
     void onSpeciesSelected(String speciesId, String name, @Nullable String subname);
   }
 
-  private static final int TAB_COUNT = 2;
+  private static final int TAB_COUNT = 1;
   private static final int SPECIES_LIST_POSITION = 0;
   private static final int OTHER_POSITION = 1;
 
@@ -65,7 +65,7 @@ public class GroupPagerAdapter extends PagerAdapter {
 
     Context context = layoutInflater.getContext();
     tabNames[SPECIES_LIST_POSITION] = context.getString(R.string.group_tab_species_list);
-    tabNames[OTHER_POSITION] = context.getString(R.string.group_tab_other);
+    //tabNames[OTHER_POSITION] = context.getString(R.string.group_tab_other);
   }
 
   public void destroy() {
@@ -81,8 +81,8 @@ public class GroupPagerAdapter extends PagerAdapter {
         view = createSpeciesListView(container);
         break;
       case OTHER_POSITION:
-        view = createOtherView(container);
-        break;
+        //view = createOtherView(container);
+        //break;
       default:
         throw new RuntimeException("Unrecognised position: " + position);
     }
@@ -129,11 +129,11 @@ public class GroupPagerAdapter extends PagerAdapter {
       }
     });
 
-    return view;
-  }
-
-  private View createOtherView(ViewGroup container) {
-    View view = layoutInflater.inflate(R.layout.group_tab_other, container, false);
+//    return view;
+//  }
+//
+//  private View createOtherView(ViewGroup container) {
+//    View view = layoutInflater.inflate(R.layout.group_tab_other, container, false);
 
     ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(
         ImageResizer.decodeSampledBitmapFromStream(dataProvider.getGroupIcon(
@@ -164,8 +164,19 @@ public class GroupPagerAdapter extends PagerAdapter {
       licenseView.setVisibility(View.GONE);
     }
 
+    final View detailsView = view.findViewById(R.id.species_details);
+    view.findViewById(R.id.details_heading).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        detailsCollapsed = !detailsCollapsed;
+        detailsView.setVisibility(detailsCollapsed ? View.GONE : View.VISIBLE);
+      }
+    });
+
     return view;
   }
+
+  private boolean detailsCollapsed = true;
 
   private boolean hasDetailsColumnValue(String columnName) {
     return !groupDetailsCursor.isNull(groupDetailsCursor.getColumnIndex(columnName));
