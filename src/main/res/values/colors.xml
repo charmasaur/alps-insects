@@ -23,5 +23,6 @@
     <color name="group_item_background">#44000000</color>
 
     <color name="toolbar_color">#0081a1</color>
+    <color name="status_bar_color">#00576d</color>
     
 </resources>
