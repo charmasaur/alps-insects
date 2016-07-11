@@ -2,20 +2,30 @@ package com.github.charmasaur.alpsinsects.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.github.charmasaur.alpsinsects.R;
 import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
+import com.github.charmasaur.alpsinsects.provider.DataProvider;
 import com.github.charmasaur.alpsinsects.provider.DataProviderFactory;
+import com.github.charmasaur.alpsinsects.util.ImageResizer;
 
 /**
  * Shows information about a group.
  */
 public class GroupFragment extends Fragment {
+  private static final String TAG = GroupFragment.class.getSimpleName();
+
   private static final String ARGUMENT_GROUP_NAME = "speciesgroup";
 
   /**
@@ -28,8 +38,11 @@ public class GroupFragment extends Fragment {
 
   private Callback callback;
 
-  private GroupPagerAdapter adapter;
+  private DataProvider dataProvider;
+  private Cursor speciesListCursor;
+  private Cursor groupDetailsCursor;
 
+  private boolean detailsCollapsed = true;
   /**
    * Returns a new {@link GroupFragment} instance corresponding to a particular group.
    *
@@ -70,20 +83,42 @@ public class GroupFragment extends Fragment {
       throw new RuntimeException("Group order missing");
     }
 
-    adapter = new GroupPagerAdapter(getActivity().getLayoutInflater(),
-        FieldGuideDatabase.getInstance(getActivity().getApplicationContext()), groupOrder,
-        DataProviderFactory.getDataProvider(getActivity().getApplicationContext()),
-        adapterCallback);
-    if (adapter.getCount() < 2) {
-      getView().findViewById(R.id.pagerTabStrip).setVisibility(View.GONE);
-    }
-    ((ViewPager) getView().findViewById(R.id.viewPager)).setAdapter(adapter);
-  }
+    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
+    dataProvider = DataProviderFactory.getDataProvider(getActivity().getApplicationContext());
 
+    speciesListCursor =
+        db.getSpeciesInGroup(groupOrder, SpeciesListCursorAdapter.getRequiredColumns());
+    if (speciesListCursor == null) {
+      throw new RuntimeException("No species list found for group: " + groupOrder);
+    }
+
+    groupDetailsCursor = db.getGroupDetails(groupOrder, null);
+    if (groupDetailsCursor == null) {
+      throw new RuntimeException("No group details found for group: " + groupOrder);
+    }
+
+    ListView listView = (ListView) getView().findViewById(R.id.species_list);
+    listView.setFastScrollEnabled(true);
+    listView.addHeaderView(createDetailsView(listView));
+
+    final SpeciesListCursorAdapter adapter =
+        new SpeciesListCursorAdapter(getActivity(), speciesListCursor, 0, dataProvider);
+
+    listView.setAdapter(adapter);
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.i(TAG, "Click" + position + " " + id);
+        callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
+            adapter.getSublabelAtPosition(position));
+      }
+    });
+  }
 
   @Override
   public void onDestroy() {
-    adapter.destroy();
+    groupDetailsCursor.close();
+    speciesListCursor.close();
 
     super.onDestroy();
   }
@@ -94,10 +129,60 @@ public class GroupFragment extends Fragment {
     super.onDetach();
   }
 
-  private final GroupPagerAdapter.Callback adapterCallback = new GroupPagerAdapter.Callback() {
-    @Override
-    public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
-      callback.onSpeciesSelected(speciesId, name, subname);
+  private View createDetailsView(ViewGroup container) {
+    View view =
+        getActivity().getLayoutInflater().inflate(R.layout.group_details_item, container, false);
+
+    ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(
+        ImageResizer.decodeSampledBitmapFromStream(dataProvider.getGroupIcon(
+            getDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME))));
+
+    ((TextView) view.findViewById(R.id.description)).setText(
+        Html.fromHtml(getDetailsColumnValue(FieldGuideDatabase.GROUPS_DESCRIPTION)));
+
+    View creditHeadingView = view.findViewById(R.id.icon_credit_heading);
+    TextView creditView = (TextView) view.findViewById(R.id.icon_credit);
+    if (hasDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_CREDIT)) {
+      creditHeadingView.setVisibility(View.VISIBLE);
+      creditView.setVisibility(View.VISIBLE);
+      creditView.setText(getDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_CREDIT));
+    } else {
+      creditHeadingView.setVisibility(View.GONE);
+      creditView.setVisibility(View.GONE);
     }
-  };
+
+    View licenseHeadingView = view.findViewById(R.id.icon_license_heading);
+    TextView licenseView = (TextView) view.findViewById(R.id.icon_license);
+    if (hasDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE_LINK)) {
+      licenseHeadingView.setVisibility(View.VISIBLE);
+      licenseView.setVisibility(View.VISIBLE);
+      licenseView.setText(getDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE_LINK));
+    } else {
+      licenseHeadingView.setVisibility(View.GONE);
+      licenseView.setVisibility(View.GONE);
+    }
+
+    final View detailsView = view.findViewById(R.id.details);
+    final ImageView detailsIcon = (ImageView) view.findViewById(R.id.expand_icon);
+    view.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        detailsCollapsed = !detailsCollapsed;
+        detailsView.setVisibility(detailsCollapsed ? View.GONE : View.VISIBLE);
+        detailsIcon.setImageDrawable(getActivity().getResources().getDrawable(
+            detailsCollapsed
+                ? R.drawable.ic_expand_more_white_24dp : R.drawable.ic_expand_less_white_24dp));
+      }
+    });
+
+    return view;
+  }
+
+  private boolean hasDetailsColumnValue(String columnName) {
+    return !groupDetailsCursor.isNull(groupDetailsCursor.getColumnIndex(columnName));
+  }
+
+  private String getDetailsColumnValue(String columnName) {
+    return groupDetailsCursor.getString(groupDetailsCursor.getColumnIndex(columnName));
+  }
 }
