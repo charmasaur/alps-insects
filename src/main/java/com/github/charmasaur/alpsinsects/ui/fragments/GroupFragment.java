@@ -109,8 +109,11 @@ public class GroupFragment extends Fragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.i(TAG, "Click" + position + " " + id);
-        callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
-            adapter.getSublabelAtPosition(position));
+        // Since we have a header view, the position in the adapter is actually 1 less (or fewer? I
+        // don't know...) than the reported position.
+        int adapterPosition = position - 1;
+        callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(adapterPosition),
+            adapter.getSublabelAtPosition(adapterPosition));
       }
     });
   }
