@@ -78,5 +78,6 @@ dependencies {
   compile 'com.android.support:appcompat-v7:23.3.0'
   compile 'com.android.support:support-v4:23.3.0'
   compile 'com.google.code.gson:gson:2.6.2'
+  compile 'com.github.japgolly.android:svg-android:2.0.6'
   compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.5'
 }

@@ -18,7 +18,8 @@ import com.github.charmasaur.alpsinsects.R;
 import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
 import com.github.charmasaur.alpsinsects.provider.DataProvider;
 import com.github.charmasaur.alpsinsects.provider.DataProviderFactory;
-import com.github.charmasaur.alpsinsects.util.ImageResizer;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGBuilder;
 
 /**
  * Shows information about a group.
@@ -136,9 +137,9 @@ public class GroupFragment extends Fragment {
     View view =
         getActivity().getLayoutInflater().inflate(R.layout.group_details_item, container, false);
 
-    ((ImageView) view.findViewById(R.id.icon)).setImageBitmap(
-        ImageResizer.decodeSampledBitmapFromStream(dataProvider.getGroupIcon(
-            getDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME))));
+    ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(
+        new SVGBuilder().readFromInputStream(dataProvider.getGroupIcon("ic_d_bla.svg")).build()
+            .getDrawable());
 
     ((TextView) view.findViewById(R.id.description)).setText(
         Html.fromHtml(getDetailsColumnValue(FieldGuideDatabase.GROUPS_DESCRIPTION)));
