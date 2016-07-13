@@ -10,14 +10,9 @@
 
     <item>
         <bitmap
-            android:src="@drawable/splash_mountains"
-            android:gravity="bottom|fill_horizontal"/>
-    </item>
-
-    <item>
-        <bitmap
             android:src="@drawable/splash_icon"
             android:gravity="center"/>
     </item>
 
 </layer-list>
+
