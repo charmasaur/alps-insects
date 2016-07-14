@@ -44,7 +44,7 @@ public class FieldGuideDatabase {
   private static final String TAG = FieldGuideDatabase.class.getSimpleName();
 
   // database
-  private static final int DATABASE_VERSION = 5;
+  private static final int DATABASE_VERSION = 6;
   private static final String DATABASE_NAME = "fieldguide";
   private static final String SPECIES_TABLE_NAME = "species";
   private static final String IMAGES_TABLE_NAME = "images";
@@ -85,7 +85,6 @@ public class FieldGuideDatabase {
   public static final String GROUPS_ID = "rowid";
   public static final String GROUPS_ORDER = "orderORDER";
   public static final String GROUPS_LABEL = "label";
-  public static final String GROUPS_ICON_WHITE_FILENAME = "iconWhiteFilename";
   public static final String GROUPS_ICON_DARK_FILENAME = "iconDarkFilename";
   public static final String GROUPS_ICON_CREDIT = "iconCredit";
   public static final String GROUPS_LICENSE_LINK = "licenseLink";
@@ -265,7 +264,6 @@ public class FieldGuideDatabase {
     private static final String GROUPS_TABLE_CREATE = "CREATE TABLE " + GROUPS_TABLE_NAME + " ("
         + GROUPS_ORDER + " TEXT, "
         + GROUPS_LABEL + " TEXT, "
-        + GROUPS_ICON_WHITE_FILENAME + " TEXT, "
         + GROUPS_ICON_DARK_FILENAME + " TEXT, "
         + GROUPS_ICON_CREDIT + " TEXT, "
         + GROUPS_LICENSE_LINK + " TEXT, "
@@ -363,7 +361,6 @@ public class FieldGuideDatabase {
           Arrays.asList(
             GROUPS_ORDER,
             GROUPS_LABEL,
-            GROUPS_ICON_WHITE_FILENAME,
             GROUPS_ICON_DARK_FILENAME,
             GROUPS_ICON_CREDIT,
             GROUPS_LICENSE_LINK,
@@ -431,8 +428,6 @@ public class FieldGuideDatabase {
 
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_ORDER), group.getOrder());
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_LABEL), group.getLabel());
-          maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_WHITE_FILENAME),
-              group.getIconWhiteFilename());
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_DARK_FILENAME),
               group.getIconDarkFilename());
           maybeBind(groupsStatement, groupsColumns.get(GROUPS_ICON_CREDIT),

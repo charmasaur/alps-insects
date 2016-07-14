@@ -138,7 +138,11 @@ public class GroupFragment extends Fragment {
         getActivity().getLayoutInflater().inflate(R.layout.group_details_item, container, false);
 
     ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(
-        new SVGBuilder().readFromInputStream(dataProvider.getGroupIcon("ic_d_bla.svg")).build()
+        new SVGBuilder()
+            .readFromInputStream(dataProvider.getGroupIcon(
+                getDetailsColumnValue(FieldGuideDatabase.GROUPS_ICON_DARK_FILENAME)))
+            .setColorSwap(0xFF000000, 0xFFFFFFFF)
+            .build()
             .getDrawable());
 
     ((TextView) view.findViewById(R.id.description)).setText(

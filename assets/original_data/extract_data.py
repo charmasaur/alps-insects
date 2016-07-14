@@ -66,8 +66,7 @@ for (order, group, icon_w, icon_d, icon_credit, license_link, desc, other) in gr
     entry = {
             "order" : order,
             "label" : group,
-            "iconWhiteFilename" : icon_w + '.png',
-            "iconDarkFilename" : icon_d + '.png',
+            "iconDarkFilename" : icon_d + '.svg',
             "iconCredit" : icon_credit,
             "description" : desc};
 

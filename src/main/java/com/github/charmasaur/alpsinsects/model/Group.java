@@ -3,7 +3,6 @@ package com.github.charmasaur.alpsinsects.model;
 public class Group {
   private String order;
 	private String label;
-  private String iconWhiteFilename;
   private String iconDarkFilename;
   private String iconCredit;
   private String description;
@@ -25,14 +24,6 @@ public class Group {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public String getIconWhiteFilename() {
-		return iconWhiteFilename;
-	}
-
-	public void setIconWhiteFilename(String iconWhiteFilename) {
-		this.iconWhiteFilename = iconWhiteFilename;
 	}
 
 	public String getIconDarkFilename() {

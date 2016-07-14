@@ -22,6 +22,8 @@ import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
 import com.github.charmasaur.alpsinsects.provider.DataProvider;
 import com.github.charmasaur.alpsinsects.provider.DataProviderFactory;
 import com.github.charmasaur.alpsinsects.util.ImageResizer;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGBuilder;
 
 /**
  * Displays a list of groups.
@@ -141,14 +143,17 @@ public class SpeciesGroupListFragment extends Fragment {
     public void bindView(View view, Context context, Cursor cursor) {
       String groupLabel = getGroupName(cursor);
       String iconLabel =
-          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME));
+          cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.GROUPS_ICON_DARK_FILENAME));
 
       TextView txtView1 = (TextView) view.findViewById(R.id.label);
       txtView1.setText(groupLabel);
 
-      ImageView imgView = (ImageView) view.findViewById(R.id.icon);
-      imgView.setImageBitmap(ImageResizer.decodeSampledBitmapFromStream(
-          dataProvider.getGroupIcon(iconLabel)));
+      ((ImageView) view.findViewById(R.id.icon)).setImageDrawable(
+          new SVGBuilder()
+              .readFromInputStream(dataProvider.getGroupIcon(iconLabel))
+              .setColorSwap(0xFF000000, 0xFFFFFFFF)
+              .build()
+              .getDrawable());
     }
 
     @Override
@@ -169,7 +174,7 @@ public class SpeciesGroupListFragment extends Fragment {
 
     public static String[] getRequiredColumns() {
       return new String[] { FieldGuideDatabase.GROUPS_ID + " AS _id",
-        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_WHITE_FILENAME,
+        FieldGuideDatabase.GROUPS_ORDER, FieldGuideDatabase.GROUPS_ICON_DARK_FILENAME,
         FieldGuideDatabase.GROUPS_LABEL };
     }
 

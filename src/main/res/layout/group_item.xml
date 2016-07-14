@@ -15,7 +15,8 @@
         android:paddingRight="@dimen/group_icon_padding"
         android:paddingTop="@dimen/group_icon_padding"
         android:paddingBottom="@dimen/group_icon_padding"
-        android:scaleType="fitCenter"/>
+        android:layerType="software"
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/label"

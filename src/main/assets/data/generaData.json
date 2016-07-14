@@ -3,16 +3,14 @@
     {
       "description": "COCKROACHES (order Blattodea) are related to mantises and termites. They can be found in decaying leaves, soil, and under logs. ",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_bla.png",
-      "iconWhiteFilename": "ic_w_bla.png",
+      "iconDarkFilename": "ic_d_bla.svg",
       "label": "Cockroaches",
       "order": "Blattodea"
     },
     {
       "description": "BEETLES (order Coleoptera) can be recognized by their hard, armor-like wing covers and are found in many habitats.",
       "iconCredit": "B Lang",
-      "iconDarkFilename": "ic_d_col.png",
-      "iconWhiteFilename": "ic_w_col.png",
+      "iconDarkFilename": "ic_d_col.svg",
       "label": "Beetles",
       "licenseLink": "http://creativecommons.org/licenses/by/3.0/",
       "order": "Coleoptera"
@@ -20,8 +18,7 @@
     {
       "description": "FLIES (Order Diptera) can be recognized by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects)",
       "iconCredit": "D Monger",
-      "iconDarkFilename": "ic_d_dip.png",
-      "iconWhiteFilename": "ic_w_dip.png",
+      "iconDarkFilename": "ic_d_dip.svg",
       "label": "Flies",
       "licenseLink": "http://creativecommons.org/licenses/by/3.0/",
       "order": "Diptera"
@@ -29,16 +26,14 @@
     {
       "description": "MAYFLIES (order Ephemeroptera) spend most of their lives as aquatic nymphs, emerging en masse for a brief adult life of mating and ovipositing. Can be recognized by their large, triangular, membranous wings and long, trailing \"tails\" (cerci). ",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_eph.png",
-      "iconWhiteFilename": "ic_w_eph.png",
+      "iconDarkFilename": "ic_d_eph.svg",
       "label": "Mayflies",
       "order": "Ephemeroptera"
     },
     {
       "description": "TRUE BUGS (order Hemiptera) include most plant-feeding insects with piercing, sucking mouthparts. Common true bugs include aphids, planthoppers, scale insects, and cicadas.",
       "iconCredit": "J Hughes",
-      "iconDarkFilename": "ic_d_hem.png",
-      "iconWhiteFilename": "ic_w_hem.png",
+      "iconDarkFilename": "ic_d_hem.svg",
       "label": "True bugs",
       "licenseLink": "http://creativecommons.org/licenses/by-nc-sa/3.0/",
       "order": "Hemiptera"
@@ -46,64 +41,56 @@
     {
       "description": "BEES, WASPS, AND ANTS (order Hymenoptera) can typically be recognized by their slender, constricted waist and tendency to live in social groups, although some families (e.g. sawflies) lack the \"wasp waist\".",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_hym.png",
-      "iconWhiteFilename": "ic_w_hym.png",
+      "iconDarkFilename": "ic_d_hym.svg",
       "label": "Bees, wasps, and ants",
       "order": "Hymenoptera"
     },
     {
       "description": "MOTHS AND BUTTERFLIES (order Lepidoptera) can be recognized by their broad, powdery wings and tubelike mouthparts",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_lep.png",
-      "iconWhiteFilename": "ic_w_lep.png",
+      "iconDarkFilename": "ic_d_lep.svg",
       "label": "Moths & butterflies",
       "order": "Lepidoptera"
     },
     {
       "description": "SCORPIONFLIES (order Mecoptera) are unusual insects with four clear, membranous wings, long faces, and curving, pointed genitalia that resemble the stinger of a scorpion. ",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_mec.png",
-      "iconWhiteFilename": "ic_w_mec.png",
+      "iconDarkFilename": "ic_d_mec.svg",
       "label": "Scorpionflies",
       "order": "Mecoptera"
     },
     {
       "description": "LACEWINGS AND MANTISFLIES (order Neuroptera) can be recognized by their clear, membranous wings with an intricate, lace-like venation.",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_neu.png",
-      "iconWhiteFilename": "ic_w_neu.png",
+      "iconDarkFilename": "ic_d_neu.svg",
       "label": "Lacewings & mantisflies",
       "order": "Neuroptera"
     },
     {
       "description": "DRAGONFLIES AND DAMSELFLIES (order Odonata) develop as aquatic nymphs in freshwater habitats before emerging as ferociously predatory adults. Adult odonates can be recognized by their long, slender bodies, extremely large eyes, and four long, membranous wings of roughly the same size.",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_odo.png",
-      "iconWhiteFilename": "ic_w_odo.png",
+      "iconDarkFilename": "ic_d_odo.svg",
       "label": "Dragonflies & damselflies",
       "order": "Odonata"
     },
     {
       "description": "CRICKETS AND GRASSHOPPERS (order Orthoptera) can be recognized by their flat-folded wings (if present) and enlarged hindlegs. Usually found in grass, low shrubs, or on the ground. ",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_ort.png",
-      "iconWhiteFilename": "ic_w_ort.png",
+      "iconDarkFilename": "ic_d_ort.svg",
       "label": "Grasshoppers, crickets, & katydids",
       "order": "Orthoptera"
     },
     {
       "description": "STICK INSECTS (order Phasmida or Phasmatodea) are long, slender insects that specialize in mimicking leaves and twigs. When not moving, these insects are extremely difficult to spot. ",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_pha.png",
-      "iconWhiteFilename": "ic_w_pha.png",
+      "iconDarkFilename": "ic_d_pha.svg",
       "label": "Stick insects",
       "order": "Phasmatodea"
     },
     {
       "description": "STONEFLIES (order Plecoptera) develop in freshwater habitats like mayflies, but possess abdominal gills (as nymphs) and hold their patterned wings flat against the body (as adults).",
       "iconCredit": "A Seago",
-      "iconDarkFilename": "ic_d_ple.png",
-      "iconWhiteFilename": "ic_w_ple.png",
+      "iconDarkFilename": "ic_d_ple.svg",
       "label": "Stoneflies",
       "order": "Plecoptera"
     }
