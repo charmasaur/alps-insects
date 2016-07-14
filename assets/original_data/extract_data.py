@@ -54,7 +54,8 @@ groups_reader = csv.reader(groups_file);
 next(groups_reader);
 group_entries = [];
 
-for (order, group, icon_w, icon_d, icon_credit, license_link, desc, other) in groups_reader:
+for (order, group, icon_w, icon_d, icon_credit, license, license_link, desc,
+        extra_search) in groups_reader:
     print("Reading group: " + order);
 
     # Ensure that required fields are present.
@@ -70,8 +71,14 @@ for (order, group, icon_w, icon_d, icon_credit, license_link, desc, other) in gr
             "iconCredit" : icon_credit,
             "description" : desc};
 
-    if not license_link == "na":
+    if is_present(license_link):
         entry["licenseLink"] = license_link;
+    if is_present(license):
+        entry["license"] = license;
+    if is_present(extra_search):
+        entry["extraSearch"] = extra_search;
+    else:
+        entry["extraSearch"] = "";
     group_entries.append(entry);
 
 
@@ -82,8 +89,8 @@ next(species_reader);
 species_entries = [];
 
 for (ide, order, family, genus, scientific_name, label, sublabel, italicise_sublabel, description,
-        license_link, license, thumb, p1, c1, p2, c2, p3, c3, p4, c4, p5, c5, p6,
-        c6) in species_reader:
+        license_link, license, thumb, p1, c1, p2, c2, p3, c3, p4, c4, p5, c5, p6, c6,
+        extra_search) in species_reader:
     print("Reading species: " + ide);
 
     # Ensure that required fields are present.
@@ -95,6 +102,8 @@ for (ide, order, family, genus, scientific_name, label, sublabel, italicise_subl
     assert_present(description, "Description");
     assert_present(thumb, "Thumbnail");
 
+    if not is_present(extra_search):
+        extra_search = "";
     entry = {
             "identifier" : ide,
             "order" : order,
@@ -104,8 +113,9 @@ for (ide, order, family, genus, scientific_name, label, sublabel, italicise_subl
             "description" : description,
             "squareThumbnail" : thumb,
             "searchText" : get_words(
-                [label, sublabel] +
-                [[g for g in group_entries if g['order'] == order][0]['label']]),
+                [label, sublabel, extra_search] +
+                [[g for g in group_entries if g['order'] == order][0]['label']] +
+                [[g for g in group_entries if g['order'] == order][0]['extraSearch']]),
             "images" : get_images([p1, p2, p3, p4, p5, p6], [c1, c2, c3, c4, c5, c6])};
 
     if is_present(family):
