@@ -27,6 +27,7 @@
     <dimen name="group_icon_padding">10dp</dimen>
 
     <dimen name="group_details_icon">100dp</dimen>
+    <dimen name="group_details_padding">10dp</dimen>
 
     <dimen name="species_list_thumbnail_size">56dp</dimen>
 
