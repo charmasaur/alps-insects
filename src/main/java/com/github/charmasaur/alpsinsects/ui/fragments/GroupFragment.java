@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,10 +162,24 @@ public class GroupFragment extends Fragment {
 
     View licenseHeadingView = view.findViewById(R.id.icon_license_heading);
     TextView licenseView = (TextView) view.findViewById(R.id.icon_license);
+
+    String license = hasDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE)
+        ? getDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE) : null;
+
     if (hasDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE_LINK)) {
       licenseHeadingView.setVisibility(View.VISIBLE);
       licenseView.setVisibility(View.VISIBLE);
-      licenseView.setText(getDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE_LINK));
+
+      String licenseLink = getDetailsColumnValue(FieldGuideDatabase.GROUPS_LICENSE_LINK);
+      licenseView.setText(Html.fromHtml("<a href=\"" + licenseLink + "\">"
+          + (license == null ? licenseLink : license) + "</a>"));
+      licenseView.setMovementMethod(LinkMovementMethod.getInstance());
+    } else if (license != null) {
+      licenseHeadingView.setVisibility(View.VISIBLE);
+      licenseView.setVisibility(View.VISIBLE);
+
+      licenseView.setText(license);
+      licenseView.setMovementMethod(null);
     } else {
       licenseHeadingView.setVisibility(View.GONE);
       licenseView.setVisibility(View.GONE);

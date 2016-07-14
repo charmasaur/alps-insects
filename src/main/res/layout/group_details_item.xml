@@ -60,8 +60,7 @@
             style="@style/SpeciesDetailsText"
             android:id="@+id/icon_license"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
