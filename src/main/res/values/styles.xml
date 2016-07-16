@@ -2,7 +2,6 @@
     <style name="Theme.FieldGuide" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/toolbar_color</item>
         <item name="colorPrimaryDark">@color/status_bar_color</item>
-        <item name="colorAccent">@color/toolbar_color</item>
         <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 
