@@ -26,6 +26,7 @@ import android.support.v7.widget.SearchView;
 
 import com.github.charmasaur.alpsinsects.R;
 import com.github.charmasaur.alpsinsects.db.FieldGuideDatabase;
+import com.github.charmasaur.alpsinsects.ui.fragments.GetInvolvedFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.GroupFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.HtmlTextFragment;
 import com.github.charmasaur.alpsinsects.ui.fragments.SearchFragment;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
       case R.id.menu_get_involved:
         backStackScreens.put("INVOLVED",
             new Screen(getString(R.string.menu_get_involved_name), null));
-        setFragment(HtmlTextFragment.newInstance(R.string.get_involved_string), "INVOLVED");
+        setFragment(GetInvolvedFragment.newInstance(), "INVOLVED");
         break;
       case R.id.menu_resources:
         // TODO: Play store links.

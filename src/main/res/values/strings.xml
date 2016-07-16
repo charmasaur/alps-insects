@@ -42,6 +42,8 @@
     <string name="species_taxonomy_genus">Genus:</string>
     <string name="species_taxonomy_species">Species:</string>
 
+    <string name="get_involved_bowerbird">Join &lt;a href="http://www.bowerbird.org.au">BowerBird&lt;/a>.&lt;br>BowerBird is a web-based biodiversity workspace, which anyone can get involved in.</string>
+
     <string name="about_string">
         <![CDATA[
             <html>
@@ -64,34 +66,6 @@
               <section>
               <p>Harry Slatyer, Rachel Slatyer, Kate Umbers, Ainsley Seago, Nikolai Tatarnic</p>
               </section>
-            </body>
-            </html>
-        ]]>
-    </string>
-
-    <string name="get_involved_string">
-        <![CDATA[
-            <html>
-            <head>
-            </head>
-            <body>
-            <p>There are many hundreds of insect species in the Australian Alps that are not yet included in this field guide. We will continue to build on the number of species, and you can help!</p>
-
-            <p>
-            All you need to do is:<br>
-            1. Take photos! When you\'re out enjoying the mountains, keep a sharp eye out for insects and keep your camera ready.<br>
-            2. Keep a note of where the photo was taken. GPS coordinates (latitude and longitude) are the best and you can get them from Google Maps, by using a compass or GPS app on your smart phone, or from a dedicated GPS device. With or without the coordinates, a description of the location is also useful.<br>
-            3. Join <a href="http://www.bowerbird.org.au">BowerBird</a>. BowerBird is a web-based biodiversity workspace, which anyone can get involved in.<br>
-            4. Upload your photos onto the <em>Insects of the Australian Alps Project</em> page on BowerBird. BowerBird is a community workspace. If you can\'t identify your insect, that\'s OK - others can help!<br>
-            </p>
-
-            <p>
-            By being involved you will be helping to:<br>
-            &#8226; Develop this field guide into a comprehensive source of information on Australia\'s mountain insects.<br>
-            &#8226; Determine which species are found in the Australian Alps.<br>
-            &#8226; Build knowledge on where species occur (very little is known about most insect species in the Australian Alps).<br>
-            &#8226; Detect and monitor changes in where species occur.<br>
-            </p>
             </body>
             </html>
         ]]>
