@@ -86,9 +86,9 @@
 
             <h1>Apps</h1>
             <section>
-            <p>Field Guide to Victorian Fauna (Play Store)</p>
-            <p>Field Guide to NSW Fauna (Play Store)</p>
-            <p>Field Guide to ACT Fauna (Play Store)</p>
+            <p>Field Guide to Victorian Fauna (<a href="http://market.android.com/details?id=au.com.museumvictoria.fieldguide.vic">Play Store</a>)</p>
+            <p>Field Guide to NSW Fauna (<a href="http://market.android.com/details?id=au.gov.austmus.fieldguide">Play Store</a>)</p>
+            <p>Field Guide to ACT Fauna (<a href="http://market.android.com/details?id=au.com.museumvictoria.fieldguide.act">Play Store</a>)</p>
             </section>
 
             <h1>Other</h1>
