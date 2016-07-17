@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     if (!showOptions) {
-      return false;
+      return true;
     }
     getMenuInflater().inflate(R.menu.activity_main, menu);
 
