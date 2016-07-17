@@ -12,9 +12,7 @@ public final class SplashActivity extends AppCompatActivity {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    setTheme(R.style.Theme_FieldGuide_FullScreen);
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_splash);
 
     // Load the database on a background thread.
     new Thread(new Runnable() {
