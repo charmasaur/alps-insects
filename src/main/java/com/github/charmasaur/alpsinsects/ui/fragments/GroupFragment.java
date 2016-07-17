@@ -71,22 +71,16 @@ public class GroupFragment extends Fragment {
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_group, container, false);
-  }
-
-  @Override
-  public void onActivityCreated(Bundle savedInstanceState) {
-    super.onActivityCreated(savedInstanceState);
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
     String groupOrder = getArguments().getString(ARGUMENT_GROUP_NAME);
     if (groupOrder == null) {
       throw new RuntimeException("Group order missing");
     }
 
-    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
-    dataProvider = DataProviderFactory.getDataProvider(getActivity().getApplicationContext());
+    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getContext());
+    dataProvider = DataProviderFactory.getDataProvider(getContext());
 
     speciesListCursor =
         db.getSpeciesInGroup(groupOrder, SpeciesListCursorAdapter.getRequiredColumns());
@@ -98,6 +92,17 @@ public class GroupFragment extends Fragment {
     if (groupDetailsCursor == null) {
       throw new RuntimeException("No group details found for group: " + groupOrder);
     }
+  }
+
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_group, container, false);
+  }
+
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
 
     ListView listView = (ListView) getView().findViewById(R.id.species_list);
     listView.setFastScrollEnabled(true);

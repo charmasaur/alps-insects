@@ -62,6 +62,17 @@ public class SpeciesGroupListFragment extends Fragment {
   }
 
   @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    database = FieldGuideDatabase.getInstance(getContext());
+
+    // CursorAdapters need an _id column with integer values. We use the auto-generated rowid
+    // column.
+    mCursor = database.getSpeciesGroups(GroupListCursorAdapter.getRequiredColumns());
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_species_group_list, container, false);
@@ -71,13 +82,7 @@ public class SpeciesGroupListFragment extends Fragment {
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
 
-    database = FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
-
     Log.i(TAG, "Loading grouped items");
-
-    // CursorAdapters need an _id column with integer values. We use the auto-generated rowid
-    // column.
-    mCursor = database.getSpeciesGroups(GroupListCursorAdapter.getRequiredColumns());
 
     groupList = (GridView) getView().findViewById(R.id.group_list);
     groupList.setFastScrollEnabled(true);
@@ -99,7 +104,6 @@ public class SpeciesGroupListFragment extends Fragment {
   @Override
   public void onDestroy() {
     mCursor.close();
-
     super.onDestroy();
   }
 

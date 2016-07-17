@@ -36,6 +36,8 @@ public class SearchFragment extends Fragment {
 
   private Callback callback;
 
+  private Cursor cursor;
+
   private TextView mTextView;
   private ListView mListView;
 
@@ -63,6 +65,15 @@ public class SearchFragment extends Fragment {
   }
 
   @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    FieldGuideDatabase db = FieldGuideDatabase.getInstance(getContext());
+    cursor = db.getSpeciesMatches(getArguments().getString(SearchManager.QUERY),
+        SpeciesListCursorAdapter.getRequiredColumns());
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_search_results, container, false);
@@ -81,6 +92,10 @@ public class SearchFragment extends Fragment {
   @Override
   public void onDestroy() {
     super.onDestroy();
+
+    if (cursor != null) {
+      cursor.close();
+    }
   }
 
   @Override
@@ -90,10 +105,6 @@ public class SearchFragment extends Fragment {
   }
 
   private void searchSpecies(String query) {
-    FieldGuideDatabase fgdb =
-        FieldGuideDatabase.getInstance(getActivity().getApplicationContext());
-    Cursor cursor = fgdb.getSpeciesMatches(query, SpeciesListCursorAdapter.getRequiredColumns());
-
     if (cursor == null) {
       mTextView.setText(getString(R.string.no_results, new Object[] { query }));
     } else {

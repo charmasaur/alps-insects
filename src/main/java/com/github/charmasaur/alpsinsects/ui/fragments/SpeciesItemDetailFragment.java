@@ -28,6 +28,20 @@ public class SpeciesItemDetailFragment extends Fragment {
   }
 
   @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    String speciesId = getArguments().getString(ARGUMENT_SPECIES_ID);
+    if (speciesId == null) {
+      throw new RuntimeException("Species ID missing");
+    }
+
+    adapter = new SpeciesDetailPagerAdapter(LayoutInflater.from(getContext()),
+        FieldGuideDatabase.getInstance(getContext()),
+        DataProviderFactory.getDataProvider(getContext()), speciesId);
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_item_detail, container, false);
@@ -36,15 +50,6 @@ public class SpeciesItemDetailFragment extends Fragment {
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-
-    String speciesId = getArguments().getString(ARGUMENT_SPECIES_ID);
-    if (speciesId == null) {
-      throw new RuntimeException("Species ID missing");
-    }
-
-    adapter = new SpeciesDetailPagerAdapter(getActivity().getLayoutInflater(),
-        FieldGuideDatabase.getInstance(getActivity().getApplicationContext()),
-        DataProviderFactory.getDataProvider(getActivity().getApplicationContext()), speciesId);
     if (adapter.getCount() < 2) {
       getView().findViewById(R.id.pagerTabStrip).setVisibility(View.GONE);
     }
