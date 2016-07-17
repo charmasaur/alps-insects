@@ -42,6 +42,8 @@
     <string name="species_taxonomy_genus">Genus:</string>
     <string name="species_taxonomy_species">Species:</string>
 
+    <string name="image_credit_prefix">Credit:&#160;</string>
+
     <string name="get_involved_bowerbird">Join &lt;a href="http://www.bowerbird.org.au">BowerBird&lt;/a>.&lt;br>BowerBird is a web-based biodiversity workspace, which anyone can get involved in.</string>
 
     <string name="about_string">

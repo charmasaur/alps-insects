@@ -151,7 +151,8 @@ public class ImageDetailFragment extends Fragment {
     }
     if (credit != null) {
       mImageCredit.setVisibility(View.VISIBLE);
-      mImageCredit.setText(Html.fromHtml(credit));
+      mImageCredit.setText(Html.fromHtml(
+          getActivity().getResources().getString(R.string.image_credit_prefix) + credit));
     } else {
       mImageCredit.setVisibility(View.GONE);
     }
