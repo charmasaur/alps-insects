@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
    */
   private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
+  private static final String FRAGMENT_COUNT_KEY = "FRAGMENT_COUNT";
+  private static final String SCREEN_NAME_PREFIX_KEY = "NAME_";
+  private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
+  private static final String SCREEN_SUBTITLE_PREFIX_KEY = "SUBTITLE_";
+
   /**
    * Represents a screen that can be showing to the user.
    */
@@ -86,7 +91,12 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     setSupportActionBar(toolbar);
 
     getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
-    setFragment(SpeciesGroupListFragment.newInstance(), null);
+    // If there's saved instance state then the fragments will be restored from that (and all we
+    // need to do is restore backStackScreens in onRestoreInstanceState). Otherwise we need to push
+    // the initial fragment.
+    if (savedInstanceState == null) {
+      setFragment(SpeciesGroupListFragment.newInstance(), null);
+    }
 
     handleIntent(getIntent());
     setIntent(null);
@@ -174,10 +184,22 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
+    outState.putInt(FRAGMENT_COUNT_KEY, backStackScreens.size());
+    int i = 0;
+    for (Map.Entry<String, Screen> screen : backStackScreens.entrySet()) {
+      outState.putString(SCREEN_NAME_PREFIX_KEY + i, screen.getKey());
+      outState.putCharSequence(SCREEN_TITLE_PREFIX_KEY + i, screen.getValue().title);
+      outState.putCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i, screen.getValue().subtitle);
+      ++i;
+    }
+
+    super.onSaveInstanceState(outState);
   }
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    populateBackStackScreens(savedInstanceState);
   }
 
   @Override
@@ -195,6 +217,17 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   protected void onPause() {
     super.onPause();
     fragmentsResumed = false;
+  }
+
+  private void populateBackStackScreens(Bundle bundle) {
+    int count = bundle.getInt(FRAGMENT_COUNT_KEY);
+    for (int i = 0; i < count; ++i) {
+      String name = bundle.getString(SCREEN_NAME_PREFIX_KEY + i);
+      CharSequence title = bundle.getCharSequence(SCREEN_TITLE_PREFIX_KEY + i);
+      CharSequence subtitle = bundle.getCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i);
+      backStackScreens.put(name, new Screen(title, subtitle));
+    }
+    updateScreen();
   }
 
   private void handleIntent(Intent intent) {
