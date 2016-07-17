@@ -71,6 +71,7 @@ public class ImageDetailFragment extends Fragment {
 
   private NonBrokenImageViewTouch mImageView;
   private TextView mImageDescription;
+  private View mLine;
   private TextView mImageCredit;
   private RelativeLayout imageDetailsLayout;
 
@@ -126,6 +127,7 @@ public class ImageDetailFragment extends Fragment {
       final View v = inflater.inflate(R.layout.image_detail_fragment, container, false);
       mImageView = (NonBrokenImageViewTouch) v.findViewById(R.id.imageView);
       mImageDescription = (TextView) v.findViewById(R.id.imageDescription);
+      mLine = v.findViewById(R.id.horizontalline);
       mImageCredit = (TextView) v.findViewById(R.id.imageCredit);
       imageDetailsLayout = (RelativeLayout) v.findViewById(R.id.imageDetailsLayout);
       if (callback != null) {
@@ -151,10 +153,12 @@ public class ImageDetailFragment extends Fragment {
     }
     if (credit != null) {
       mImageCredit.setVisibility(View.VISIBLE);
+      mLine.setVisibility(View.VISIBLE);
       mImageCredit.setText(Html.fromHtml(
           getActivity().getResources().getString(R.string.image_credit_prefix) + credit));
     } else {
       mImageCredit.setVisibility(View.GONE);
+      mLine.setVisibility(View.GONE);
     }
 
     mImageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
