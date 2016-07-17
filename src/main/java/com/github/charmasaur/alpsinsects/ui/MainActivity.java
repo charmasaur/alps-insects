@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   private boolean showOptions = true;
 
+  private boolean fragmentsResumed;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
@@ -87,11 +89,17 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     setFragment(SpeciesGroupListFragment.newInstance(), null);
 
     handleIntent(getIntent());
+    setIntent(null);
   }
 
   @Override
   protected void onNewIntent(Intent intent) {
-    handleIntent(intent);
+    if (fragmentsResumed) {
+      handleIntent(intent);
+      setIntent(null);
+    } else {
+      setIntent(intent);
+    }
   }
 
   @Override
@@ -170,6 +178,23 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  }
+
+  @Override
+  protected void onResumeFragments() {
+    super.onResumeFragments();
+    fragmentsResumed = true;
+    // Process any intent that we might have received while paused.
+    if (getIntent() != null) {
+      handleIntent(getIntent());
+      setIntent(null);
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    fragmentsResumed = false;
   }
 
   private void handleIntent(Intent intent) {
