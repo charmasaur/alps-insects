@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.support.v7.widget.SearchView;
 
@@ -77,12 +78,16 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   private boolean fragmentsResumed;
 
+  private boolean dualPane;
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     Log.i(TAG, "onCreate");
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    dualPane = findViewById(R.id.extracontainer) != null;
 
     homeScreen =
         new Screen(getString(R.string.title_group_list), getString(R.string.subtitle_group_list));
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     // need to do is restore backStackScreens in onRestoreInstanceState). Otherwise we need to push
     // the initial fragment.
     if (savedInstanceState == null) {
-      setFragment(SpeciesGroupListFragment.newInstance(), null);
+      setFragment(SpeciesGroupListFragment.newInstance(), null, true /* left */);
     }
 
     handleIntent(getIntent());
@@ -133,23 +138,26 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     switch (item.getItemId()) {
       case R.id.menu_about:
         backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
-        setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT");
+        setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT",
+            false /* left */);
         break;
       case R.id.menu_get_involved:
         backStackScreens.put("INVOLVED",
             new Screen(getString(R.string.menu_get_involved_name), null));
-        setFragment(GetInvolvedFragment.newInstance(), "INVOLVED");
+        setFragment(GetInvolvedFragment.newInstance(), "INVOLVED", false /* left */);
         break;
       case R.id.menu_resources:
         // TODO: Play store links.
         backStackScreens.put("RESOURCES",
             new Screen(getString(R.string.menu_resources_name), null));
-        setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES");
+        setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES",
+            false /* left */);
         break;
       case R.id.menu_licenses:
         backStackScreens.put("LICENSES",
             new Screen(getString(R.string.menu_licenses_name), null));
-        setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES");
+        setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES",
+            false /* left */);
         break;
       case android.R.id.home:
         onBackPressed();
@@ -165,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     Log.i(TAG, "Group selected: " + groupName);
 
     backStackScreens.put("GROUP", new Screen(groupName, null));
-    setFragment(GroupFragment.newInstance(groupOrder), "GROUP");
+    setFragment(GroupFragment.newInstance(groupOrder), "GROUP", true /* left */);
   }
 
   // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense
@@ -179,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     subname = null;
     backStackScreens.put("SPECIES",
         new Screen(Html.fromHtml(name), subname == null ? null : Html.fromHtml(subname)));
-    setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES");
+    setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", false /* left */);
   }
 
   @Override
@@ -245,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         break;
       case Intent.ACTION_SEARCH:
         backStackScreens.put("SEARCH", new Screen("Search", null));
-        setFragment(SearchFragment.newInstance(intent.getExtras()), "SEARCH");
+        setFragment(SearchFragment.newInstance(intent.getExtras()), "SEARCH", true /* left */);
         break;
       default:
         break;
@@ -255,16 +263,47 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   /**
    * Sets the current fragment, updating the UI as necessary.
    */
-  private void setFragment(Fragment fragment, @Nullable String backStackEntryName) {
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-        .replace(R.id.basecontainer, fragment);
-    if (backStackEntryName != null) {
-      transaction.addToBackStack(backStackEntryName);
-    }
-    transaction.commit();
+  private void setFragment(Fragment fragment, @Nullable String backStackEntryName, boolean left) {
     if (backStackEntryName == null) {
-      updateScreen();
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.basecontainer, fragment);
+      transaction.commit();
+      return;
     }
+
+    if (dualPane) {
+      boolean hasRight = ((ViewGroup) findViewById(R.id.extracontainer)).getChildCount() != 0;
+      int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
+      if (backStackSize > 0 && backStackEntryName.equals(
+          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName())) {
+        // This is horizontal navigation, so replace the right-most fragment with this one and
+        // don't bother adding to the back stack. TODO: Do we need to pop and push, or is this OK?
+        getSupportFragmentManager().popBackStackImmediate();
+        setFragment(fragment, backStackEntryName, left);
+        return;
+        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //transaction.replace(hasRight ? R.id.extracontainer : R.id.basecontainer, fragment);
+        //transaction.commit();
+      } else {
+        // This is vertical navigation, so push a new fragment. TODO: Urgh, not necessarily. 
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (hasRight) {
+          // First replace the left with the current right.
+          Fragment r = getSupportFragmentManager().findFragmentById(R.id.extracontainer);
+          transaction.remove(getSupportFragmentManager().findFragmentById(R.id.basecontainer));
+          transaction.add(R.id.basecontainer, r);
+        }
+        transaction.replace(R.id.extracontainer, fragment);
+        transaction.addToBackStack(backStackEntryName);
+        transaction.commit();
+      }
+    } else {
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.basecontainer, fragment);
+      transaction.addToBackStack(backStackEntryName);
+      transaction.commit();
+    }
+    updateScreen();
   }
 
   private void updateScreen() {
