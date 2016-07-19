@@ -3,7 +3,7 @@
     {
       "description": "Cockroaches (order Blattodea) are related to mantises and termites. They can be found in decaying leaves, soil, and under logs. ",
       "extraSearch": "",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_bla.svg",
       "label": "Cockroaches",
       "order": "Blattodea"
@@ -11,7 +11,7 @@
     {
       "description": "Beetles (order Coleoptera) can be recognized by their hard, armor-like wing covers and are found in many habitats.",
       "extraSearch": "",
-      "iconCredit": "B Lang",
+      "iconCredit": "B. Lang",
       "iconDarkFilename": "ic_d_col.svg",
       "label": "Beetles",
       "license": "CC BY 3.0",
@@ -21,7 +21,7 @@
     {
       "description": "Flies (Order Diptera) can be recognized by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects)",
       "extraSearch": "fly",
-      "iconCredit": "D Monger",
+      "iconCredit": "D. Monger",
       "iconDarkFilename": "ic_d_dip.svg",
       "label": "Flies",
       "license": "CC BY 3.0",
@@ -31,7 +31,7 @@
     {
       "description": "Mayflies (order Ephemeroptera) spend most of their lives as aquatic nymphs, emerging en masse for a brief adult life of mating and ovipositing. Can be recognized by their large, triangular, membranous wings and long, trailing \"tails\" (cerci). ",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_eph.svg",
       "label": "Mayflies",
       "order": "Ephemeroptera"
@@ -39,7 +39,7 @@
     {
       "description": "True bugs (order Hemiptera) include most plant-feeding insects with piercing, sucking mouthparts. Common true bugs include aphids, planthoppers, scale insects, and cicadas.",
       "extraSearch": "",
-      "iconCredit": "J Hughes",
+      "iconCredit": "J. Hughes",
       "iconDarkFilename": "ic_d_hem.svg",
       "label": "True bugs",
       "license": "CC BY-NC-SA 3.0",
@@ -49,15 +49,15 @@
     {
       "description": "Bees, wasps and ants (order Hymenoptera) can typically be recognized by their slender, constricted waist and tendency to live in social groups, although some families (e.g. sawflies) lack the \"wasp waist\".",
       "extraSearch": "",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_hym.svg",
-      "label": "Bees, wasps &ants",
+      "label": "Bees, wasps & ants",
       "order": "Hymenoptera"
     },
     {
       "description": "Moths and butterflies (order Lepidoptera) can be recognized by their broad, powdery wings and tubelike mouthparts",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_lep.svg",
       "label": "Moths & butterflies",
       "order": "Lepidoptera"
@@ -65,7 +65,7 @@
     {
       "description": "Scorpionflies (order Mecoptera) are unusual insects with four clear, membranous wings, long faces, and curving, pointed genitalia that resemble the stinger of a scorpion. ",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_mec.svg",
       "label": "Scorpionflies",
       "order": "Mecoptera"
@@ -73,7 +73,7 @@
     {
       "description": "Lacewings and mantisflies (order Neuroptera) can be recognized by their clear, membranous wings with an intricate, lace-like venation.",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_neu.svg",
       "label": "Lacewings & mantisflies",
       "order": "Neuroptera"
@@ -81,7 +81,7 @@
     {
       "description": "Dragonflies and damselflies (order Odonata) develop as aquatic nymphs in freshwater habitats before emerging as ferociously predatory adults. Adult odonates can be recognized by their long, slender bodies, extremely large eyes, and four long, membranous wings of roughly the same size.",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_odo.svg",
       "label": "Dragonflies & damselflies",
       "order": "Odonata"
@@ -89,7 +89,7 @@
     {
       "description": "Crickets and grasshoppers (order Orthoptera) can be recognized by their flat-folded wings (if present) and enlarged hindlegs. Usually found in grass, low shrubs, or on the ground. ",
       "extraSearch": "",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_ort.svg",
       "label": "Grasshoppers, crickets, & katydids",
       "order": "Orthoptera"
@@ -97,7 +97,7 @@
     {
       "description": "Stick insects (order Phasmida or Phasmatodea) are long, slender insects that specialize in mimicking leaves and twigs. When not moving, these insects are extremely difficult to spot. ",
       "extraSearch": "",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_pha.svg",
       "label": "Stick insects",
       "order": "Phasmatodea"
@@ -105,7 +105,7 @@
     {
       "description": "Stoneflies (order Plecoptera) develop in freshwater habitats like mayflies, but possess abdominal gills (as nymphs) and hold their patterned wings flat against the body (as adults).",
       "extraSearch": "fly",
-      "iconCredit": "A Seago",
+      "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_ple.svg",
       "label": "Stoneflies",
       "order": "Plecoptera"
@@ -694,7 +694,7 @@
       "italiciseSublabel": true,
       "label": "Bicolour xylopine",
       "order": "Hymenoptera",
-      "searchText": "Bicolour xylopine Exoneura bicolor  Bees wasps ants  ",
+      "searchText": "Bicolour xylopine Exoneura bicolor  Bees wasps  ants  ",
       "species": "Exoneura bicolor",
       "squareThumbnail": "thumb_030.jpg",
       "sublabel": "<i>Exoneura bicolor</i>"
@@ -716,7 +716,7 @@
       "italiciseSublabel": false,
       "label": "Braconid wasps",
       "order": "Hymenoptera",
-      "searchText": "Braconid wasps Family Braconidae  Bees wasps ants  ",
+      "searchText": "Braconid wasps Family Braconidae  Bees wasps  ants  ",
       "squareThumbnail": "thumb_031.jpg",
       "sublabel": "Family Braconidae"
     },
@@ -738,7 +738,7 @@
       "italiciseSublabel": true,
       "label": "Rainbow ants",
       "order": "Hymenoptera",
-      "searchText": "Rainbow ants Iridomyrmex  Bees wasps ants  ",
+      "searchText": "Rainbow ants Iridomyrmex  Bees wasps  ants  ",
       "squareThumbnail": "thumb_032.jpg",
       "sublabel": "<i>Iridomyrmex</i>"
     },
@@ -756,7 +756,7 @@
       "italiciseSublabel": true,
       "label": "Jack-jumper ant",
       "order": "Hymenoptera",
-      "searchText": "Jackjumper ant Myrmecia forficata  Bees wasps ants  ",
+      "searchText": "Jackjumper ant Myrmecia forficata  Bees wasps  ants  ",
       "species": "Myrmecia forficata",
       "squareThumbnail": "thumb_033.jpg",
       "sublabel": "<i>Myrmecia forficata</i>"
@@ -783,7 +783,7 @@
       "italiciseSublabel": true,
       "label": "Sawfly",
       "order": "Hymenoptera",
-      "searchText": "Sawfly Pseudoperga lewisii flies Bees wasps ants  ",
+      "searchText": "Sawfly Pseudoperga lewisii flies Bees wasps  ants  ",
       "species": "Pseudoperga lewisii",
       "squareThumbnail": "thumb_034.jpg",
       "sublabel": "<i>Pseudoperga lewisii</i>"
@@ -980,6 +980,7 @@
       "identifier": "044",
       "images": [
         {
+          "credit": "K. Umbers",
           "filename": "img_044a.jpg"
         }
       ],
@@ -1365,7 +1366,7 @@
       "italiciseSublabel": true,
       "label": "European honey bee",
       "order": "Hymenoptera",
-      "searchText": "European honey bee Apis mellifera  Bees wasps ants  ",
+      "searchText": "European honey bee Apis mellifera  Bees wasps  ants  ",
       "species": "Apis mellifera",
       "squareThumbnail": "thumb_060.jpg",
       "sublabel": "<i>Apis mellifera</i>"
