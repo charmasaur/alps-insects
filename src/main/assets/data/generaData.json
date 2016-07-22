@@ -9,7 +9,7 @@
       "order": "Blattodea"
     },
     {
-      "description": "Beetles (order Coleoptera) can be recognized by their hard, armor-like wing covers and are found in many habitats.",
+      "description": "Beetles (order Coleoptera) can be recognised by their hard, armor-like wing covers and are found in many habitats.",
       "extraSearch": "",
       "iconCredit": "B. Lang",
       "iconDarkFilename": "ic_d_col.svg",
@@ -19,7 +19,7 @@
       "order": "Coleoptera"
     },
     {
-      "description": "Flies (Order Diptera) can be recognized by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects)",
+      "description": "Flies (Order Diptera) can be recognised by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects)",
       "extraSearch": "fly",
       "iconCredit": "D. Monger",
       "iconDarkFilename": "ic_d_dip.svg",
@@ -29,7 +29,7 @@
       "order": "Diptera"
     },
     {
-      "description": "Mayflies (order Ephemeroptera) spend most of their lives as aquatic nymphs, emerging en masse for a brief adult life of mating and ovipositing. Can be recognized by their large, triangular, membranous wings and long, trailing \"tails\" (cerci). ",
+      "description": "Mayflies (order Ephemeroptera) spend most of their lives as aquatic nymphs, emerging en masse for a brief adult life of mating and ovipositing. Can be recognised by their large, triangular, membranous wings and long, trailing \"tails\" (cerci). ",
       "extraSearch": "fly",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_eph.svg",
@@ -47,7 +47,7 @@
       "order": "Hemiptera"
     },
     {
-      "description": "Bees, wasps and ants (order Hymenoptera) can typically be recognized by their slender, constricted waist and tendency to live in social groups, although some families (e.g. sawflies) lack the \"wasp waist\".",
+      "description": "Bees, wasps and ants (order Hymenoptera) can typically be recognised by their slender, constricted waist and tendency to live in social groups, although some families (e.g. sawflies) lack the \"wasp waist\".",
       "extraSearch": "",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_hym.svg",
@@ -55,7 +55,7 @@
       "order": "Hymenoptera"
     },
     {
-      "description": "Moths and butterflies (order Lepidoptera) can be recognized by their broad, powdery wings and tubelike mouthparts",
+      "description": "Moths and butterflies (order Lepidoptera) can be recognised by their broad, powdery wings and tubelike mouthparts",
       "extraSearch": "fly",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_lep.svg",
@@ -71,7 +71,7 @@
       "order": "Mecoptera"
     },
     {
-      "description": "Lacewings and mantisflies (order Neuroptera) can be recognized by their clear, membranous wings with an intricate, lace-like venation.",
+      "description": "Lacewings and mantisflies (order Neuroptera) can be recognised by their clear, membranous wings with an intricate, lace-like venation.",
       "extraSearch": "fly",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_neu.svg",
@@ -79,7 +79,7 @@
       "order": "Neuroptera"
     },
     {
-      "description": "Dragonflies and damselflies (order Odonata) develop as aquatic nymphs in freshwater habitats before emerging as ferociously predatory adults. Adult odonates can be recognized by their long, slender bodies, extremely large eyes, and four long, membranous wings of roughly the same size.",
+      "description": "Dragonflies and damselflies (order Odonata) develop as aquatic nymphs in freshwater habitats before emerging as ferociously predatory adults. Adult odonates can be recognised by their long, slender bodies, extremely large eyes, and four long, membranous wings of roughly the same size.",
       "extraSearch": "fly",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_odo.svg",
@@ -87,7 +87,7 @@
       "order": "Odonata"
     },
     {
-      "description": "Crickets and grasshoppers (order Orthoptera) can be recognized by their flat-folded wings (if present) and enlarged hindlegs. Usually found in grass, low shrubs, or on the ground. ",
+      "description": "Crickets and grasshoppers (order Orthoptera) can be recognised by their flat-folded wings (if present) and enlarged hindlegs. Usually found in grass, low shrubs, or on the ground. ",
       "extraSearch": "",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_ort.svg",
@@ -138,7 +138,7 @@
       "sublabel": "<i>Laxta granicollis</i>"
     },
     {
-      "description": "This species is one of Australia's larger cockroaches, and often found in the damp soil beneath rotting logs. Members of this genus are easily recognized by their large, spiny legs. ",
+      "description": "This species is one of Australia's larger cockroaches, and often found in the damp soil beneath rotting logs. Members of this genus are easily recognised by their large, spiny legs. ",
       "family": "Blaberidae",
       "genus": "Panesthia",
       "identifier": "002",
@@ -207,7 +207,7 @@
       "sublabel": "<i>Polyzosteria viridissima</i>"
     },
     {
-      "description": "The genus <i>Rhinotia</i> and other belid weevils are called \"primitive\" because they lack the elbowed antennae and other specialized features of the \"higher\" weevils. <i>Rhinotia</i> is easily recognized by its long, narrow, pointed body with vivid white stripes along the underside.",
+      "description": "The genus <i>Rhinotia</i> and other belid weevils are called \"primitive\" because they lack the elbowed antennae and other specialized features of the \"higher\" weevils. <i>Rhinotia</i> is easily recognised by its long, narrow, pointed body with vivid white stripes along the underside.",
       "family": "Belidae",
       "genus": "Rhinotia",
       "identifier": "005",
@@ -305,7 +305,7 @@
       "sublabel": "<i>Pseudagonica</i>"
     },
     {
-      "description": "New South Wales is home to many species of these large, dome-shaped leaf beetles. Paropsines, like all leaf beetles, can be recognized by their wide, flattened feet (for gripping leaf surfaces) and prominent, jellybean-shaped eyes. All <i>Paropsis</i> species feed exclusively on eucalyptus leaves. ",
+      "description": "New South Wales is home to many species of these large, dome-shaped leaf beetles. Paropsines, like all leaf beetles, can be recognised by their wide, flattened feet (for gripping leaf surfaces) and prominent, jellybean-shaped eyes. All <i>Paropsis</i> species feed exclusively on eucalyptus leaves. ",
       "family": "Chrysomelidae",
       "genus": "Paropsis",
       "identifier": "010",
@@ -344,7 +344,7 @@
       "sublabel": "Family Coccinellidae"
     },
     {
-      "description": "Most broad-nosed weevils can be recognized, as their name suggests, by the wide rostrum, elbowed antennae, and scale-covered bodies. Members of the genus <i>Adelognatha</i> are particularly large and slow-moving, and usually found near vegetation. ",
+      "description": "Most broad-nosed weevils can be recognised, as their name suggests, by the wide rostrum, elbowed antennae, and scale-covered bodies. Members of the genus <i>Adelognatha</i> are particularly large and slow-moving, and usually found near vegetation. ",
       "family": "Curculionidae",
       "genus": "Adelognatha",
       "identifier": "013",
@@ -366,7 +366,7 @@
       "sublabel": "<i>Adelognatha</i>"
     },
     {
-      "description": "These long, oval-shaped beetles superficially resemble jewel beetles (family Buprestidae) but can be recognized by their ability to flip or jump by \"clicking\" a special joint in their thorax. ",
+      "description": "These long, oval-shaped beetles superficially resemble jewel beetles (family Buprestidae) but can be recognised by their ability to flip or jump by \"clicking\" a special joint in their thorax. ",
       "family": "Elateridae",
       "identifier": "014",
       "images": [
@@ -383,7 +383,7 @@
       "sublabel": "Family Elateridae"
     },
     {
-      "description": "These small beetles feed on fungus and can be recognized by their clubbed antennae and parallel \"seams\" along the edges of the prothorax. The species <i>Erotendomychus bimaculatus</i> is seldom seen. It is found only in cool, moist, high-elevation habitats in New South Wales and Victoria, where it feeds on fungus in leaf litter and decaying wood. ",
+      "description": "These small beetles feed on fungus and can be recognised by their clubbed antennae and parallel \"seams\" along the edges of the prothorax. The species <i>Erotendomychus bimaculatus</i> is seldom seen. It is found only in cool, moist, high-elevation habitats in New South Wales and Victoria, where it feeds on fungus in leaf litter and decaying wood. ",
       "family": "Endomychidae",
       "genus": "Erotendomychus",
       "identifier": "015",
@@ -421,7 +421,7 @@
       "sublabel": "Family Melyridae"
     },
     {
-      "description": "These large, odd-looking beetles can be recognized by their large, delicate, fan-like antennae and pattern of white speckles. ",
+      "description": "These large, odd-looking beetles can be recognised by their large, delicate, fan-like antennae and pattern of white speckles. ",
       "family": "Rhipiceridae",
       "identifier": "017",
       "images": [
@@ -585,7 +585,7 @@
       "sublabel": "Family Tipulidae"
     },
     {
-      "description": "In high elevation habitats, mayflies of this genus can be recognized by their speckled wings.",
+      "description": "In high elevation habitats, mayflies of this genus can be recognised by their speckled wings.",
       "family": "Nesameletidae",
       "genus": "Ameletoides",
       "identifier": "025",
@@ -660,7 +660,7 @@
       "sublabel": "Family Cicadidae"
     },
     {
-      "description": "This family of bugs can be recognized by their large, triangular scutellum and flattened, shield-shaped body. True to their name, many species can secrete or spray offensive-smelling chemicals when threatened. ",
+      "description": "This family of bugs can be recognised by their large, triangular scutellum and flattened, shield-shaped body. True to their name, many species can secrete or spray offensive-smelling chemicals when threatened. ",
       "family": "Pentatomidae",
       "identifier": "029",
       "images": [
@@ -700,7 +700,7 @@
       "sublabel": "<i>Exoneura bicolor</i>"
     },
     {
-      "description": "These graceful, slender wasps area often seen hunting for other insects to use as provisions for their larvae. Female parasitoid wasps can be recognized by the long, slender ovipositor arising from the tip of the abdomen. ",
+      "description": "These graceful, slender wasps area often seen hunting for other insects to use as provisions for their larvae. Female parasitoid wasps can be recognised by the long, slender ovipositor arising from the tip of the abdomen. ",
       "family": "Braconidae",
       "identifier": "031",
       "images": [
@@ -789,7 +789,7 @@
       "sublabel": "<i>Pseudoperga lewisii</i>"
     },
     {
-      "description": "Although these moths are typically drab brown as adults, geometrid caterpillars are easily recognized by their \"inching\" gait as they travel across vegetation.",
+      "description": "Although these moths are typically drab brown as adults, geometrid caterpillars are easily recognised by their \"inching\" gait as they travel across vegetation.",
       "family": "Geometridae",
       "identifier": "035",
       "images": [
@@ -814,7 +814,7 @@
       "sublabel": "Family Geometridae"
     },
     {
-      "description": "Skipper butterflies can be recognized by their relatively small size, stout bodies, and characteristic \"semi-erect\" wing posture. The underside of the wing is typically more vividly patterned than the dorsal side.",
+      "description": "Skipper butterflies can be recognised by their relatively small size, stout bodies, and characteristic \"semi-erect\" wing posture. The underside of the wing is typically more vividly patterned than the dorsal side.",
       "family": "Hesperiidae",
       "genus": "Anisynta",
       "identifier": "036",
@@ -835,7 +835,7 @@
       "sublabel": "<i>Anisynta dominula, Anisynta monticolae</i>"
     },
     {
-      "description": "Skipper butterflies can be recognized by their relatively small size, stout bodies, and characteristic \"semi-erect\" wing posture. The underside of the wing is typically more vividly patterned than the dorsal side.",
+      "description": "Skipper butterflies can be recognised by their relatively small size, stout bodies, and characteristic \"semi-erect\" wing posture. The underside of the wing is typically more vividly patterned than the dorsal side.",
       "family": "Hesperiidae",
       "genus": "Oreisplanus",
       "identifier": "037",
@@ -860,7 +860,7 @@
       "sublabel": "<i>Oreisplanus munionga</i>"
     },
     {
-      "description": "These small, delicate butterflies are often blue-winged, but may also be copper-coloured or purple. They can be recognized by their small size, black-and-white banded antennae, and fine white border along the outer edges of the wings. Many species have small eyespots on the underside of the hindwing.",
+      "description": "These small, delicate butterflies are often blue-winged, but may also be copper-coloured or purple. They can be recognised by their small size, black-and-white banded antennae, and fine white border along the outer edges of the wings. Many species have small eyespots on the underside of the hindwing.",
       "family": "Lycaenidae",
       "identifier": "038",
       "images": [
@@ -900,7 +900,7 @@
       "sublabel": "<i>Agrotis infusa</i>"
     },
     {
-      "description": "This alpine butterfly belongs to the family Nymphalidae and can be recognized by its checkerspot wing pattern with both dorsal and ventral eyespots. ",
+      "description": "This alpine butterfly belongs to the family Nymphalidae and can be recognised by its checkerspot wing pattern with both dorsal and ventral eyespots. ",
       "family": "Nymphalidae",
       "genus": "Oreixenica",
       "identifier": "040",
@@ -1248,9 +1248,6 @@
         {
           "credit": "M. Nash",
           "filename": "img_055e.jpg"
-        },
-        {
-          "filename": "img_055f.jpg"
         }
       ],
       "italiciseSublabel": true,
