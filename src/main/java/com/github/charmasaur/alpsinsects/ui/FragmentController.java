@@ -17,36 +17,54 @@ public class FragmentController {
     public final CharSequence subtitle;
     public final Fragment fragment;
     public final String name;
+    @Nullable
+    public final Screen parent;
 
     public Screen(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-        String name) {
+        String name, @Nullable Screen parent) {
       this.title = title;
       this.subtitle = subtitle;
       this.fragment = fragment;
       this.name = name;
+      this.parent = parent;
     }
   };
 
-  private Screen homeScreen;
-
-  private boolean dualPane;
+  private final FragmentManager fragmentManager;
+  private final int containerViewId;
+  private final int numViews;
 
   @Nullable
   private Screen leaf;
 
+  public FragmentController(FragmentManager fragmentManager, int containerViewId, int numViews) {
+    this.fragmentManager = fragmentManager;
+    this.containerViewId = containerViewId;
+    this.numViews = numViews;
+  }
+
   public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-      @Nullable String parent) {
+      String name, @Nullable String parent) {
     while (leaf != null && leaf.name != parent) {
-      // pop
+      fragmentManager.popBackStack();
+      leaf = leaf.parent;
     }
     if (leaf == null && parent != null) {
       throw new RuntimeException("Parent screen not found: " + parent);
     }
-    leaf = new Screen(title, subtitle, fragment, parent);
-    // push
+    leaf = new Screen(title, subtitle, fragment, name, leaf);
+    FragmentTransaction transaction = fragmentManager.beginTransaction();
+    if (leaf.parent != null) {
+      transaction.hide(leaf.parent.fragment);
+    }
+    transaction.add(containerViewId, fragment);
+    transaction.addToBackStack("it");
+    transaction.commit();
   }
 
-  public void onBackPressed() {
-    // pop
-  }
+  // TODO: Now need to listen to changes (so we can update leaf, and then update the corresponding
+  // title and subtitle). Maybe we don't need to store leaf at all, and can just look at the top
+  // back stack entry or something?
+  //
+  // TODO: Note that the title and subtitle to show are just leaf's. Nice!
 }
