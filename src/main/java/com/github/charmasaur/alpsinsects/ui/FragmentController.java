@@ -87,6 +87,7 @@ public class FragmentController {
       if (leaf.name == parent) {
         break;
       }
+      // TODO: This looks pretty gross... Maybe we should just look back through the back stack entries and queue up pops.
       fragmentManager.popBackStackImmediate();
     }
     Screen newLeaf = new Screen(title, subtitle, fragment, name);
