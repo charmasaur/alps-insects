@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   private final Map<String, Screen> backStackScreens = new HashMap<>();
 
+  private FragmentController fragmentController;
+
   private Toolbar toolbar;
 
   private Screen homeScreen;
@@ -95,12 +97,15 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
+    fragmentController = new FragmentController(getSupportFragmentManager(), R.id.basecontainer,
+        dualPane ? 2 : 1, getSupportActionBar());
+    //getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     // If there's saved instance state then the fragments will be restored from that (and all we
     // need to do is restore backStackScreens in onRestoreInstanceState). Otherwise we need to push
     // the initial fragment.
     if (savedInstanceState == null) {
-      setFragment(SpeciesGroupListFragment.newInstance(), null, true /* left */);
+      //setFragment(SpeciesGroupListFragment.newInstance(), null, true /* left */);
+      fragmentController.pushFragment(getString(R.string.title_group_list), getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), "ROOT", null);
     }
 
     handleIntent(getIntent());
@@ -138,27 +143,29 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     switch (item.getItemId()) {
       case R.id.menu_about:
         backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
-        setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT",
-            false /* left */);
+        fragmentController.pushFragment("About", null, HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", "ROOT");
+        //setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT",
+        //    false /* left */);
         break;
-      case R.id.menu_get_involved:
-        backStackScreens.put("INVOLVED",
-            new Screen(getString(R.string.menu_get_involved_name), null));
-        setFragment(GetInvolvedFragment.newInstance(), "INVOLVED", false /* left */);
-        break;
-      case R.id.menu_resources:
-        // TODO: Play store links.
-        backStackScreens.put("RESOURCES",
-            new Screen(getString(R.string.menu_resources_name), null));
-        setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES",
-            false /* left */);
-        break;
-      case R.id.menu_licenses:
-        backStackScreens.put("LICENSES",
-            new Screen(getString(R.string.menu_licenses_name), null));
-        setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES",
-            false /* left */);
-        break;
+        // TODO: Add.
+      //case R.id.menu_get_involved:
+      //  backStackScreens.put("INVOLVED",
+      //      new Screen(getString(R.string.menu_get_involved_name), null));
+      //  setFragment(GetInvolvedFragment.newInstance(), "INVOLVED", false /* left */);
+      //  break;
+      //case R.id.menu_resources:
+      //  // TODO: Play store links.
+      //  backStackScreens.put("RESOURCES",
+      //      new Screen(getString(R.string.menu_resources_name), null));
+      //  setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES",
+      //      false /* left */);
+      //  break;
+      //case R.id.menu_licenses:
+      //  backStackScreens.put("LICENSES",
+      //      new Screen(getString(R.string.menu_licenses_name), null));
+      //  setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES",
+      //      false /* left */);
+      //  break;
       case android.R.id.home:
         onBackPressed();
         break;
@@ -173,7 +180,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     Log.i(TAG, "Group selected: " + groupName);
 
     backStackScreens.put("GROUP", new Screen(groupName, null));
-    setFragment(GroupFragment.newInstance(groupOrder), "GROUP", true /* left */);
+    //setFragment(GroupFragment.newInstance(groupOrder), "GROUP", true /* left */);
+    fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder), "GROUP", "ROOT");
   }
 
   // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense
@@ -187,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     subname = null;
     backStackScreens.put("SPECIES",
         new Screen(Html.fromHtml(name), subname == null ? null : Html.fromHtml(subname)));
-    setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", false /* left */);
+    //setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", false /* left */);
+    fragmentController.pushFragment(name, null, SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", "GROUP");
   }
 
   @Override

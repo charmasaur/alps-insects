@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/basecontainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,5 +12,11 @@
         android:elevation="4dp"
         app:theme="@style/Theme.FieldGuide.Toolbar"
         app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
+
+    <LinearLayout
+        android:id="@+id/basecontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
 
 </LinearLayout>

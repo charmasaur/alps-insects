@@ -4,10 +4,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FragmentController {
+  private static final String TAG = FragmentController.class.getSimpleName();
   /**
    * Represents a screen that can be showing to the user.
    */
@@ -17,50 +23,135 @@ public class FragmentController {
     public final CharSequence subtitle;
     public final Fragment fragment;
     public final String name;
-    @Nullable
-    public final Screen parent;
+
+    private int id;
 
     public Screen(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-        String name, @Nullable Screen parent) {
+        String name) {
       this.title = title;
       this.subtitle = subtitle;
       this.fragment = fragment;
       this.name = name;
-      this.parent = parent;
+    }
+
+    public void setId(int id) {
+      this.id = id;
+    }
+
+    public int getId() {
+      return id;
     }
   };
 
+  private final Map<Integer, Screen> backStackScreens = new HashMap<>();
+
   private final FragmentManager fragmentManager;
+  private final ActionBar actionBar;
   private final int containerViewId;
   private final int numViews;
 
   @Nullable
-  private Screen leaf;
+  private Screen root;
 
-  public FragmentController(FragmentManager fragmentManager, int containerViewId, int numViews) {
+  private int urgh;
+
+  public FragmentController(FragmentManager fragmentManager, int containerViewId, int numViews,
+      ActionBar actionBar) {
     this.fragmentManager = fragmentManager;
     this.containerViewId = containerViewId;
     this.numViews = numViews;
+    this.actionBar = actionBar;
+
+    fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
   }
 
   public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
       String name, @Nullable String parent) {
-    while (leaf != null && leaf.name != parent) {
-      fragmentManager.popBackStack();
-      leaf = leaf.parent;
+    fragmentManager.executePendingTransactions();
+
+    if (parent == null) {
+      if (root != null) {
+        throw new RuntimeException("Only one parentless fragment allowed");
+      }
+      root = new Screen(title, subtitle, fragment, name);
+      FragmentTransaction transaction = fragmentManager.beginTransaction();
+      transaction.add(containerViewId, fragment, "" + (++urgh));
+      transaction.commit();
+      return;
     }
-    if (leaf == null && parent != null) {
-      throw new RuntimeException("Parent screen not found: " + parent);
+
+    // Otherwise, backtrack through the stack until we find the parent.
+    Screen leaf = null;
+    while (true) {
+      leaf = getLeaf();
+      if (leaf.name == parent) {
+        break;
+      }
+      fragmentManager.popBackStackImmediate();
     }
-    leaf = new Screen(title, subtitle, fragment, name, leaf);
+    Screen newLeaf = new Screen(title, subtitle, fragment, name);
     FragmentTransaction transaction = fragmentManager.beginTransaction();
-    if (leaf.parent != null) {
-      transaction.hide(leaf.parent.fragment);
+    // TODO: Tidy.
+    int idx = fragmentManager.getBackStackEntryCount() - numViews;
+    Screen toHide = null;
+    if (idx == -1) {
+      toHide = root;
+    } else if (idx >= 0) {
+      toHide = backStackScreens.get(fragmentManager.getBackStackEntryAt(idx).getId());
     }
-    transaction.add(containerViewId, fragment);
-    transaction.addToBackStack("it");
-    transaction.commit();
+    if (toHide != null) {
+      transaction.hide(toHide.fragment);
+    }
+    transaction.add(containerViewId, fragment, "" + (++urgh));
+    transaction.addToBackStack(null);
+    int id = transaction.commit();
+    newLeaf.setId(id);
+    backStackScreens.put(id, newLeaf);
   }
+
+  private void updateScreen() {
+    Screen leaf = getLeaf();
+    actionBar.setTitle(leaf.title);
+    actionBar.setSubtitle(leaf.subtitle);
+    actionBar.setDisplayHomeAsUpEnabled(leaf != root);
+    // TODO: Options menu.
+  }
+
+  //  Screen currentScreen;
+  //  int backStackSize = fragmentManager.getBackStackEntryCount();
+  //  if (backStackSize == 0) {
+  //    // Root screen is now showing.
+  //    leaf = root;
+  //  } else {
+  //    currentScreen = backStackScreens.get(
+  //        getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
+  //    if (showOptions) {
+  //      showOptions = false;
+  //      supportInvalidateOptionsMenu();
+  //    }
+  //  }
+  //  getSupportActionBar().setTitle(currentScreen.title);
+  //  getSupportActionBar().setSubtitle(currentScreen.subtitle);
+  //  getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
+  //}
+
+  private Screen getLeaf() {
+    int backStackSize = fragmentManager.getBackStackEntryCount();
+    if (backStackSize == 0) {
+      return root;
+    }
+    return backStackScreens.get(fragmentManager.getBackStackEntryAt(backStackSize - 1).getId());
+  }
+
+  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
+      new FragmentManager.OnBackStackChangedListener() {
+    @Override
+    public void onBackStackChanged() {
+      Log.i(TAG, "Back stack changed: " + fragmentManager.getBackStackEntryCount());
+      updateScreen();
+    }
+  };
+
 
   // TODO: Now need to listen to changes (so we can update leaf, and then update the corresponding
   // title and subtitle). Maybe we don't need to store leaf at all, and can just look at the top
