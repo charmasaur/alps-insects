@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
+    // TODO: Switch to sw600dp instead of w600dp, so we always have the same configuration.
     fragmentController = new FragmentController(getSupportFragmentManager(), R.id.basecontainer,
         dualPane ? 2 : 1, getSupportActionBar());
     if (savedInstanceState == null) {
