@@ -54,6 +54,10 @@
         <item name="android:lineSpacingExtra">4dp</item>
     </style>
 
+    <style name="FragmentThing">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
 
     <!-- table styles -->
     <style name="tablerowstyle">

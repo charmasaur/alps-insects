@@ -40,7 +40,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SpeciesGroupListFragment.Callback,
     GroupFragment.Callback, SearchFragment.Callback {
-
   private static final String TAG = MainActivity.class.getSimpleName();
 
   /**
@@ -49,38 +48,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
    */
   private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
-  private static final String FRAGMENT_COUNT_KEY = "FRAGMENT_COUNT";
-  private static final String SCREEN_NAME_PREFIX_KEY = "NAME_";
-  private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
-  private static final String SCREEN_SUBTITLE_PREFIX_KEY = "SUBTITLE_";
-
-  /**
-   * Represents a screen that can be showing to the user.
-   */
-  private static final class Screen {
-    public final CharSequence title;
-    @Nullable
-    public final CharSequence subtitle;
-
-    public Screen(CharSequence title, @Nullable CharSequence subtitle) {
-      this.title = title;
-      this.subtitle = subtitle;
-    }
-  };
-
-  private final Map<String, Screen> backStackScreens = new HashMap<>();
-
   private FragmentController fragmentController;
 
   private Toolbar toolbar;
 
-  private Screen homeScreen;
-
-  private boolean showOptions = true;
-
   private boolean fragmentsResumed;
-
-  private boolean dualPane;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -89,23 +61,17 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    dualPane = findViewById(R.id.extracontainer) != null;
-
-    homeScreen =
-        new Screen(getString(R.string.title_group_list), getString(R.string.subtitle_group_list));
+    boolean dualPane = findViewById(R.id.extracontainer) != null;
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
     fragmentController = new FragmentController(getSupportFragmentManager(), R.id.basecontainer,
         dualPane ? 2 : 1, getSupportActionBar());
-    //getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
-    // If there's saved instance state then the fragments will be restored from that (and all we
-    // need to do is restore backStackScreens in onRestoreInstanceState). Otherwise we need to push
-    // the initial fragment.
     if (savedInstanceState == null) {
-      //setFragment(SpeciesGroupListFragment.newInstance(), null, true /* left */);
-      fragmentController.pushFragment(getString(R.string.title_group_list), getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), "ROOT", null);
+      fragmentController.pushFragment(getString(R.string.title_group_list),
+          getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), "ROOT",
+          null);
     }
 
     handleIntent(getIntent());
@@ -124,9 +90,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    if (!showOptions) {
-      return true;
-    }
     getMenuInflater().inflate(R.menu.activity_main, menu);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -142,30 +105,22 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_about:
-        backStackScreens.put("ABOUT", new Screen(getString(R.string.menu_about_name), null));
-        fragmentController.pushFragment("About", null, HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", "ROOT");
-        //setFragment(HtmlTextFragment.newInstance(R.string.about_string), "ABOUT",
-        //    false /* left */);
+        fragmentController.pushFragment(getString(R.string.menu_about_name), null,
+            HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", null);
         break;
-        // TODO: Add.
-      //case R.id.menu_get_involved:
-      //  backStackScreens.put("INVOLVED",
-      //      new Screen(getString(R.string.menu_get_involved_name), null));
-      //  setFragment(GetInvolvedFragment.newInstance(), "INVOLVED", false /* left */);
-      //  break;
-      //case R.id.menu_resources:
-      //  // TODO: Play store links.
-      //  backStackScreens.put("RESOURCES",
-      //      new Screen(getString(R.string.menu_resources_name), null));
-      //  setFragment(HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES",
-      //      false /* left */);
-      //  break;
-      //case R.id.menu_licenses:
-      //  backStackScreens.put("LICENSES",
-      //      new Screen(getString(R.string.menu_licenses_name), null));
-      //  setFragment(WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES",
-      //      false /* left */);
-      //  break;
+      case R.id.menu_get_involved:
+        fragmentController.pushFragment(getString(R.string.menu_get_involved_name), null,
+            GetInvolvedFragment.newInstance(), "INVOLVED", null);
+        break;
+      case R.id.menu_resources:
+        // TODO: Play store links.
+        fragmentController.pushFragment(getString(R.string.menu_resources_name), null,
+            HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES", null);
+        break;
+      case R.id.menu_licenses:
+        fragmentController.pushFragment(getString(R.string.menu_licenses_name), null,
+            WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES", null);
+        break;
       case android.R.id.home:
         onBackPressed();
         break;
@@ -179,44 +134,39 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public void onGroupSelected(String groupName, String groupOrder) {
     Log.i(TAG, "Group selected: " + groupName);
 
-    backStackScreens.put("GROUP", new Screen(groupName, null));
-    //setFragment(GroupFragment.newInstance(groupOrder), "GROUP", true /* left */);
-    fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder), "GROUP", "ROOT");
+    fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder),
+        "GROUP", "ROOT");
   }
 
-  // TODO: At the moment this is the method of two callbacks simultaneously.. That might make sense
-  // though.
   @Override
   public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
     Log.i(TAG, "Species selected: " + speciesId);
+    pushSpecies(speciesId, name, subname, "GROUP");
+  }
 
-    // TODO: For now just hide the secondary text (since the italicisation looks silly -- too
-    // slanted), but if Rachel thinks we should show it always then we can figure something out.
+  @Override
+  public void onSpeciesSelectedSearch(String speciesId, String name, @Nullable String subname) {
+    Log.i(TAG, "Species selected search: " + speciesId);
+    pushSpecies(speciesId, name, subname, "SEARCH");
+  }
+
+  private void pushSpecies(String speciesId, String name, @Nullable String subname,
+      @Nullable String parent) {
     subname = null;
-    backStackScreens.put("SPECIES",
-        new Screen(Html.fromHtml(name), subname == null ? null : Html.fromHtml(subname)));
-    //setFragment(SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", false /* left */);
-    fragmentController.pushFragment(name, null, SpeciesItemDetailFragment.newInstance(speciesId), "SPECIES", "GROUP");
+    fragmentController.pushFragment(name, null, SpeciesItemDetailFragment.newInstance(speciesId),
+        "SPECIES", parent);
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt(FRAGMENT_COUNT_KEY, backStackScreens.size());
-    int i = 0;
-    for (Map.Entry<String, Screen> screen : backStackScreens.entrySet()) {
-      outState.putString(SCREEN_NAME_PREFIX_KEY + i, screen.getKey());
-      outState.putCharSequence(SCREEN_TITLE_PREFIX_KEY + i, screen.getValue().title);
-      outState.putCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i, screen.getValue().subtitle);
-      ++i;
-    }
-
+    fragmentController.save(outState);
     super.onSaveInstanceState(outState);
   }
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
-    populateBackStackScreens(savedInstanceState);
+    fragmentController.load(savedInstanceState);
   }
 
   @Override
@@ -236,17 +186,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     fragmentsResumed = false;
   }
 
-  private void populateBackStackScreens(Bundle bundle) {
-    int count = bundle.getInt(FRAGMENT_COUNT_KEY);
-    for (int i = 0; i < count; ++i) {
-      String name = bundle.getString(SCREEN_NAME_PREFIX_KEY + i);
-      CharSequence title = bundle.getCharSequence(SCREEN_TITLE_PREFIX_KEY + i);
-      CharSequence subtitle = bundle.getCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i);
-      backStackScreens.put(name, new Screen(title, subtitle));
-    }
-    updateScreen();
-  }
-
   private void handleIntent(Intent intent) {
     Log.i(TAG, "Handling intent: " + intent);
     if (intent.getAction() == null) {
@@ -255,95 +194,18 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     switch (intent.getAction()) {
       case Intent.ACTION_VIEW:
         Cursor cursor = getContentResolver().query(intent.getData(), null, null, null, null);
-        onSpeciesSelected(
+        pushSpecies(
             cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_ID)),
             cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_LABEL)),
-            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)));
+            cursor.getString(cursor.getColumnIndex(FieldGuideDatabase.SPECIES_SUBLABEL)),
+            null);
         break;
       case Intent.ACTION_SEARCH:
-        backStackScreens.put("SEARCH", new Screen("Search", null));
-        setFragment(SearchFragment.newInstance(intent.getExtras()), "SEARCH", true /* left */);
+        fragmentController.pushFragment("Search", null,
+            SearchFragment.newInstance(intent.getExtras()), "SEARCH", null);
         break;
       default:
         break;
     };
   }
-
-  /**
-   * Sets the current fragment, updating the UI as necessary.
-   */
-  private void setFragment(Fragment fragment, @Nullable String backStackEntryName, boolean left) {
-    if (backStackEntryName == null) {
-      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.basecontainer, fragment);
-      transaction.commit();
-      return;
-    }
-
-    if (dualPane) {
-      boolean hasRight = ((ViewGroup) findViewById(R.id.extracontainer)).getChildCount() != 0;
-      int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
-      if (backStackSize > 0 && backStackEntryName.equals(
-          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName())) {
-        // This is horizontal navigation, so replace the right-most fragment with this one and
-        // don't bother adding to the back stack. TODO: Do we need to pop and push, or is this OK?
-        getSupportFragmentManager().popBackStackImmediate();
-        setFragment(fragment, backStackEntryName, left);
-        return;
-        //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //transaction.replace(hasRight ? R.id.extracontainer : R.id.basecontainer, fragment);
-        //transaction.commit();
-      } else {
-        // This is vertical navigation, so push a new fragment. TODO: Urgh, not necessarily. 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (hasRight) {
-          // First replace the left with the current right.
-          Fragment r = getSupportFragmentManager().findFragmentById(R.id.extracontainer);
-          transaction.remove(getSupportFragmentManager().findFragmentById(R.id.basecontainer));
-          transaction.add(R.id.basecontainer, r);
-        }
-        transaction.replace(R.id.extracontainer, fragment);
-        transaction.addToBackStack(backStackEntryName);
-        transaction.commit();
-      }
-    } else {
-      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.basecontainer, fragment);
-      transaction.addToBackStack(backStackEntryName);
-      transaction.commit();
-    }
-    updateScreen();
-  }
-
-  private void updateScreen() {
-    Screen currentScreen;
-    int backStackSize = getSupportFragmentManager().getBackStackEntryCount();
-    if (backStackSize == 0) {
-      // Home screen is showing.
-      currentScreen = homeScreen;
-      if (!showOptions) {
-        showOptions = true;
-        supportInvalidateOptionsMenu();
-      }
-    } else {
-      currentScreen = backStackScreens.get(
-          getSupportFragmentManager().getBackStackEntryAt(backStackSize - 1).getName());
-      if (showOptions) {
-        showOptions = false;
-        supportInvalidateOptionsMenu();
-      }
-    }
-    getSupportActionBar().setTitle(currentScreen.title);
-    getSupportActionBar().setSubtitle(currentScreen.subtitle);
-    getSupportActionBar().setDisplayHomeAsUpEnabled(backStackSize != 0);
-  }
-
-  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
-      new FragmentManager.OnBackStackChangedListener() {
-    @Override
-    public void onBackStackChanged() {
-      Log.i(TAG, "Back stack changed: " + getSupportFragmentManager().getBackStackEntryCount());
-      updateScreen();
-    }
-  };
 }
