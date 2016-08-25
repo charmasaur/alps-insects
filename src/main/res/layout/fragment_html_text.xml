@@ -1,5 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/FragmentThing">
+    style="@style/FragmentRoot">
     
     <TextView
         android:id="@+id/dummy"

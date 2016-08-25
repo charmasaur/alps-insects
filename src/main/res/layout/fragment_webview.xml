@@ -1,4 +1,4 @@
 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dummy"
-    style="@style/FragmentThing">
+    style="@style/FragmentRoot">
 </WebView>
