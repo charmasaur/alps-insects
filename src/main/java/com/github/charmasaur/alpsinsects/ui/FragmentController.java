@@ -16,6 +16,7 @@ import java.util.Map;
 public class FragmentController {
   private static final String TAG = FragmentController.class.getSimpleName();
 
+  private static final String FRAGMENT_URGH_KEY = "FRAGMENT_URGH";
   private static final String FRAGMENT_COUNT_KEY = "FRAGMENT_COUNT";
   private static final String SCREEN_ID_PREFIX_KEY = "ID_";
   private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
@@ -44,6 +45,7 @@ public class FragmentController {
     }
   };
 
+  // TODO: We only ever add to this collection. How can we detect whether to remove from it?
   private final Map<Integer, Screen> backStackScreens = new HashMap<>();
 
   private final FragmentManager fragmentManager;
@@ -82,7 +84,7 @@ public class FragmentController {
       return;
     }
 
-    // If necessary, backtrack through the stack until we find the parent.
+    // If necessary, pop from the backstack until we find the parent.
     int index = 0;
     if (parent != null) {
       while (getFromBack(index).name != parent) {
@@ -91,10 +93,13 @@ public class FragmentController {
       }
     }
     FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+    // Now we need to hide whatever is numViews before the parent (if it exists).
     Screen toHide = getFromBack(index + numViews - 1);
     if (toHide != null) {
       transaction.hide(fragmentManager.findFragmentByTag(toHide.fragmentTag));
     }
+
     String fragmentTag = "" + (++urgh);
     transaction.add(containerViewId, fragment, fragmentTag);
     transaction.addToBackStack(null);
@@ -104,6 +109,7 @@ public class FragmentController {
   }
 
   public void save(Bundle outState) {
+    outState.putInt(FRAGMENT_URGH_KEY, urgh);
     outState.putInt(FRAGMENT_COUNT_KEY, backStackScreens.size());
     int i = 0;
     for (Map.Entry<Integer, Screen> screen : backStackScreens.entrySet()) {
@@ -114,6 +120,7 @@ public class FragmentController {
   }
 
   public void load(Bundle bundle) {
+    urgh = bundle.getInt(FRAGMENT_URGH_KEY);
     int count = bundle.getInt(FRAGMENT_COUNT_KEY);
     for (int i = 0; i < count; ++i) {
       Screen screen = getScreen(bundle, i);
