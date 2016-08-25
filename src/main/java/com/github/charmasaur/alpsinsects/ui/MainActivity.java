@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
             GetInvolvedFragment.newInstance(), "INVOLVED", null);
         break;
       case R.id.menu_resources:
-        // TODO: Play store links.
         fragmentController.pushFragment(getString(R.string.menu_resources_name), null,
             HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES", null);
         break;
