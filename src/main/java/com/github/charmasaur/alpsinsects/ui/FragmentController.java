@@ -84,13 +84,16 @@ public class FragmentController {
       return;
     }
 
+    if (parent == null) {
+      Screen currentParent = getFromBack(1);
+      parent = currentParent == null ? getFromBack(0).name : currentParent.name;
+    }
+
     // If necessary, pop from the backstack until we find the parent.
     int index = 0;
-    if (parent != null) {
-      while (getFromBack(index).name != parent) {
-        ++index;
-        fragmentManager.popBackStack();
-      }
+    while (getFromBack(index).name != parent) {
+      ++index;
+      fragmentManager.popBackStack();
     }
     FragmentTransaction transaction = fragmentManager.beginTransaction();
 
