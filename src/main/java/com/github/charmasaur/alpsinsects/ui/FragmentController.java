@@ -45,7 +45,11 @@ public class FragmentController {
     }
   };
 
-  // TODO: We only ever add to this collection. How can we detect whether to remove from it?
+  /**
+   * Stores information about screens in the back stack. To avoid this growing indefinitely we have
+   * to rely on the fragment manager reusing IDs, which is a bit of a shame. But it's only a few
+   * bytes each time, so it's not exactly the worst leak in the world.
+   */
   private final Map<Integer, Screen> backStackScreens = new HashMap<>();
 
   private final FragmentManager fragmentManager;
@@ -85,6 +89,7 @@ public class FragmentController {
     }
 
     if (parent == null) {
+      // TODO: This doesn't really work for the single pane case :(
       Screen currentParent = getFromBack(1);
       parent = currentParent == null ? getFromBack(0).name : currentParent.name;
     }

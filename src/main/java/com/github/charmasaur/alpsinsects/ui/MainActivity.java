@@ -104,9 +104,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      // TODO: Figure out what to do with these. It's a bit silly when they just stack up.. Really
-      // they should have a parent. Or should we show them in a separate activity? They're kind of
-      // different to the main flow.
+      // TODO: Should these be fullscreen?
       case R.id.menu_about:
         fragmentController.pushFragment(getString(R.string.menu_about_name), null,
             HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", null);
