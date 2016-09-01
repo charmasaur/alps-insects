@@ -67,11 +67,11 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     setSupportActionBar(toolbar);
 
     fragmentController = new FragmentController(getSupportFragmentManager(), R.id.basecontainer,
-        dualPane ? 2 : 1, getSupportActionBar());
+        dualPane, getSupportActionBar());
     if (savedInstanceState == null) {
       fragmentController.pushFragment(getString(R.string.title_group_list),
           getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), "ROOT",
-          null);
+          null, false);
     }
 
     handleIntent(getIntent());
@@ -104,22 +104,21 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      // TODO: Should these be fullscreen?
       case R.id.menu_about:
         fragmentController.pushFragment(getString(R.string.menu_about_name), null,
-            HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", null);
+            HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", null, false);
         break;
       case R.id.menu_get_involved:
         fragmentController.pushFragment(getString(R.string.menu_get_involved_name), null,
-            GetInvolvedFragment.newInstance(), "INVOLVED", null);
+            GetInvolvedFragment.newInstance(), "INVOLVED", null, false);
         break;
       case R.id.menu_resources:
         fragmentController.pushFragment(getString(R.string.menu_resources_name), null,
-            HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES", null);
+            HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES", null, false);
         break;
       case R.id.menu_licenses:
         fragmentController.pushFragment(getString(R.string.menu_licenses_name), null,
-            WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES", null);
+            WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES", null, false);
         break;
       case android.R.id.home:
         onBackPressed();
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     Log.i(TAG, "Group selected: " + groupName);
 
     fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder),
-        "GROUP", "ROOT");
+        "GROUP", "ROOT", false);
   }
 
   @Override
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
       @Nullable String parent) {
     subname = null;
     fragmentController.pushFragment(name, null, SpeciesItemDetailFragment.newInstance(speciesId),
-        "SPECIES", parent);
+        "SPECIES", parent, true);
   }
 
   @Override
@@ -202,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         break;
       case Intent.ACTION_SEARCH:
         fragmentController.pushFragment("Search", null,
-            SearchFragment.newInstance(intent.getExtras()), "SEARCH", null);
+            SearchFragment.newInstance(intent.getExtras()), "SEARCH", null, false);
         break;
       default:
         break;

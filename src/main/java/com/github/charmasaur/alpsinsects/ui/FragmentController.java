@@ -22,6 +22,7 @@ public class FragmentController {
   private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
   private static final String SCREEN_SUBTITLE_PREFIX_KEY = "SUBTITLE_";
   private static final String SCREEN_FRAGMENT_TAG_PREFIX_KEY = "TAG_";
+  private static final String SCREEN_SLAVE_PREFIX_KEY = "SLAVE_";
   private static final String SCREEN_NAME_PREFIX_KEY = "NAME_";
 
   /**
@@ -33,14 +34,16 @@ public class FragmentController {
     public final CharSequence subtitle;
     public final String fragmentTag;
     public final String name;
+    public final boolean slave;
     public final int id;
 
     public Screen(CharSequence title, @Nullable CharSequence subtitle, String fragmentTag,
-        String name, int id) {
+        String name, boolean slave, int id) {
       this.title = title;
       this.subtitle = subtitle;
       this.fragmentTag = fragmentTag;
       this.name = name;
+      this.slave = slave;
       this.id = id;
     }
   };
@@ -55,43 +58,51 @@ public class FragmentController {
   private final FragmentManager fragmentManager;
   private final ActionBar actionBar;
   private final int containerViewId;
-  private final int numViews;
+  private final boolean dualPane;
 
   @Nullable
   private Screen root;
 
   private int urgh;
 
-  public FragmentController(FragmentManager fragmentManager, int containerViewId, int numViews,
+  public FragmentController(FragmentManager fragmentManager, int containerViewId, boolean dualPane,
       ActionBar actionBar) {
     this.fragmentManager = fragmentManager;
     this.containerViewId = containerViewId;
-    this.numViews = numViews;
+    this.dualPane = dualPane;
     this.actionBar = actionBar;
 
     fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
   }
 
   public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-      String name, @Nullable String parent) {
+      String name, @Nullable String parent, boolean slave) {
     fragmentManager.executePendingTransactions();
 
     if (root == null) {
       if (parent != null) {
         throw new RuntimeException("Root must be added first");
       }
+      if (slave) {
+        throw new RuntimeException("Root must be a master");
+      }
       FragmentTransaction transaction = fragmentManager.beginTransaction();
       String fragmentTag = "" + (++urgh);
       transaction.add(containerViewId, fragment, fragmentTag);
       int id = transaction.commit();
-      root = new Screen(title, subtitle, fragmentTag, name, id);
+      root = new Screen(title, subtitle, fragmentTag, name, slave, id);
       return;
     }
 
     if (parent == null) {
-      // TODO: This doesn't really work for the single pane case :(
-      Screen currentParent = getFromBack(1);
-      parent = currentParent == null ? getFromBack(0).name : currentParent.name;
+      // The parent is either the current leaf, or whatever is before that if the current leaf
+      // matches the new thing.
+      parent = getLeaf().name;
+      if (parent == name) {
+        // If getFromBack(1) is null then we must have tried to add the root to the root. Crashing
+        // is fine in that case 'cause something weird is happening.
+        parent = getFromBack(1).name;
+      }
     }
 
     // If necessary, pop from the backstack until we find the parent.
@@ -102,17 +113,33 @@ public class FragmentController {
     }
     FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-    // Now we need to hide whatever is numViews before the parent (if it exists).
-    Screen toHide = getFromBack(index + numViews - 1);
-    if (toHide != null) {
-      transaction.hide(fragmentManager.findFragmentByTag(toHide.fragmentTag));
+    if (slave) {
+      if (getFromBack(index).slave) {
+        throw new RuntimeException("Slave cannot have a slave parent");
+      }
+    }
+
+    if (dualPane) {
+      if (!slave) {
+        // We need to hide the parent, and if that's a slave we need to hide its parent too.
+        Screen parentScreen = getFromBack(index);
+        transaction.hide(fragmentManager.findFragmentByTag(parentScreen.fragmentTag));
+        if (parentScreen.slave) {
+          transaction.hide(fragmentManager.findFragmentByTag(getFromBack(index + 1).fragmentTag));
+        }
+      }
+      // TODO: It would be nice if when we have [master, slave] showing, back removes both of them.
+      // TODO: Or perhaps we should have up vs back. Then back would use the current behaviour
+      // (undo the last thing), and up would go back to the next level of the tree...
+    } else {
+      transaction.hide(fragmentManager.findFragmentByTag(getFromBack(index).fragmentTag));
     }
 
     String fragmentTag = "" + (++urgh);
     transaction.add(containerViewId, fragment, fragmentTag);
     transaction.addToBackStack(null);
     int id = transaction.commit();
-    Screen newLeaf = new Screen(title, subtitle, fragmentTag, name, id);
+    Screen newLeaf = new Screen(title, subtitle, fragmentTag, name, slave, id);
     backStackScreens.put(id, newLeaf);
   }
 
@@ -143,6 +170,7 @@ public class FragmentController {
     outState.putCharSequence(SCREEN_TITLE_PREFIX_KEY + i, screen.title);
     outState.putCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i, screen.subtitle);
     outState.putString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i, screen.fragmentTag);
+    outState.putBoolean(SCREEN_SLAVE_PREFIX_KEY + i, screen.slave);
     outState.putString(SCREEN_NAME_PREFIX_KEY + i, screen.name);
   }
 
@@ -151,8 +179,9 @@ public class FragmentController {
     CharSequence title = bundle.getCharSequence(SCREEN_TITLE_PREFIX_KEY + i);
     CharSequence subtitle = bundle.getCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i);
     String fragmentTag = bundle.getString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i);
+    Boolean slave = bundle.getBoolean(SCREEN_SLAVE_PREFIX_KEY + i);
     String name = bundle.getString(SCREEN_NAME_PREFIX_KEY + i);
-    return new Screen(title, subtitle, fragmentTag, name, id);
+    return new Screen(title, subtitle, fragmentTag, name, slave, id);
   }
 
   private void updateScreen() {
