@@ -22,7 +22,8 @@ public class FragmentController {
   private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
   private static final String SCREEN_SUBTITLE_PREFIX_KEY = "SUBTITLE_";
   private static final String SCREEN_FRAGMENT_TAG_PREFIX_KEY = "TAG_";
-  private static final String SCREEN_SLAVE_PREFIX_KEY = "SLAVE_";
+  private static final String SCREEN_LEVEL_PREFIX_KEY = "LEVEL_";
+  private static final String SCREEN_PARENT_TAG_PREFIX_KEY = "PARENT_TAG_";
   private static final String SCREEN_NAME_PREFIX_KEY = "NAME_";
 
   /**
@@ -34,16 +35,18 @@ public class FragmentController {
     public final CharSequence subtitle;
     public final String fragmentTag;
     public final String name;
-    public final boolean slave;
+    public final int level;
     public final int id;
+    public final String parentTag;
 
     public Screen(CharSequence title, @Nullable CharSequence subtitle, String fragmentTag,
-        String name, boolean slave, int id) {
+        String name, int level, String parentTag, int id) {
       this.title = title;
       this.subtitle = subtitle;
       this.fragmentTag = fragmentTag;
       this.name = name;
-      this.slave = slave;
+      this.level = level;
+      this.parentTag = parentTag;
       this.id = id;
     }
   };
@@ -75,72 +78,78 @@ public class FragmentController {
     fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
   }
 
+  /**
+   * @param level the level of this fragment. Even for a master, that plus one if it's the master's
+   *     slave.
+   */
   public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-      String name, @Nullable String parent, boolean slave) {
+      String name, int level) {
     fragmentManager.executePendingTransactions();
 
     if (root == null) {
-      if (parent != null) {
-        throw new RuntimeException("Root must be added first");
-      }
-      if (slave) {
+      if (isSlave(level)) {
         throw new RuntimeException("Root must be a master");
       }
       FragmentTransaction transaction = fragmentManager.beginTransaction();
       String fragmentTag = "" + (++urgh);
       transaction.add(containerViewId, fragment, fragmentTag);
       int id = transaction.commit();
-      root = new Screen(title, subtitle, fragmentTag, name, slave, id);
+      root = new Screen(title, subtitle, fragmentTag, name, level, null, id);
       return;
     }
 
-    if (parent == null) {
-      // The parent is either the current leaf, or whatever is before that if the current leaf
-      // matches the new thing.
-      parent = getLeaf().name;
-      if (parent == name) {
-        // If getFromBack(1) is null then we must have tried to add the root to the root. Crashing
-        // is fine in that case 'cause something weird is happening.
-        parent = getFromBack(1).name;
-      }
+    Screen leaf = getLeaf();
+    String parentTag;
+    if (level == leaf.level) {
+      parentTag = leaf.parentTag;
+    } else if (isSlave(level)) {
+      parentTag = leaf.fragmentTag;
+    } else {
+      parentTag = null;
     }
 
-    // If necessary, pop from the backstack until we find the parent.
-    int index = 0;
-    while (getFromBack(index).name != parent) {
-      ++index;
-      fragmentManager.popBackStack();
-    }
     FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-    if (slave) {
-      if (getFromBack(index).slave) {
-        throw new RuntimeException("Slave cannot have a slave parent");
-      }
-    }
-
     if (dualPane) {
-      if (!slave) {
-        // We need to hide the parent, and if that's a slave we need to hide its parent too.
-        Screen parentScreen = getFromBack(index);
-        transaction.hide(fragmentManager.findFragmentByTag(parentScreen.fragmentTag));
-        if (parentScreen.slave) {
-          transaction.hide(fragmentManager.findFragmentByTag(getFromBack(index + 1).fragmentTag));
+      if (isSlave(level)) {
+        // If there's already a slave we need to hide that.
+        if (isSlave(leaf.level)) {
+          transaction.hide(fragmentManager.findFragmentByTag(leaf.fragmentTag));
+        }
+      } else {
+        // We need to hide the current leaf, and if that's a slave we need to hide its parent too.
+        transaction.hide(fragmentManager.findFragmentByTag(leaf.fragmentTag));
+        if (isSlave(leaf.level)) {
+          transaction.hide(fragmentManager.findFragmentByTag(leaf.parentTag));
         }
       }
-      // TODO: It would be nice if when we have [master, slave] showing, back removes both of them.
-      // TODO: Or perhaps we should have up vs back. Then back would use the current behaviour
-      // (undo the last thing), and up would go back to the next level of the tree...
     } else {
-      transaction.hide(fragmentManager.findFragmentByTag(getFromBack(index).fragmentTag));
+      transaction.hide(fragmentManager.findFragmentByTag(leaf.fragmentTag));
     }
 
     String fragmentTag = "" + (++urgh);
     transaction.add(containerViewId, fragment, fragmentTag);
     transaction.addToBackStack(null);
     int id = transaction.commit();
-    Screen newLeaf = new Screen(title, subtitle, fragmentTag, name, slave, id);
+    Screen newLeaf = new Screen(title, subtitle, fragmentTag, name, level, parentTag, id);
     backStackScreens.put(id, newLeaf);
+  }
+
+  public void onUpPressed() {
+    fragmentManager.executePendingTransactions();
+
+    int curLevel = getLeaf().level;
+    // Pop from the backstack until the level changes (where slaves and their masters are
+    // considered to have the same level for this).
+    int index = 0;
+    while (getFromBack(index).level / 2 == curLevel / 2) {
+      ++index;
+      fragmentManager.popBackStack();
+    }
+  }
+
+  public static boolean isSlave(int level) {
+    return level % 2 == 1;
   }
 
   public void save(Bundle outState) {
@@ -170,7 +179,8 @@ public class FragmentController {
     outState.putCharSequence(SCREEN_TITLE_PREFIX_KEY + i, screen.title);
     outState.putCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i, screen.subtitle);
     outState.putString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i, screen.fragmentTag);
-    outState.putBoolean(SCREEN_SLAVE_PREFIX_KEY + i, screen.slave);
+    outState.putInt(SCREEN_LEVEL_PREFIX_KEY + i, screen.level);
+    outState.putString(SCREEN_PARENT_TAG_PREFIX_KEY + i, screen.parentTag);
     outState.putString(SCREEN_NAME_PREFIX_KEY + i, screen.name);
   }
 
@@ -179,9 +189,10 @@ public class FragmentController {
     CharSequence title = bundle.getCharSequence(SCREEN_TITLE_PREFIX_KEY + i);
     CharSequence subtitle = bundle.getCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i);
     String fragmentTag = bundle.getString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i);
-    Boolean slave = bundle.getBoolean(SCREEN_SLAVE_PREFIX_KEY + i);
+    Integer level = bundle.getInt(SCREEN_LEVEL_PREFIX_KEY + i);
+    String parentTag = bundle.getString(SCREEN_PARENT_TAG_PREFIX_KEY + i);
     String name = bundle.getString(SCREEN_NAME_PREFIX_KEY + i);
-    return new Screen(title, subtitle, fragmentTag, name, slave, id);
+    return new Screen(title, subtitle, fragmentTag, name, level, parentTag, id);
   }
 
   private void updateScreen() {
