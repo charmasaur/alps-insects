@@ -70,8 +70,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
         dualPane, getSupportActionBar());
     if (savedInstanceState == null) {
       fragmentController.pushFragment(getString(R.string.title_group_list),
-          getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), "ROOT",
-          0);
+          getString(R.string.subtitle_group_list), SpeciesGroupListFragment.newInstance(), 0);
     }
 
     handleIntent(getIntent());
@@ -106,19 +105,19 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     switch (item.getItemId()) {
       case R.id.menu_about:
         fragmentController.pushFragment(getString(R.string.menu_about_name), null,
-            HtmlTextFragment.newInstance(R.string.about_string), "ABOUT", 2);
+            HtmlTextFragment.newInstance(R.string.about_string), 2);
         break;
       case R.id.menu_get_involved:
         fragmentController.pushFragment(getString(R.string.menu_get_involved_name), null,
-            GetInvolvedFragment.newInstance(), "INVOLVED", 2);
+            GetInvolvedFragment.newInstance(), 2);
         break;
       case R.id.menu_resources:
         fragmentController.pushFragment(getString(R.string.menu_resources_name), null,
-            HtmlTextFragment.newInstance(R.string.resources_string), "RESOURCES", 2);
+            HtmlTextFragment.newInstance(R.string.resources_string), 2);
         break;
       case R.id.menu_licenses:
         fragmentController.pushFragment(getString(R.string.menu_licenses_name), null,
-            WebViewFragment.newInstance("open_source_licenses.html"), "LICENSES", 2);
+            WebViewFragment.newInstance("open_source_licenses.html"), 2);
         break;
       case android.R.id.home:
         fragmentController.onUpPressed();
@@ -133,12 +132,13 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   public void onGroupSelected(String groupName, String groupOrder) {
     Log.i(TAG, "Group selected: " + groupName);
 
-    fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder),
-        "GROUP", 4);
+    fragmentController.pushFragment(groupName, null, GroupFragment.newInstance(groupOrder), 4);
   }
 
   @Override
   public void onSpeciesSelected(String speciesId, String name, @Nullable String subname) {
+    // TODO: Here and elsewhere: if this species is already selected, don't push the fragment
+    // again.
     Log.i(TAG, "Species selected: " + speciesId);
     pushSpecies(speciesId, name, subname, 5);
   }
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
   private void pushSpecies(String speciesId, String name, @Nullable String subname, int level) {
     subname = null;
     fragmentController.pushFragment(name, null, SpeciesItemDetailFragment.newInstance(speciesId),
-        "SPECIES", level);
+        level);
   }
 
   @Override
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
             8);
         break;
       case Intent.ACTION_SEARCH:
-        fragmentController.pushFragment("Search", null,
-            SearchFragment.newInstance(intent.getExtras()), "SEARCH", 6);
+        fragmentController
+            .pushFragment("Search", null, SearchFragment.newInstance(intent.getExtras()), 6);
         break;
       default:
         break;

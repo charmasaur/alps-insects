@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: Test single pane.
 public class FragmentController {
   private static final String TAG = FragmentController.class.getSimpleName();
 
-  private static final String FRAGMENT_URGH_KEY = "FRAGMENT_URGH";
+  private static final String FRAGMENT_TOTAL_FRAGMENTS_CREATED_KEY =
+    "FRAGMENT_TOTAL_FRAGMENTS_CREATED";
   private static final String FRAGMENT_COUNT_KEY = "FRAGMENT_COUNT";
   private static final String SCREEN_ID_PREFIX_KEY = "ID_";
   private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
@@ -24,7 +26,6 @@ public class FragmentController {
   private static final String SCREEN_FRAGMENT_TAG_PREFIX_KEY = "TAG_";
   private static final String SCREEN_LEVEL_PREFIX_KEY = "LEVEL_";
   private static final String SCREEN_PARENT_TAG_PREFIX_KEY = "PARENT_TAG_";
-  private static final String SCREEN_NAME_PREFIX_KEY = "NAME_";
 
   /**
    * Represents a screen that can be showing to the user.
@@ -34,17 +35,15 @@ public class FragmentController {
     @Nullable
     public final CharSequence subtitle;
     public final String fragmentTag;
-    public final String name;
     public final int level;
     public final int id;
     public final String parentTag;
 
     public Screen(CharSequence title, @Nullable CharSequence subtitle, String fragmentTag,
-        String name, int level, String parentTag, int id) {
+        int level, String parentTag, int id) {
       this.title = title;
       this.subtitle = subtitle;
       this.fragmentTag = fragmentTag;
-      this.name = name;
       this.level = level;
       this.parentTag = parentTag;
       this.id = id;
@@ -66,7 +65,7 @@ public class FragmentController {
   @Nullable
   private Screen root;
 
-  private int urgh;
+  private int totalFragmentsCreated;
 
   public FragmentController(FragmentManager fragmentManager, int containerViewId, boolean dualPane,
       ActionBar actionBar) {
@@ -83,7 +82,7 @@ public class FragmentController {
    *     slave.
    */
   public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-      String name, int level) {
+      int level) {
     fragmentManager.executePendingTransactions();
 
     if (root == null) {
@@ -91,14 +90,16 @@ public class FragmentController {
         throw new RuntimeException("Root must be a master");
       }
       FragmentTransaction transaction = fragmentManager.beginTransaction();
-      String fragmentTag = "" + (++urgh);
+      String fragmentTag = nextTag();
       transaction.add(containerViewId, fragment, fragmentTag);
       int id = transaction.commit();
-      root = new Screen(title, subtitle, fragmentTag, name, level, null, id);
+      root = new Screen(title, subtitle, fragmentTag, level, null, id);
       return;
     }
 
     Screen leaf = getLeaf();
+
+    // Figure out the parent of this new screen. Note that slaves always have a parent.
     String parentTag;
     if (level == leaf.level) {
       parentTag = leaf.parentTag;
@@ -127,11 +128,11 @@ public class FragmentController {
       transaction.hide(fragmentManager.findFragmentByTag(leaf.fragmentTag));
     }
 
-    String fragmentTag = "" + (++urgh);
+    String fragmentTag = nextTag();
     transaction.add(containerViewId, fragment, fragmentTag);
     transaction.addToBackStack(null);
     int id = transaction.commit();
-    Screen newLeaf = new Screen(title, subtitle, fragmentTag, name, level, parentTag, id);
+    Screen newLeaf = new Screen(title, subtitle, fragmentTag, level, parentTag, id);
     backStackScreens.put(id, newLeaf);
   }
 
@@ -139,21 +140,21 @@ public class FragmentController {
     fragmentManager.executePendingTransactions();
 
     int curLevel = getLeaf().level;
-    // Pop from the backstack until the level changes (where slaves and their masters are
-    // considered to have the same level for this).
+
+    // Pop from the backstack until the level changes (in dual pane slaves and their masters are
+    // considered to have the same level), or until we hit the root.
     int index = 0;
-    while (getFromBack(index).level / 2 == curLevel / 2) {
-      ++index;
+    while (true) {
       fragmentManager.popBackStack();
+      Screen newLeaf = getFromBack(++index);
+      if (newLeaf == root || !compareLevels(newLeaf.level, curLevel)) {
+        break;
+      }
     }
   }
 
-  public static boolean isSlave(int level) {
-    return level % 2 == 1;
-  }
-
   public void save(Bundle outState) {
-    outState.putInt(FRAGMENT_URGH_KEY, urgh);
+    outState.putInt(FRAGMENT_TOTAL_FRAGMENTS_CREATED_KEY, totalFragmentsCreated);
     outState.putInt(FRAGMENT_COUNT_KEY, backStackScreens.size());
     int i = 0;
     for (Map.Entry<Integer, Screen> screen : backStackScreens.entrySet()) {
@@ -164,7 +165,7 @@ public class FragmentController {
   }
 
   public void load(Bundle bundle) {
-    urgh = bundle.getInt(FRAGMENT_URGH_KEY);
+    totalFragmentsCreated = bundle.getInt(FRAGMENT_TOTAL_FRAGMENTS_CREATED_KEY);
     int count = bundle.getInt(FRAGMENT_COUNT_KEY);
     for (int i = 0; i < count; ++i) {
       Screen screen = getScreen(bundle, i);
@@ -181,7 +182,6 @@ public class FragmentController {
     outState.putString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i, screen.fragmentTag);
     outState.putInt(SCREEN_LEVEL_PREFIX_KEY + i, screen.level);
     outState.putString(SCREEN_PARENT_TAG_PREFIX_KEY + i, screen.parentTag);
-    outState.putString(SCREEN_NAME_PREFIX_KEY + i, screen.name);
   }
 
   private Screen getScreen(Bundle bundle, int i) {
@@ -191,8 +191,23 @@ public class FragmentController {
     String fragmentTag = bundle.getString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i);
     Integer level = bundle.getInt(SCREEN_LEVEL_PREFIX_KEY + i);
     String parentTag = bundle.getString(SCREEN_PARENT_TAG_PREFIX_KEY + i);
-    String name = bundle.getString(SCREEN_NAME_PREFIX_KEY + i);
-    return new Screen(title, subtitle, fragmentTag, name, level, parentTag, id);
+    return new Screen(title, subtitle, fragmentTag, level, parentTag, id);
+  }
+
+  private Screen getLeaf() {
+    return getFromBack(0);
+  }
+
+  private Screen getFromBack(int count) {
+    int backStackSize = fragmentManager.getBackStackEntryCount();
+    if (count > backStackSize) {
+      return null;
+    }
+    if (count == backStackSize) {
+      return root;
+    }
+    return backStackScreens
+        .get(fragmentManager.getBackStackEntryAt(backStackSize - count - 1).getId());
   }
 
   private void updateScreen() {
@@ -202,21 +217,16 @@ public class FragmentController {
     actionBar.setDisplayHomeAsUpEnabled(leaf != root);
   }
 
-  private Screen getLeaf() {
-    return getFromBack(0);
+  private String nextTag() {
+    return "" + (++totalFragmentsCreated);
   }
 
-  private Screen getFromBack(int count) {
-    int backStackSize = fragmentManager.getBackStackEntryCount();
-    Log.i(TAG, "Size: " + backStackSize);
-    if (count > backStackSize) {
-      return null;
-    }
-    if (count == backStackSize) {
-      return root;
-    }
-    return backStackScreens
-        .get(fragmentManager.getBackStackEntryAt(backStackSize - count - 1).getId());
+  private boolean compareLevels(int a, int b) {
+    return dualPane ? a / 2 == b / 2 : a == b;
+  }
+
+  private static boolean isSlave(int level) {
+    return level % 2 == 1;
   }
 
   private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
