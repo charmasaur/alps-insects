@@ -14,13 +14,7 @@
         app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
 
     <LinearLayout
-        android:id="@+id/basecontainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"/>
-
-    <LinearLayout
-        android:id="@+id/extracontainer"
+        android:id="@+id/double_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"/>

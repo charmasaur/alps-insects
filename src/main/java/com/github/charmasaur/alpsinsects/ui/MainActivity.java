@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    boolean dualPane = findViewById(R.id.extracontainer) != null;
+    boolean dualPane = findViewById(R.id.double_container) != null;
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    fragmentController = new FragmentController(getSupportFragmentManager(), R.id.basecontainer,
-        dualPane);
+    fragmentController = new FragmentController(getSupportFragmentManager(),
+        dualPane ? R.id.double_container : R.id.single_container, dualPane);
     if (savedInstanceState == null) {
       fragmentController.pushFragment(
           new FragmentInfo(getString(R.string.title_group_list),

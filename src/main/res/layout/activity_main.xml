@@ -14,7 +14,7 @@
         app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
 
     <FrameLayout
-        android:id="@+id/basecontainer"
+        android:id="@+id/single_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

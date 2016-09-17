@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Test single pane.
 public class FragmentController {
   private static final String TAG = FragmentController.class.getSimpleName();
 
