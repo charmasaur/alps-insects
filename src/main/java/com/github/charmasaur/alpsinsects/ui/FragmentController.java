@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ public class FragmentController {
     "FRAGMENT_TOTAL_FRAGMENTS_CREATED";
   private static final String FRAGMENT_COUNT_KEY = "FRAGMENT_COUNT";
   private static final String SCREEN_ID_PREFIX_KEY = "ID_";
-  private static final String SCREEN_TITLE_PREFIX_KEY = "TITLE_";
-  private static final String SCREEN_SUBTITLE_PREFIX_KEY = "SUBTITLE_";
+  private static final String SCREEN_INFO_PREFIX_KEY = "INFO_";
   private static final String SCREEN_FRAGMENT_TAG_PREFIX_KEY = "TAG_";
   private static final String SCREEN_LEVEL_PREFIX_KEY = "LEVEL_";
   private static final String SCREEN_PARENT_TAG_PREFIX_KEY = "PARENT_TAG_";
@@ -31,18 +29,15 @@ public class FragmentController {
    * Represents a screen that can be showing to the user.
    */
   private static final class Screen {
-    public final CharSequence title;
-    @Nullable
-    public final CharSequence subtitle;
+    public final FragmentInfo fragmentInfo;
     public final String fragmentTag;
     public final int level;
     public final int id;
     public final String parentTag;
 
-    public Screen(CharSequence title, @Nullable CharSequence subtitle, String fragmentTag,
-        int level, String parentTag, int id) {
-      this.title = title;
-      this.subtitle = subtitle;
+    public Screen(FragmentInfo fragmentInfo, String fragmentTag, int level, String parentTag,
+        int id) {
+      this.fragmentInfo = fragmentInfo;
       this.fragmentTag = fragmentTag;
       this.level = level;
       this.parentTag = parentTag;
@@ -58,7 +53,6 @@ public class FragmentController {
   private final Map<Integer, Screen> backStackScreens = new HashMap<>();
 
   private final FragmentManager fragmentManager;
-  private final ActionBar actionBar;
   private final int containerViewId;
   private final boolean dualPane;
 
@@ -67,22 +61,18 @@ public class FragmentController {
 
   private int totalFragmentsCreated;
 
-  public FragmentController(FragmentManager fragmentManager, int containerViewId, boolean dualPane,
-      ActionBar actionBar) {
+  public FragmentController(FragmentManager fragmentManager, int containerViewId,
+      boolean dualPane) {
     this.fragmentManager = fragmentManager;
     this.containerViewId = containerViewId;
     this.dualPane = dualPane;
-    this.actionBar = actionBar;
-
-    fragmentManager.addOnBackStackChangedListener(backStackChangedListener);
   }
 
   /**
    * @param level the level of this fragment. Even for a master, that plus one if it's the master's
    *     slave.
    */
-  public void pushFragment(CharSequence title, @Nullable CharSequence subtitle, Fragment fragment,
-      int level) {
+  public void pushFragment(FragmentInfo fragmentInfo, Fragment fragment, int level) {
     fragmentManager.executePendingTransactions();
 
     if (root == null) {
@@ -93,18 +83,28 @@ public class FragmentController {
       String fragmentTag = nextTag();
       transaction.add(containerViewId, fragment, fragmentTag);
       int id = transaction.commit();
-      root = new Screen(title, subtitle, fragmentTag, level, null, id);
+      root = new Screen(fragmentInfo, fragmentTag, level, null, id);
       return;
     }
 
     Screen leaf = getLeaf();
 
-    // Figure out the parent of this new screen. Note that slaves always have a parent.
+    // This doesn't really belong here (should be in MainActivity, since FragmentInfo should be
+    // opaque to this class). But it's a bit simpler, and doesn't do any harm.
+    if (fragmentInfo.getId().equals(leaf.fragmentInfo.getId())) {
+      return;
+    }
+
     String parentTag;
-    if (level == leaf.level) {
-      parentTag = leaf.parentTag;
-    } else if (isSlave(level)) {
-      parentTag = leaf.fragmentTag;
+    if (isSlave(level)) {
+      if (isSlave(leaf.level)) {
+        // This and the leaf are siblings (they might not have the same level, but that's OK --
+        // actual level is only used for determining how far up "up" means).
+        parentTag = leaf.parentTag;
+      } else {
+        // This is the leaf's child.
+        parentTag = leaf.fragmentTag;
+      }
     } else {
       parentTag = null;
     }
@@ -132,11 +132,11 @@ public class FragmentController {
     transaction.add(containerViewId, fragment, fragmentTag);
     transaction.addToBackStack(null);
     int id = transaction.commit();
-    Screen newLeaf = new Screen(title, subtitle, fragmentTag, level, parentTag, id);
+    Screen newLeaf = new Screen(fragmentInfo, fragmentTag, level, parentTag, id);
     backStackScreens.put(id, newLeaf);
   }
 
-  public void onUpPressed() {
+  public void navigateUp() {
     fragmentManager.executePendingTransactions();
 
     int curLevel = getLeaf().level;
@@ -145,11 +145,12 @@ public class FragmentController {
     // considered to have the same level), or until we hit the root.
     int index = 0;
     while (true) {
-      fragmentManager.popBackStack();
-      Screen newLeaf = getFromBack(++index);
+      Screen newLeaf = getFromBack(index);
       if (newLeaf == root || !compareLevels(newLeaf.level, curLevel)) {
         break;
       }
+      fragmentManager.popBackStack();
+      ++index;
     }
   }
 
@@ -172,13 +173,21 @@ public class FragmentController {
       backStackScreens.put(screen.id, screen);
     }
     root = getScreen(bundle, count);
-    updateScreen();
+  }
+
+  public FragmentInfo getLeafInfo() {
+    return getLeaf().fragmentInfo;
+  }
+
+  public FragmentInfo getRootInfo() {
+    return root.fragmentInfo;
   }
 
   private void putScreen(Screen screen, Bundle outState, int i) {
     outState.putInt(SCREEN_ID_PREFIX_KEY + i, screen.id);
-    outState.putCharSequence(SCREEN_TITLE_PREFIX_KEY + i, screen.title);
-    outState.putCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i, screen.subtitle);
+    Bundle infoBundle = new Bundle();
+    screen.fragmentInfo.save(infoBundle);
+    outState.putBundle(SCREEN_INFO_PREFIX_KEY + i, infoBundle);
     outState.putString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i, screen.fragmentTag);
     outState.putInt(SCREEN_LEVEL_PREFIX_KEY + i, screen.level);
     outState.putString(SCREEN_PARENT_TAG_PREFIX_KEY + i, screen.parentTag);
@@ -186,12 +195,11 @@ public class FragmentController {
 
   private Screen getScreen(Bundle bundle, int i) {
     Integer id = bundle.getInt(SCREEN_ID_PREFIX_KEY + i);
-    CharSequence title = bundle.getCharSequence(SCREEN_TITLE_PREFIX_KEY + i);
-    CharSequence subtitle = bundle.getCharSequence(SCREEN_SUBTITLE_PREFIX_KEY + i);
+    FragmentInfo fragmentInfo = FragmentInfo.load(bundle.getBundle(SCREEN_INFO_PREFIX_KEY + i));
     String fragmentTag = bundle.getString(SCREEN_FRAGMENT_TAG_PREFIX_KEY + i);
     Integer level = bundle.getInt(SCREEN_LEVEL_PREFIX_KEY + i);
     String parentTag = bundle.getString(SCREEN_PARENT_TAG_PREFIX_KEY + i);
-    return new Screen(title, subtitle, fragmentTag, level, parentTag, id);
+    return new Screen(fragmentInfo, fragmentTag, level, parentTag, id);
   }
 
   private Screen getLeaf() {
@@ -210,13 +218,6 @@ public class FragmentController {
         .get(fragmentManager.getBackStackEntryAt(backStackSize - count - 1).getId());
   }
 
-  private void updateScreen() {
-    Screen leaf = getLeaf();
-    actionBar.setTitle(leaf.title);
-    actionBar.setSubtitle(leaf.subtitle);
-    actionBar.setDisplayHomeAsUpEnabled(leaf != root);
-  }
-
   private String nextTag() {
     return "" + (++totalFragmentsCreated);
   }
@@ -228,13 +229,4 @@ public class FragmentController {
   private static boolean isSlave(int level) {
     return level % 2 == 1;
   }
-
-  private final FragmentManager.OnBackStackChangedListener backStackChangedListener =
-      new FragmentManager.OnBackStackChangedListener() {
-    @Override
-    public void onBackStackChanged() {
-      Log.i(TAG, "Back stack changed: " + fragmentManager.getBackStackEntryCount());
-      updateScreen();
-    }
-  };
 }
