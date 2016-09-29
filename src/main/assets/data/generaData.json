@@ -19,7 +19,7 @@
       "order": "Coleoptera"
     },
     {
-      "description": "Flies (Order Diptera) can be recognised by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects)",
+      "description": "Flies (Order Diptera) can be recognised by their proboscoid mouthparts and two translucent wings (not four wings like most flying insects).",
       "extraSearch": "fly",
       "iconCredit": "D. Monger",
       "iconDarkFilename": "ic_d_dip.svg",
@@ -55,7 +55,7 @@
       "order": "Hymenoptera"
     },
     {
-      "description": "Moths and butterflies (order Lepidoptera) can be recognised by their broad, powdery wings and tubelike mouthparts",
+      "description": "Moths and butterflies (order Lepidoptera) can be recognised by their broad, powdery wings and tubelike mouthparts.",
       "extraSearch": "fly",
       "iconCredit": "A. Seago",
       "iconDarkFilename": "ic_d_lep.svg",
