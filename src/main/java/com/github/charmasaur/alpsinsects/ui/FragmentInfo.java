@@ -47,12 +47,13 @@ public class FragmentInfo {
     return new FragmentInfo(title, subtitle, id);
   }
 
-  public static FragmentInfo fromHeading(CharSequence title, @Nullable CharSequence subtitle) {
-    return new FragmentInfo(title, subtitle, title.toString());
+  public static FragmentInfo fromHeading(CharSequence title, @Nullable CharSequence subtitle,
+      String type) {
+    return new FragmentInfo(title, subtitle, type + title.toString());
   }
 
   public static FragmentInfo fromHeadingAndId(CharSequence title, @Nullable CharSequence subtitle,
-      String id) {
-    return new FragmentInfo(title, subtitle, id);
+      String id, String type) {
+    return new FragmentInfo(title, subtitle, id + type);
   }
 }
