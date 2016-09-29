@@ -31,7 +31,7 @@ public class SearchFragment extends Fragment {
    * must implement this interface.
    */
   public interface Callback {
-    void onSpeciesSelected(String speciesId, String name, @Nullable String subname);
+    void onSpeciesSelectedSearch(String speciesId, String name, @Nullable String subname);
   }
 
   private Callback callback;
@@ -137,7 +137,7 @@ public class SearchFragment extends Fragment {
           Log.w("SearchActivity", "Displaying species details for " + id);
           Log.w("SearchActivity", view.toString());
 
-          callback.onSpeciesSelected(Long.toString(id), adapter.getLabelAtPosition(position),
+          callback.onSpeciesSelectedSearch(Long.toString(id), adapter.getLabelAtPosition(position),
               adapter.getSublabelAtPosition(position));
         }
       });

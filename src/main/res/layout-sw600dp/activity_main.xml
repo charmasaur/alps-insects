@@ -13,9 +13,10 @@
         app:theme="@style/Theme.FieldGuide.Toolbar"
         app:popupTheme="@style/Theme.FieldGuide.ToolbarPopup"/>
 
-    <FrameLayout
-        android:id="@+id/single_container"
+    <LinearLayout
+        android:id="@+id/double_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal"/>
 
 </LinearLayout>
