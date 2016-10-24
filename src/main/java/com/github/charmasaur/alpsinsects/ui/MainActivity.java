@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements SpeciesGroupListF
           FragmentInfo.fromHeading(getString(R.string.title_group_list),
               getString(R.string.subtitle_group_list), "GROUPLIST"),
           SpeciesGroupListFragment.newInstance(), 0);
+      updateHeading();
     }
 
     getSupportFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
